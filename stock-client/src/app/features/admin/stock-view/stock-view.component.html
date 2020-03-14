@@ -1,0 +1,37 @@
+
+<div class="mb-3">
+  <h5 class="text-center"> Upload Stock Data
+    <input type="file" #uploadFile name="stock_data" class="mx-5" [ngStyle]="{'color': 'orange'}"
+           id="txtFileUpload" (change)="uploadStocks($event)" accept=".xlsx" />
+  </h5>
+
+</div>
+
+<app-cards>
+  <div *ngIf="stocks; else doThis">
+    <p-table [value]="stocks" [columns]="cols" [paginator]="true" [rows]="10">
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of cols" [ngStyle]="{'width': col.width}">
+            {{col.header}}
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-stock let-columns>
+        <tr>
+          <td *ngFor="let col of cols">
+            {{stock[col.field]}}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <ng-template #doThis>
+    <div class="text-center">
+      <header class="text-center">
+        <h6> No stock data </h6>
+      </header>
+    </div>
+  </ng-template>
+</app-cards>

@@ -1,0 +1,18 @@
+spring:
+  # for Postgres database
+  datasource:
+    url: "jdbc:postgresql://${db-host}:5432/jwt"
+    username: ${db-user}
+    password:  ${db-pw}
+
+  # for Ms SQL server database
+    #driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    #url: jdbc:sqlserver://${db-host}: 1433;DatabaseName=jwt
+    #username: ${db-user}
+    #password: ${db-pw}
+  jpa:
+    hibernate:
+      ddl-auto: update
+jwt:
+  header: Authorization
+  secret: secret-key

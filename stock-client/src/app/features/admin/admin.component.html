@@ -1,0 +1,12 @@
+<div class="container">
+  <div class="m-5">
+    <p-tabView (onChange)="tabChange($event)">
+      <p-tabPanel [header]="item.label" *ngFor="let item of items; let i = index" [selected]="i == 0">
+        <div class="m-2" [ngSwitch]="tabs">
+            <app-stock-view class="w-100" *ngSwitchCase="selected.STOCKS"></app-stock-view>
+        </div>
+      </p-tabPanel>
+    </p-tabView>
+  </div>
+</div>
+

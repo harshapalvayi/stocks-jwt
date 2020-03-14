@@ -1,0 +1,54 @@
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import {LandingPageComponent} from '@core/landing-page/landing-page.component';
+import {LoginPageComponent} from '@core/login-page/login-page.component';
+import {ErrorComponent} from '@core/error/error.component';
+import {RegisterComponent} from '@core/register/register.component';
+import {LogoutComponent} from '@core/logout/logout.component';
+import {RoleGuardService} from '@app/role-guard.service';
+
+
+const routes: Routes = [
+  {
+    path: 'app-landing-page',
+    component: LandingPageComponent
+  },
+  {
+    path: 'app-login-page',
+    component: LoginPageComponent
+  },
+  {
+    path: 'app-register',
+    component: RegisterComponent
+  },
+  {
+    path: 'app-logout',
+    component: LogoutComponent
+  },
+  {
+    path: 'app-dashboard',
+    loadChildren: '@features/dashboard/dashboard.module#DashboardModule',
+    canActivate: [RoleGuardService]
+  },
+  { path: 'app-reports',
+    loadChildren: () => import('@features/reports/reports.module').then(m => m.ReportsModule),
+    canActivate: [RoleGuardService]
+  },
+  {
+    path: 'app-admin',
+    loadChildren: '@features/admin/admin.module#AdminModule',
+    canActivate: [RoleGuardService]
+  },
+  {
+    path: '',
+    redirectTo: 'app-landing-page',
+    pathMatch: 'full'
+  },
+  { path: '**', component: ErrorComponent }
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }

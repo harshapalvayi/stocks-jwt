@@ -1,0 +1,26 @@
+<div class="container">
+  <app-cards>
+    <form [formGroup]= "signUpForm" (ngSubmit)="submit()">
+      <header class="text-center"> <h2>User Registration</h2> </header><br>
+      <div>
+        <label>
+          <input class="text-center" formControlName="username" placeholder="user" maxlength="12"/>
+        </label>
+      </div>
+      <div>
+        <label>
+          <input class="text-center" formControlName="password" placeholder="password"/>
+        </label>
+      </div>
+      <div>
+        <label>
+          <input class="text-center" formControlName="email" placeholder="email"/>
+        </label>
+      </div>
+      <div>
+        <button pButton label="Sign Up" class="ui-button-rounded" [disabled]="signUpForm.invalid"></button>
+      </div>
+    </form>
+  </app-cards>
+
+</div>
