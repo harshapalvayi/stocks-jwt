@@ -1,23 +1,37 @@
 
-<div>
-  <p-carousel *ngIf="stocks && stocks.length > 0" [value]="stocks"
-              [numVisible]="count < 3 ? count : 3" [numScroll]="1"
-              [circular]="true" [autoplayInterval]="5000">
-    <ng-template let-stock pTemplate="item">
+<div class="m-5" *ngIf="stocks && stocks.length > 0">
+  <p-carousel [value]="stocks"
+              [numVisible]="stocks.length < 3 ? stocks.length : 3"
+              [numScroll]="stocks.length < 3 ? stocks.length : 3"
+              [circular]="false"
+              [responsiveOptions]="responsiveOptions">
+    <ng-template let-share pTemplate="item">
       <div class="stock-details text-center">
-        <div class="my-2">
+        <div class="my-3">
           <div class="p-col-12 stock-data">
-            <div class="stock-title font-weight-bold"> {{stock.name}}</div>
-            <div class="my-1 mx-2">
-              <div class="stock-subtitle font-weight-bold"
-                   [ngClass]="stock.price > stock.avg_price ? 'text-success' : 'text-danger'">
-                Price : {{stock.price}}</div>
-              <div class="stock-subtitle font-weight-bold"
-                   [ngClass]="stock.equity > stock.cost ? 'text-success' : 'text-danger'">
-                Equity : {{stock.equity}}</div>
-              <div class="stock-subtitle font-weight-bold"
-                   [ngClass]="stock.cost < stock.equity ? 'text-success' : 'text-danger'">
-                Cost : {{stock.cost}}</div>
+            <div class="stock-title font-weight-bold"> {{share.stockName}}</div>
+
+            <div class="stock-subtitle font-weight-bold"
+                 [ngClass]="share.price > share.buy ? 'text-success' : 'text-danger'">
+              Price : {{share.price}}</div>
+            <div class="stock-subtitle font-weight-bold"
+                 [ngClass]="share.price > share.buy ? 'text-success' : 'text-danger'">
+              Buy : {{share.buy}}</div>
+            <div class="stock-subtitle font-weight-bold"
+                 [ngClass]="share.equity > share.cost ? 'text-success' : 'text-danger'">
+              Equity : {{share.equity}}</div>
+            <div class="stock-subtitle font-weight-bold"
+                 [ngClass]="share.cost < share.equity ? 'text-success' : 'text-danger'">
+              Cost : {{share.cost}}
+            </div>
+
+            <div class="container my-2" [hidden]="loader"
+                 [ngClass]="{'min': stocks.length < 2,
+                             'max': stocks.length > 2 }">
+              <app-line-cards *ngIf="getHistory(share) != null" [data]="getHistory(share)"></app-line-cards>
+            </div>
+            <div class="m-2">
+              <app-loader [hidden]="!loader"></app-loader>
             </div>
           </div>
         </div>

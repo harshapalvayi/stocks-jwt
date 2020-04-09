@@ -32,4 +32,8 @@ export class AuthenticationService {
       `${API_URL}/register`, {username, password, email}, httpOptions)
       .pipe(map(d =>  d));
   }
+
+  refresh(): Observable<any> {
+    return this.http.get<any>(`${API_URL}/refresh`, httpOptions).pipe(map(d => d));
+  }
 }

@@ -4,8 +4,9 @@ export interface Chart {
 }
 
 export interface Dataset {
-  label: string;
-  backgroundColor: string;
-  borderColor: string;
+  label?: string;
+  backgroundColor?: string;
+  borderColor?: string;
+  fill?: boolean;
   data: number[];
 }

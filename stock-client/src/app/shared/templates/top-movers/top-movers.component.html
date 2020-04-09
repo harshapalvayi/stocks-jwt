@@ -1,0 +1,25 @@
+
+<div *ngIf="stocks && stocks.length > 0">
+  <p-carousel [value]="stocks"
+              [numVisible]="stocks.length < 3 ? stocks.length : 3"
+              [numScroll]="stocks.length < 3 ? stocks.length : 3"
+              [circular]="false">
+    <ng-template let-share pTemplate="item">
+      <div class="stock-details text-center">
+        <div class="my-4">
+          <div class="mx-2 stock-data">
+              <div class="stock-title font-weight-bold"> {{share.stockName}}</div>
+              <div class="stock-subtitle font-weight-bold"
+                   [ngClass]="share.price > share.buy ? 'text-success' : 'text-danger'">
+                Price : {{share.price}}
+              </div>
+              <div class="stock-subtitle font-weight-bold"
+                   [ngClass]="share.price > share.buy ? 'text-success' : 'text-danger'">
+                <h2>{{share.percentChange }}</h2>
+              </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </p-carousel>
+</div>

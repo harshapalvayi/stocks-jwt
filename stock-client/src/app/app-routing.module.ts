@@ -6,6 +6,7 @@ import {ErrorComponent} from '@core/error/error.component';
 import {RegisterComponent} from '@core/register/register.component';
 import {LogoutComponent} from '@core/logout/logout.component';
 import {RoleGuardService} from '@app/role-guard.service';
+import {Authguard} from '@app/authguard';
 
 
 const routes: Routes = [
@@ -28,16 +29,16 @@ const routes: Routes = [
   {
     path: 'app-dashboard',
     loadChildren: '@features/dashboard/dashboard.module#DashboardModule',
-    canActivate: [RoleGuardService]
+    canActivate: [RoleGuardService, Authguard]
   },
   { path: 'app-reports',
     loadChildren: () => import('@features/reports/reports.module').then(m => m.ReportsModule),
-    canActivate: [RoleGuardService]
+    canActivate: [RoleGuardService, Authguard]
   },
   {
     path: 'app-admin',
     loadChildren: '@features/admin/admin.module#AdminModule',
-    canActivate: [RoleGuardService]
+    canActivate: [RoleGuardService, Authguard]
   },
   {
     path: '',

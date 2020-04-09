@@ -1,37 +1,46 @@
-import {Component, Input, OnChanges, OnInit} from '@angular/core';
-import {Stock} from '@models/stock';
+import {Component, Input, OnInit} from '@angular/core';
+import {StockInfo} from '@models/stock';
 
 @Component({
   selector: 'app-monthly-dividends',
   templateUrl: './monthly-dividends.component.html',
   styleUrls: ['./monthly-dividends.component.sass']
 })
-export class MonthlyDividendsComponent implements OnInit, OnChanges {
+export class MonthlyDividendsComponent implements OnInit {
 
-  @Input() stocks: Stock[];
+  @Input() shareInfo: StockInfo[];
   total: number;
   cols: any[];
+
   constructor() {
     this.cols = [
-      {field: 'symbol', header: 'Ticker', width: '10%'},
-      {field: 'name', header: 'Stock', width: '35%'},
-      {field: 'ex_date', header: 'Ex Date', width: '15%'},
-      {field: 'pay_date', header: 'Pay Date', width: '15%'},
-      {field: 'symbol', header: 'Shares', width: '10%'},
-      {field: 'dividend', header: 'Dividends', width: '10%'},
-      {field: 'total', header: 'Total', width: '15%'}
+      {field: 'ticker', header: 'Ticker', width: '10%'},
+      {field: 'stockName', header: 'Stock', width: '35%'},
+      {field: 'payDate', header: 'Pay Date', width: '15%'},
+      {field: 'shares', header: 'Shares', width: '10%'},
+      {field: 'dividend', header: 'Dividends', width: '15%'},
+      {field: 'total', header: 'Total', width: '10%'}
     ];
   }
 
   ngOnInit() { }
 
-  ngOnChanges(): void {
-    if (this.stocks) {
-      this.getTotals(this.stocks);
-    }
-  }
 
   getTotals(data) {
-    return data.shares * (data.dividend / 4);
+    let total = 0;
+    if (data && data.dividend) {
+      total = data.shares * (data.dividend / 4);
+    }
+    return total;
+  }
+
+  getGrandTotal(data) {
+    let sum  = 0;
+    if (data && data.length > 0) {
+      data.forEach(stock => {
+        sum = sum + stock.shares * (stock.dividend / 4);
+      });
+    }
+    return sum;
   }
 }

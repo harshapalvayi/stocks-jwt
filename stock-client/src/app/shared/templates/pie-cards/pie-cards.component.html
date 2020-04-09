@@ -1,0 +1,9 @@
+<p-chart type="doughnut" [data]="data" [options]="options"
+         *ngIf="data; else doThis"></p-chart>
+
+<ng-template #doThis>
+  <div class="text-center my-5">
+    <h3> No data found.</h3>
+  </div>
+</ng-template>
+

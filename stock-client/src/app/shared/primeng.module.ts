@@ -10,7 +10,6 @@ import {
   ChartModule,
   CheckboxModule,
   DialogModule,
-  FileUploadModule,
   InputSwitchModule,
   InputTextModule,
   KeyFilterModule,
@@ -39,6 +38,8 @@ import {
 } from 'primeng/primeng';
 import {ToastModule} from 'primeng/toast';
 import {TableModule} from 'primeng/table';
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
+import {FileUploadModule} from 'primeng/fileupload';
 
 @NgModule({
     imports: [
@@ -118,6 +119,7 @@ import {TableModule} from 'primeng/table';
     SpinnerModule,
     TabViewModule,
     TreeModule,
+    ProgressSpinnerModule,
     ToggleButtonModule
   ],
   providers: [

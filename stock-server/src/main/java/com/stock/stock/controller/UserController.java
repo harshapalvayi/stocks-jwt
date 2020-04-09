@@ -33,20 +33,35 @@ class UserController {
     private UserInfoService userDetailsService;
 
 
-    @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
+    @PostMapping(value = "/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
 
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-        final User userDetails = (User) userDetailsService
+        final Users userDetails = (Users) userDetailsService
                 .loadUserByUsername(authenticationRequest.getUsername());
 
         final String jwt = jwtTokenUtil.generateToken(userDetails);
 
-        return ResponseEntity.ok(new AuthenticationResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail()));
+        return ResponseEntity.ok(new AuthenticationResponse(jwt,
+                userDetails.getUserid(), userDetails.getUsername(), userDetails.getEmail()));
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @PostMapping(value = "/refresh")
+    public ResponseEntity<?> refreshAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+
+        authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+        final Users userDetails = (Users) userDetailsService
+                .loadUserByUsername(authenticationRequest.getUsername());
+
+        final String jwt = jwtTokenUtil.refreshToken(userDetails);
+
+        return ResponseEntity.ok(new AuthenticationResponse(jwt,
+                userDetails.getUserid(), userDetails.getUsername(), userDetails.getEmail()));
+    }
+
+    @PostMapping(value = "/register")
     public ResponseEntity<?> registerUser(@RequestBody Signup user) {
+        String jwt = null;
         if (userRepository.existsByUsername(user.getUsername())) {
             return ResponseEntity
                     .badRequest()
@@ -58,8 +73,15 @@ class UserController {
                     .body(new MessageResponse("Error: Email is already in use!"));
         }
 
-        User newUser = new User(user.getUsername(), user.getPassword(), user.getEmail());
-        return ResponseEntity.ok(userDetailsService.save(newUser));
+        Users newUser = new Users(user.getUsername(), user.getPassword(), user.getEmail());
+
+        userDetailsService.save(newUser);
+
+        if (userRepository.existsByUsername(newUser.getUsername())) {
+            jwt = jwtTokenUtil.generateToken(newUser);
+        }
+        return ResponseEntity.ok(new AuthenticationResponse(jwt,
+                newUser.getUserid(), newUser.getUsername(), newUser.getEmail()));
     }
 
     private void authenticate(String username, String password) throws Exception {

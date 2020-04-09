@@ -1,1 +1,10 @@
-<p>line-cards works!</p>
+<app-cards>
+  <p-chart type="line" [data]="data" [options]="options"
+           *ngIf="data; else doThis"></p-chart>
+</app-cards>
+
+<ng-template #doThis>
+  <div class="text-center my-5">
+    <h3> No data found.</h3>
+  </div>
+</ng-template>

@@ -1,3 +1,10 @@
 <app-cards>
-  <p-chart type="bar" [data]="data"></p-chart>
+  <p-chart type="bar" [data]="data" *ngIf="data; else doThis"></p-chart>
 </app-cards>
+
+<ng-template #doThis>
+  <div class="text-center my-5">
+    <h3> No data found.</h3>
+  </div>
+</ng-template>
+

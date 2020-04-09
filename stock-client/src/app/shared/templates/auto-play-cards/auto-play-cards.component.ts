@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Stock} from '@models/stock';
+import {CustomStockInfo} from '@models/stock';
+import {Chart} from '@models/chart';
 
 @Component({
   selector: 'app-auto-play-cards',
@@ -8,10 +9,38 @@ import {Stock} from '@models/stock';
 })
 export class AutoPlayCardsComponent implements OnInit {
 
-  @Input() public stocks: Stock[];
-  @Input() public count: number;
-  constructor() { }
+  @Input() public  stocks: CustomStockInfo[];
+  responsiveOptions;
+  loader: boolean;
 
-  ngOnInit() {}
+  constructor() {
+    this.responsiveOptions = [
+      {
+        breakpoint: '1024px',
+        numVisible: 3,
+        numScroll: 3
+      },
+      {
+        breakpoint: '768px',
+        numVisible: 2,
+        numScroll: 2
+      },
+      {
+        breakpoint: '560px',
+        numVisible: 1,
+        numScroll: 1
+      }
+    ];
+  }
 
+  ngOnInit() {
+    this.loader = true;
+  }
+
+  getHistory(share): Chart {
+    this.loader = false;
+    return share.history;
+  }
 }
+
+
