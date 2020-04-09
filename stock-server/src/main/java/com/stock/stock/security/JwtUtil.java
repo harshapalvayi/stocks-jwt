@@ -38,11 +38,16 @@ public class JwtUtil {
                 .getBody();
     }
 
-    private Boolean isTokenExpired(String token) {
+    public Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
     public String generateToken(UserDetails user) {
+        Map<String, Object> claims = new HashMap<>();
+        return createToken(claims, user.getUsername());
+    }
+
+    public String refreshToken(UserDetails user) {
         Map<String, Object> claims = new HashMap<>();
         return createToken(claims, user.getUsername());
     }

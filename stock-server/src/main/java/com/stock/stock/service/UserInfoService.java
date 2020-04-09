@@ -1,6 +1,6 @@
 package com.stock.stock.service;
 
-import com.stock.stock.model.User;
+import com.stock.stock.model.Users;
 import com.stock.stock.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,14 +18,14 @@ public class UserInfoService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
+        Users user = userRepository.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
         return user;
     }
 
-    public User save(User user) {
+    public Users save(Users user) {
         return userRepository.save(user);
     }
 }

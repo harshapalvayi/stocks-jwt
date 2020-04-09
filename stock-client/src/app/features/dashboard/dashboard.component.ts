@@ -1,11 +1,14 @@
 import {Component, OnChanges, OnInit, ViewChild} from '@angular/core';
 import {AddStocksComponent} from '@features/dashboard/add-stocks/add-stocks.component';
-import {TableCardsComponent} from '@shared/templates/table-cards/table-cards.component';
-import {Stock} from '@models/stock';
-import {User} from '@models/User';
+import {Portfolio, StockInfo} from '@models/stock';
+import {UserToken} from '@models/User';
 import {UserService} from '@shared/services/user/user.service';
-import {StocksService} from '@shared/services/stocks/stocks.service';
 import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
+import {SharesService} from '@shared/services/shares/shares.service';
+import {UserStockDetailsComponent} from '@features/dashboard/user-stock-details/user-stock-details.component';
+import {Observable} from 'rxjs';
+import {UtilService} from '@shared/services/util/util.service';
+import {ChartService} from '@shared/services/chart/chart.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,14 +18,20 @@ import {TokenStorageService} from '@shared/services/token-storage/token-storage.
 export class DashboardComponent implements OnInit, OnChanges {
 
   @ViewChild(AddStocksComponent, {static: false}) addStock: AddStocksComponent;
-  @ViewChild(TableCardsComponent, {static: false}) deleteStock: TableCardsComponent;
-  public stocks: Stock[];
-  public total: number;
-  public userInfo: User;
-  public stockCount: number;
+  @ViewChild(UserStockDetailsComponent, {static: false}) deleteStock: UserStockDetailsComponent;
+
+  public count: number;
+  public shares: StockInfo[];
+  public portfolio: Portfolio;
+  public userInfo: UserToken;
+  public text: string;
+  public loader$: Observable<boolean> = this.utilService.getLoader();
+
   constructor(private userService: UserService,
+              private utilService: UtilService,
+              private chartService: ChartService,
               private tokenService: TokenStorageService,
-              private stockService: StocksService) { }
+              private shareService: SharesService) { }
 
   ngOnInit() {
     this.getUserData();
@@ -34,22 +43,29 @@ export class DashboardComponent implements OnInit, OnChanges {
 
   private getUserData() {
     if (this.userService.isUserLoggedIn()) {
-      this.userInfo = this.tokenService.getUser();
+      this.userInfo = this.tokenService.getUserDetails();
       this.buildTableData();
     }
   }
 
   private buildTableData() {
-    this.stockService.getAllStocks(this.userInfo.id).subscribe(stocks => {
-      this.stocks = stocks;
-      if (stocks && stocks.length > 0) {
-        this.stockCount = stocks.length;
-        this.stockService.getTotal().subscribe(total => this.total = total);
+    this.utilService.showSpinner();
+    this.shareService.getShares(this.userInfo.id).subscribe(shares => {
+      this.shares =  shares;
+      if (shares && shares.length > 0) {
+        this.count = shares.length;
+      } else {
+        this.count = 0;
       }
+      this.utilService.hideSpinner();
     });
+    this.shareService.getPortfolio(this.userInfo.id)
+      .subscribe(portfolio => {
+        this.portfolio = portfolio;
+      });
   }
 
-  onDeleteStock() {
+  onActionPerformed() {
     this.buildTableData();
   }
 

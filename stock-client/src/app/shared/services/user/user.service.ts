@@ -18,7 +18,7 @@ export class UserService {
 
   isUserLoggedIn() {
     const user = window.sessionStorage.getItem('name');
-    return !(user === null);
+    return !(user === null) && !this.tokenService.isTokenExpired();
   }
 
   logout() {

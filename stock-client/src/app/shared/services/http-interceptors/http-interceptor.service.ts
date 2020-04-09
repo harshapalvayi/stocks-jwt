@@ -12,7 +12,6 @@ export class HttpInterceptors implements HttpInterceptor {
   }
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = this.tokenService.getToken();
-    console.log('token', token);
     if (token != null) {
       request = request.clone({
         setHeaders: {

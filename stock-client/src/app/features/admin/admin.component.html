@@ -1,12 +1,20 @@
-<div class="container">
-  <div class="m-5">
-    <p-tabView (onChange)="tabChange($event)">
-      <p-tabPanel [header]="item.label" *ngFor="let item of items; let i = index" [selected]="i == 0">
-        <div class="m-2" [ngSwitch]="tabs">
-            <app-stock-view class="w-100" *ngSwitchCase="selected.STOCKS"></app-stock-view>
-        </div>
-      </p-tabPanel>
-    </p-tabView>
+<div class="col-sm-12 my-5">
+  <div class="mt-3" [hidden]="(loader$ | async)">
+    <app-auto-play-cards [stocks]="stockHistory"
+                         *ngIf="stockHistory && stockHistory.length > 0; else doThis">
+    </app-auto-play-cards>
+  </div>
+
+  <div class="mt-5 text-center">
+    <app-loader [hidden]="(loader$ | async) === false"></app-loader>
   </div>
 </div>
 
+
+<ng-template #doThis>
+  <div class="container mt-5">
+    <div class="text-center mt-5">
+      <h3> No stocks found.</h3>
+    </div>
+  </div>
+</ng-template>

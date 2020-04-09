@@ -1,12 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import {Chart} from '@models/chart';
-import {User} from '@models/User';
-import {Stock} from '@models/stock';
+import {UserToken} from '@models/User';
+import {StockInfo} from '@models/stock';
 import {UserService} from '@shared/services/user/user.service';
-import {StocksService} from '@shared/services/stocks/stocks.service';
 import {DateService} from '@shared/services/date/date.service';
 import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
 import {MenuTabs as menus, Tabs} from '@models/menus';
+import {SharesService} from '@shared/services/shares/shares.service';
+import {ChartService} from '@shared/services/chart/chart.service';
+import {Dates} from '@models/dates';
+import {forkJoin, Observable} from 'rxjs';
+import {UtilService} from '@shared/services/util/util.service';
 
 @Component({
   selector: 'app-reports',
@@ -16,19 +20,24 @@ import {MenuTabs as menus, Tabs} from '@models/menus';
 export class ReportsComponent implements OnInit {
 
   public tabs: Tabs;
-  public cost: Chart;
-  public price: Chart;
-  public equity: Chart;
-  public dividends: Chart;
   public selected = Tabs;
-  public userInfo: User;
-  public stocks: Stock[];
+  public costVsEquity: Chart;
+  public priceVsBuy: Chart;
+  public dividends: Chart;
+  public pieData: Chart;
+  public userInfo: UserToken;
+  public monthlyDividends: StockInfo[];
+  public allDividends: StockInfo[];
+  public topMovers: StockInfo[];
   public items: ({ label: string; value: Tabs, id: number })[];
+  public loader$: Observable<boolean> = this.utilService.getLoader();
 
   constructor(private dateService: DateService,
+              private chartService: ChartService,
               private userService: UserService,
-              private tokenService: TokenStorageService,
-              private stocksService: StocksService) {}
+              private shareService: SharesService,
+              private utilService: UtilService,
+              private tokenService: TokenStorageService) {}
 
   ngOnInit() {
     this.getUserData();
@@ -36,7 +45,7 @@ export class ReportsComponent implements OnInit {
 
   private getUserData() {
     if (this.userService.isUserLoggedIn()) {
-      this.userInfo = this.tokenService.getUser();
+      this.userInfo = this.tokenService.getUserDetails();
       this.buildReportData();
     }
   }
@@ -45,13 +54,13 @@ export class ReportsComponent implements OnInit {
     if (id) {
       switch (id.index) {
         case 0:
-          this.tabs = this.selected.PRICE;
+          this.tabs = this.selected.TOTAL_PORTFOLIO;
           break;
         case 1:
-          this.tabs = this.selected.COST;
+          this.tabs = this.selected.PRICE_BUY;
           break;
         case 2:
-          this.tabs = this.selected.EQUITY;
+          this.tabs = this.selected.COST_EQUITY;
           break;
         case 3:
           this.tabs = this.selected.DIVIDEND;
@@ -59,108 +68,43 @@ export class ReportsComponent implements OnInit {
         case 4:
           this.tabs = this.selected.MONTHLY_DIVIDEND;
           break;
+        case 5:
+          this.tabs = this.selected.YEARLY_DIVIDEND;
+          break;
+        case 6:
+          this.tabs = this.selected.TOP_MOVERS;
+          break;
       }
     }
   }
 
   buildReportData() {
     const { reportTabs } = menus;
-    this.tabs = this.selected.PRICE;
     this.items = reportTabs;
-    const date  = this.dateService.getDates();
-    this.stocksService.getAllStocks(this.userInfo.id).subscribe(stocks => {
-      this.buildPriceChart(stocks);
-      this.buildCostChart(stocks);
-      this.buildEquityChart(stocks);
-      this.buildDividendChart(stocks);
+    this.tabs = this.selected.TOTAL_PORTFOLIO;
+
+    const date  = this.dateService.getMonthDates();
+    const data: {userid: number, date: Dates} = {
+      userid: this.userInfo.id, date
+    };
+
+    this.utilService.showSpinner();
+
+    forkJoin([
+      this.shareService.getShares(data.userid),
+      this.shareService.getMonthlyDividendShares(data),
+      this.shareService.getAllDividendShares(data.userid),
+      this.shareService.getTopMovers(data.userid)
+    ]).subscribe(([shares, monthly, yearly, topMovers]) => {
+      this.priceVsBuy = this.chartService.buildPriceVsBuyChart(shares);
+      this.costVsEquity = this.chartService.buildCostVsEquityChart(shares);
+      this.dividends = this.chartService.buildDividendChart(shares);
+      this.pieData = this.chartService.buildEquityPortfolio(shares);
+      this.monthlyDividends = monthly;
+      this.allDividends = yearly;
+      this.topMovers = topMovers;
+      this.utilService.hideSpinner();
     });
-    this.stocksService.getDividendStocks(date).subscribe(stocks => {
-      this.stocks = stocks;
-    });
-  }
-
-  buildPriceChart(data) {
-    const labels = [];
-    const price = [];
-    const datasets = [];
-    if (data) {
-      data.sort((a, b) => a.price - b.price);
-      data.forEach(s => {
-        labels.push(s.symbol);
-        price.push(s.price);
-      });
-      datasets.push({
-        label: 'Stock Price',
-        backgroundColor: '#42A5F5',
-        borderColor: '#1E88E5',
-        data: price
-      });
-    }
-    this.price = { labels, datasets };
-  }
-
-  buildCostChart(data) {
-    const labels = [];
-    const cost = [];
-    const datasets = [];
-    if (data) {
-      data.sort((a, b) => a.cost - b.cost);
-      data.forEach(s => {
-        labels.push(s.symbol);
-        cost.push(s.cost);
-      });
-      datasets.push({
-        label: 'Stock Cost',
-        backgroundColor: '#FF7F50',
-        borderColor: '#FF7F50',
-        data: cost
-      });
-    }
-    this.cost = { labels, datasets };
-  }
-
-  buildEquityChart(data) {
-    const labels = [];
-    const equity = [];
-    const datasets = [];
-    if (data) {
-      data.sort((a, b) => a.equity - b.equity);
-      data.forEach(s => {
-        labels.push(s.symbol);
-        equity.push(s.equity);
-      });
-      datasets.push({
-        label: 'Stock Equity',
-        backgroundColor: '#DAA520',
-        borderColor: '#DAA520',
-        data: equity
-      });
-    }
-    this.equity = { labels, datasets };
-  }
-
-  buildDividendChart(data) {
-    const labels = [];
-    const dividend = [];
-    const datasets = [];
-    if (data) {
-      data.sort((a, b) => a.dividend - b.dividend);
-      data.forEach(s => {
-        labels.push(s.symbol);
-        if (s.dividend != null) {
-          dividend.push(s.dividend);
-        } else {
-          dividend.push(0);
-        }
-      });
-      datasets.push({
-        label: 'Stock Dividend',
-        backgroundColor: '#32CD32',
-        borderColor: '#32CD32',
-        data: dividend
-      });
-    }
-    this.dividends = { labels, datasets };
   }
 
 }

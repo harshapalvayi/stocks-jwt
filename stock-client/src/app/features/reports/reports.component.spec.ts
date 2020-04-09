@@ -4,7 +4,6 @@ import { ReportsComponent } from './reports.component';
 import {CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {DateService} from '@shared/services/date/date.service';
-import {StocksService} from '@shared/services/stocks/stocks.service';
 import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
 import {UserService} from '@shared/services/user/user.service';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
@@ -20,7 +19,7 @@ describe('ReportsComponent', () => {
       imports: [HttpClientTestingModule, RouterTestingModule, PrimengModule],
       declarations: [ ReportsComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
-      providers: [FormBuilder, DateService, StocksService, TokenStorageService, UserService]
+      providers: [FormBuilder, DateService, TokenStorageService, UserService]
     });
   }));
 

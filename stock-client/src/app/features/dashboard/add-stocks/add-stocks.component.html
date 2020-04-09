@@ -8,22 +8,23 @@
     <form [formGroup]="addStock" (ngSubmit)="onSubmitStock()">
       <div class="d-flex flex-row flex-wrap justify-content-around align-items-center m-auto">
         <div>
-          <label>Ticker
-            <input class="font-weight-bold ml-5" formControlName="symbol" type="text">
+          <label><b>Ticker</b>
+            <input class="font-weight-bold ml-5" formControlName="ticker" type="text">
           </label>
         </div>
 
         <div>
-          <label>Average Price
-            <input class="font-weight-bold ml-5" formControlName="avg_price" type="number">
-          </label>
-        </div>
-
-        <div>
-          <label>Shares
+          <label><b>Shares</b>
             <input class="font-weight-bold ml-5" formControlName="shares" type="number">
           </label>
         </div>
+
+        <div>
+          <label><b>Buy</b>
+            <input class="font-weight-bold ml-5" formControlName="buy" type="number">
+          </label>
+        </div>
+
       </div>
 
       <div class="d-flex justify-content-center mt-3">
@@ -34,8 +35,19 @@
                 (click)="onSubmitStock()" [disabled]="addStock.invalid" ></button>
 
         <button pButton type="button" label="Cancel" class="ml-2 ui-button-rounded ui-button-warning"
-                (click)="onCancel()"></button>
-      </div>
+                (click)="onCancel()">
+        </button>
 
+        <input type="file" #uploadFile accept=".xlsx" (change)="onUpload($event)" hidden/>
+        <button pButton type="button" label="Upload Stocks" class="ml-2 ui-button-rounded ui-button-primary"
+                (click)="uploadFile.click()">
+        </button>
+        <i class="pi pi-info-circle ui-button-secondary" style="font-size:24px"
+           (click)="toolTip.toggle($event)"></i>
+      </div>
     </form>
+
+  <p-overlayPanel #toolTip [appendTo]="'body'" [style]="{'width':'300px'}">
+    <span [innerHTML]="text"> </span>
+  </p-overlayPanel>
 </p-dialog>

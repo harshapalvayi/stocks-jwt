@@ -7,13 +7,17 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
-public class User implements UserDetails {
+@Table(name = "users")
+public class Users implements UserDetails {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long  id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long userid;
 
     @Column(unique = true, nullable = false)
     private String username;
@@ -24,10 +28,15 @@ public class User implements UserDetails {
     @Column(unique = true, nullable = false)
     private String email;
 
-    public long getId() { return id; }
+    @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL)
+    private List<Share> share = new ArrayList<>();
 
-    public void setId(long id) {
-        this.id = id;
+    public long getUserid() {
+        return userid;
+    }
+
+    public void setUserid(long id) {
+        this.userid = id;
     }
 
     @Override
@@ -79,20 +88,42 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    public User() { }
+    public Users() {
+    }
 
-    public User(@Size(min = 4, max = 255, message = "Minimum username length: 4 characters") String username,
-                @Size(min = 4, message = "Minimum password length: 4 characters") String password) {
+    public Users(@Size(min = 4, max = 255, message = "Minimum username length: 4 characters") String username,
+                 @Size(min = 4, message = "Minimum password length: 4 characters") String password) {
         this.username = username;
         this.password = password;
     }
 
-    public User(@NotBlank @Size(min = 4, max = 20) String username,
-                @NotBlank @Size(min = 4, max = 40) String password,
-                @NotBlank @Size(max = 50)
-                @Email String email) {
+    public Users(@NotBlank @Size(min = 4, max = 20) String username,
+                 @NotBlank @Size(min = 4, max = 40) String password,
+                 @NotBlank @Size(max = 50)
+                 @Email String email) {
         this.username = username;
         this.email = email;
         this.password = password;
+    }
+
+    public Users(long id, @NotBlank @Size(min = 4, max = 20) String username,
+                 @NotBlank @Size(max = 50) @Email String email) {
+        this.userid = id;
+        this.username = username;
+        this.email = email;
+    }
+
+    public List<Share> getShare() {
+        return share;
+    }
+
+    public void setShare(List<Share> share) {
+        this.share = share;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "Users[userid=%d, username='%s', email='%s']", userid, username, email);
     }
 }

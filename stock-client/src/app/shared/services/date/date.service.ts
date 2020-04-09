@@ -9,9 +9,16 @@ export class DateService {
 
   constructor() { }
 
-  getDates(): Dates {
+  getMonthDates(): Dates {
     const startDate = moment().startOf('month').format('YYYY-MM-DD');
     const endDate = moment().endOf('month').format('YYYY-MM-DD');
     return { startDate,  endDate };
   }
+
+  getWeeklyDates(): Dates {
+    const startDate = moment(new Date()).format('YYYY-MM-DD');
+    const endDate = moment().subtract(7, 'd').format('YYYY-MM-DD');
+    return { startDate,  endDate };
+  }
+
 }
