@@ -1,21 +1,30 @@
 
-<div class="container">
-  <div class="m-5">
-    <button pButton type="button" label="Add Stocks" icon="pi pi-plus" class="ui-button-rounded float-right"
-            (click)="addStockPopup()">
+<div class="container mt-5" [hidden]="(loader$ | async)">
+  <div class="float-left  mb-3">
+    <button pButton type="button" label="Add Stocks"
+            class="ui-button-rounded ui-button-success"
+              (click)="addStockPopup()">
     </button>
   </div>
   <app-add-stocks (saved)="onAddStocks()"></app-add-stocks>
 </div>
 
-<div class="container">
-  <div class="col-sm-4 mb-2">
-    <app-display-cards [title]="'Portfolio'" [data]="total"></app-display-cards>
+<div class="my-3" [hidden]="(loader$ | async)">
+  <app-portfolio [stocks]= "count" [portfolio]="portfolio"></app-portfolio>
 </div>
-  <div class="col-sm-12">
-    <app-auto-play-cards [stocks]="stocks" [count]="stockCount"></app-auto-play-cards>
+
+<div class="container" [hidden]="(loader$ | async)">
+  <app-cards>
+    <app-user-stock-details (action)="onActionPerformed()" [shares]="shares">
+    </app-user-stock-details>
+  </app-cards>
+</div>
+
+<div class="container mt-5">
+  <div class="text-center">
+    <app-loader [hidden]="(loader$ | async) === false"></app-loader>
   </div>
-  <p-card>
-    <app-table-cards (deleted)="onDeleteStock()" [stocks]="stocks" ></app-table-cards>
-  </p-card>
 </div>
+
+
+

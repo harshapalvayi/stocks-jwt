@@ -11,7 +11,7 @@
     <ul class="navbar-nav navbar-collapse justify-content-end">
       <li><a *ngIf="!userService.isUserLoggedIn()" routerLink="/app-register" class="nav-link">Sign Up</a></li>
       <li><a *ngIf="!userService.isUserLoggedIn()" routerLink="/app-login-page" class="nav-link">Login</a></li>
-      <li><span *ngIf="(userInfo$ | async) as userInfo" class="nav-link"> {{userInfo.name}}</span></li>
+      <li><span *ngIf="userService.isUserLoggedIn() && username" class="nav-link"> {{username}}</span></li>
       <li><a *ngIf="userService.isUserLoggedIn()" routerLink="/app-logout" class="nav-link">Logout</a></li>
     </ul>
   </nav>

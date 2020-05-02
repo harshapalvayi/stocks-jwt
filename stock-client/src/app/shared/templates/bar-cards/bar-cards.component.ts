@@ -9,7 +9,18 @@ import {Chart} from '@models/chart';
 export class BarCardsComponent implements OnInit {
 
   @Input() data: Chart;
-  constructor() {}
+  options: any;
+  constructor() {
+    this.options = {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    };
+  }
 
   ngOnInit() {
   }

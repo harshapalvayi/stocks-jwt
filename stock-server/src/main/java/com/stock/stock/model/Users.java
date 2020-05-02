@@ -10,10 +10,10 @@ import javax.validation.constraints.Size;
 import java.util.Collection;
 
 @Entity
-public class User implements UserDetails {
+public class Users implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long  id;
+    private long userid;
 
     @Column(unique = true, nullable = false)
     private String username;
@@ -24,10 +24,12 @@ public class User implements UserDetails {
     @Column(unique = true, nullable = false)
     private String email;
 
-    public long getId() { return id; }
+    public long getUserid() {
+        return userid;
+    }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setUserid(long userId) {
+        this.userid = userId;
     }
 
     @Override
@@ -79,17 +81,17 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    public User() { }
+    public Users() { }
 
-    public User(@Size(min = 4, max = 255, message = "Minimum username length: 4 characters") String username,
-                @Size(min = 4, message = "Minimum password length: 4 characters") String password) {
+    public Users(@Size(min = 4, max = 255, message = "Minimum username length: 4 characters") String username,
+                 @Size(min = 4, message = "Minimum password length: 4 characters") String password) {
         this.username = username;
         this.password = password;
     }
 
-    public User(@NotBlank @Size(min = 4, max = 20) String username,
-                @NotBlank @Size(min = 4, max = 40) String password,
-                @NotBlank @Size(max = 50)
+    public Users(@NotBlank @Size(min = 4, max = 20) String username,
+                 @NotBlank @Size(min = 4, max = 40) String password,
+                 @NotBlank @Size(max = 50)
                 @Email String email) {
         this.username = username;
         this.email = email;

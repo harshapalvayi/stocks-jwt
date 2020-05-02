@@ -37,12 +37,12 @@ class UserController {
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
 
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-        final User userDetails = (User) userDetailsService
+        final Users userDetails = (Users) userDetailsService
                 .loadUserByUsername(authenticationRequest.getUsername());
 
         final String jwt = jwtTokenUtil.generateToken(userDetails);
 
-        return ResponseEntity.ok(new AuthenticationResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail()));
+        return ResponseEntity.ok(new AuthenticationResponse(jwt, userDetails.getUserid(), userDetails.getUsername(), userDetails.getEmail()));
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
@@ -58,7 +58,7 @@ class UserController {
                     .body(new MessageResponse("Error: Email is already in use!"));
         }
 
-        User newUser = new User(user.getUsername(), user.getPassword(), user.getEmail());
+        Users newUser = new Users(user.getUsername(), user.getPassword(), user.getEmail());
         return ResponseEntity.ok(userDetailsService.save(newUser));
     }
 

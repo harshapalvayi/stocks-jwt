@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {UserService} from '@shared/services/user/user.service';
 import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
-import {Observable} from 'rxjs';
-import { UserToken} from '@models/User';
+const USER_KEY = 'name';
 
 @Component({
   selector: 'app-header',
@@ -11,11 +10,18 @@ import { UserToken} from '@models/User';
 })
 export class HeaderComponent implements OnInit {
 
-  public userInfo$: Observable<UserToken> = this.tokenStorage.getSharedUserProfile();
+  public username: string;
   constructor(private userService: UserService,
               private tokenStorage: TokenStorageService) { }
 
   ngOnInit() {
+    this.tokenStorage.getSharedUserProfile().subscribe(user => {
+      if (user) {
+        this.username = user.name;
+      } else {
+        this.username = localStorage.getItem(USER_KEY);
+      }
+    });
   }
 
 }

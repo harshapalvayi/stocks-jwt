@@ -13,8 +13,8 @@ export class LogoutComponent implements OnInit {
               public userService: UserService) { }
 
   ngOnInit() {
-    this.userService.logout();
-    this.router.navigate(['/app-landing-page']);
+      this.userService.logout();
+      this.router.navigate(['/app-landing-page']);
   }
 
 }

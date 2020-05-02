@@ -37,7 +37,6 @@ export class RegisterComponent implements OnInit {
   submit() {
     this.jwtService.register(this.signUpForm.value)
       .subscribe(data => {
-          this.tokenStorage.saveToken(data.accessToken);
           this.tokenStorage.saveUser(data);
           const toastDetails = {
             message: 'Success',

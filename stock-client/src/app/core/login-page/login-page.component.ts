@@ -35,8 +35,7 @@ export class LoginPageComponent implements OnInit {
   submit() {
     this.jwtService.login(this.loginForm.value)
       .subscribe(data => {
-          console.log(data);
-          this.tokenStorage.saveToken(data.jwtToken);
+          this.tokenStorage.setSharedUserProfile(data);
           this.tokenStorage.saveUser(data);
           this.router.navigate(['/app-landing-page']);
           this.isLoggedIn = true;
