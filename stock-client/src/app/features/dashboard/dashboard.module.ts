@@ -5,10 +5,11 @@ import {DashboardComponent} from './dashboard.component';
 import {CoreModule} from '@core/core.module';
 import {TemplateModule} from '@shared/templates/template.module';
 import {PrimengModule} from '@shared/primeng.module';
-import {AddStocksComponent} from '@features/dashboard/add-stocks/add-stocks.component';
+import {AddStocksComponent} from '@features/dashboard/dialogs/add-stocks/add-stocks.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {PortfolioComponent} from '@features/dashboard/portfolio/portfolio.component';
 import {UserStockDetailsComponent} from '@features/dashboard/user-stock-details/user-stock-details.component';
+import {TradeStockComponent} from '@features/dashboard/dialogs/trade-stock/trade-stock.component';
 
 @NgModule({
   imports: [
@@ -23,6 +24,7 @@ import {UserStockDetailsComponent} from '@features/dashboard/user-stock-details/
   declarations: [
     DashboardComponent,
     AddStocksComponent,
+    TradeStockComponent,
     PortfolioComponent,
     UserStockDetailsComponent
   ],

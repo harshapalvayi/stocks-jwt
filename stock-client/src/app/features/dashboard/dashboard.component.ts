@@ -1,14 +1,15 @@
 import {Component, OnChanges, OnInit, ViewChild} from '@angular/core';
-import {AddStocksComponent} from '@features/dashboard/add-stocks/add-stocks.component';
+import {AddStocksComponent} from '@features/dashboard/dialogs/add-stocks/add-stocks.component';
 import {UserToken} from '@models/User';
 import {UserService} from '@shared/services/user/user.service';
 import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
 import {SharesService} from '@shared/services/shares/shares.service';
 import {Portfolio, StockInfo} from '@models/stock';
-import {Observable} from 'rxjs';
+import {forkJoin, Observable} from 'rxjs';
 import {UtilService} from '@shared/services/util/util.service';
-import {ChartService} from "@shared/services/chart/chart.service";
-import {UserStockDetailsComponent} from "@features/dashboard/user-stock-details/user-stock-details.component";
+import {ChartService} from '@shared/services/chart/chart.service';
+import {UserStockDetailsComponent} from '@features/dashboard/user-stock-details/user-stock-details.component';
+import {PortfolioService} from '@shared/services/portfolio/portfolio.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,7 +19,7 @@ import {UserStockDetailsComponent} from "@features/dashboard/user-stock-details/
 export class DashboardComponent implements OnInit, OnChanges {
 
   @ViewChild(AddStocksComponent, {static: false}) addStock: AddStocksComponent;
-  @ViewChild(UserStockDetailsComponent, {static: false}) deleteStock: UserStockDetailsComponent;
+  @ViewChild(UserStockDetailsComponent, {static: false}) userStock: UserStockDetailsComponent;
 
   public count: number;
   public shares: StockInfo[];
@@ -30,8 +31,10 @@ export class DashboardComponent implements OnInit, OnChanges {
   constructor(private userService: UserService,
               private utilService: UtilService,
               private chartService: ChartService,
+              private shareService: SharesService,
+              private portfolioService: PortfolioService,
               private tokenService: TokenStorageService,
-              private shareService: SharesService) { }
+              ) { }
 
   ngOnInit() {
     this.getUserData();
@@ -50,19 +53,15 @@ export class DashboardComponent implements OnInit, OnChanges {
 
   private buildTableData() {
     this.utilService.showSpinner();
-    this.shareService.getShares(this.userInfo.id).subscribe(shares => {
-      this.shares =  shares;
-      if (shares && shares.length > 0) {
-        this.count = shares.length;
-        this.shareService.getPortfolio(this.userInfo.id)
-          .subscribe(portfolio =>  this.portfolio = portfolio);
-      }
+    forkJoin([
+      this.shareService.getShares(this.userInfo.id),
+      this.portfolioService.getPortfolio(this.userInfo.id)
+    ]).subscribe(([shares, portfolio]) => {
+      this.shares = shares;
+      this.count = shares.length;
+      this.portfolio = portfolio;
       this.utilService.hideSpinner();
     });
-  }
-
-  onDeleteStock() {
-    this.buildTableData();
   }
 
   onAddStocks() {
@@ -71,6 +70,13 @@ export class DashboardComponent implements OnInit, OnChanges {
 
   addStockPopup() {
     this.addStock.showDialog();
+  }
+
+  deletePortfolioPopup() {
+    this.portfolioService.deletePortfolio(this.userInfo.id)
+      .subscribe(() => {
+        this.buildTableData();
+      });
   }
 
   onActionPerformed() {

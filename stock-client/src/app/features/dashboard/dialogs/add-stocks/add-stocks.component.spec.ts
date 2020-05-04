@@ -5,23 +5,23 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA} from '@angular/core';
 import {UserService} from '@shared/services/user/user.service';
 import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
-import {StocksService} from '@shared/services/stocks/stocks.service';
 import {PrimengModule} from '@shared/primeng.module';
 import {RouterTestingModule} from '@angular/router/testing';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {SharesService} from '@shared/services/shares/shares.service';
 
 describe('AddStocksComponent', () => {
   let component: AddStocksComponent;
   let fixture: ComponentFixture<AddStocksComponent>;
   let userService: UserService;
   let tokenService: TokenStorageService;
-  let stockService: StocksService;
+  let shareService: SharesService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, RouterTestingModule, HttpClientTestingModule, ReactiveFormsModule, PrimengModule],
       declarations: [ AddStocksComponent ],
-      providers: [UserService, TokenStorageService, StocksService],
+      providers: [UserService, TokenStorageService, SharesService],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
     });
   }));
@@ -30,7 +30,7 @@ describe('AddStocksComponent', () => {
     fixture = TestBed.createComponent(AddStocksComponent);
     component = fixture.componentInstance;
     userService = TestBed.get(UserService);
-    stockService = TestBed.get(StocksService);
+    shareService = TestBed.get(SharesService);
     tokenService = TestBed.get(TokenStorageService);
   });
 

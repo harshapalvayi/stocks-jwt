@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import {ReportsRoutingModule} from './reports-routing.module';
 import {ReportsComponent} from './reports.component';
 import {FormBuilder, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MonthlyDividendsComponent} from './monthly-dividends/monthly-dividends.component';
+import {DividendsComponent} from './dividends/dividends.component';
 import {PrimengModule} from '@shared/primeng.module';
 import {TemplateModule} from '@shared/templates/template.module';
 
@@ -17,7 +17,7 @@ import {TemplateModule} from '@shared/templates/template.module';
     ReactiveFormsModule,
     ReportsRoutingModule
   ],
-  declarations: [ReportsComponent, MonthlyDividendsComponent],
+  declarations: [ReportsComponent, DividendsComponent],
   providers: [FormBuilder],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

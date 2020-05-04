@@ -41,7 +41,7 @@ export class AddStocksComponent implements OnInit {
   createForm() {
     this.text  = `To upload all your stocks at once make an excel file of your stocks with
                     <b>Ticker</b>, <b>Shares</b> and <b>Buy</b> as columns and upload the file`;
-    this.addStock = this.shareService.create();
+    this.addStock = this.shareService.createAddStock();
   }
 
   resetStock() {
@@ -66,7 +66,7 @@ export class AddStocksComponent implements OnInit {
         ticker: share.ticker,
         buy: share.buy,
         shares: share.shares,
-        getUserInfo(): User { return user; },
+        userInfo: user
       };
       this.shareService.save(shareData).subscribe(() => {
         this.saved.emit('saved');

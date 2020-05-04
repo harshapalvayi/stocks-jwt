@@ -2,13 +2,14 @@ import {Component, Input, OnInit} from '@angular/core';
 import {StockInfo} from '@models/stock';
 
 @Component({
-  selector: 'app-monthly-dividends',
-  templateUrl: './monthly-dividends.component.html',
-  styleUrls: ['./monthly-dividends.component.sass']
+  selector: 'app-dividends',
+  templateUrl: './dividends.component.html',
+  styleUrls: ['./dividends.component.sass']
 })
-export class MonthlyDividendsComponent implements OnInit {
+export class DividendsComponent implements OnInit {
 
   @Input() shareInfo: StockInfo[];
+  @Input() dividendType: string;
   total: number;
   cols: any[];
 
@@ -29,7 +30,11 @@ export class MonthlyDividendsComponent implements OnInit {
   getTotals(data) {
     let total = 0;
     if (data && data.dividend) {
-      total = data.shares * (data.dividend / 4);
+      if (this.dividendType && this.dividendType === 'monthly') {
+        total = data.shares * (data.dividend / 4);
+      } else {
+        total = data.shares * (data.dividend);
+      }
     }
     return total;
   }
@@ -37,9 +42,16 @@ export class MonthlyDividendsComponent implements OnInit {
   getGrandTotal(data) {
     let sum  = 0;
     if (data && data.length > 0) {
-      data.forEach(stock => {
-        sum = sum + stock.shares * (stock.dividend / 4);
-      });
+      if (this.dividendType && this.dividendType === 'monthly') {
+        data.forEach(stock => {
+          sum = sum + (stock.shares * (stock.dividend / 4));
+        });
+      } else {
+        data.forEach(stock => {
+          sum = sum + (stock.shares * (stock.dividend));
+        });
+      }
+
     }
     return sum;
   }

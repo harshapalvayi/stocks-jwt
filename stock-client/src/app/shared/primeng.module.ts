@@ -22,7 +22,7 @@ import {
   MultiSelectModule,
   OverlayPanelModule,
   PaginatorModule,
-  PanelModule,
+  PanelModule, ProgressSpinnerModule,
   RadioButtonModule,
   SelectButtonModule,
   SharedModule,
@@ -78,6 +78,7 @@ import {TableModule} from 'primeng/table';
     SpinnerModule,
     TabViewModule,
     TreeModule,
+    ProgressSpinnerModule,
     ToggleButtonModule
   ],
   declarations: [],
@@ -118,6 +119,7 @@ import {TableModule} from 'primeng/table';
     SpinnerModule,
     TabViewModule,
     TreeModule,
+    ProgressSpinnerModule,
     ToggleButtonModule
   ],
   providers: [

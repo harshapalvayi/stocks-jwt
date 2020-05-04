@@ -12,7 +12,7 @@ export class PortfolioComponent implements OnInit, OnChanges {
   @Input() public portfolio: Portfolio;
   @Input() public stocks: number;
   public status: string;
-  constructor(private currencyPipe: CurrencyPipe){ }
+  constructor(private currencyPipe: CurrencyPipe) { }
 
   ngOnInit() {
     this.buildData();
@@ -24,8 +24,8 @@ export class PortfolioComponent implements OnInit, OnChanges {
 
   buildData() {
     if (this.portfolio && this.portfolio.investment &&
-      this.portfolio.equity && this.portfolio.percentChange) {
-      const change = Math.abs(this.portfolio.equity - this.portfolio.investment);
+      this.portfolio.portfolio && this.portfolio.percentChange) {
+      const change = Math.abs(this.portfolio.portfolio - this.portfolio.investment);
       const percentChange = this.portfolio.percentChange;
       const changeInCurrency = this.currencyPipe.transform(change);
       this.status = `${changeInCurrency} (${percentChange})`;

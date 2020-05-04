@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TopMoversComponent } from './top-movers.component';
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 
 describe('TopMoversComponent', () => {
   let component: TopMoversComponent;
@@ -8,7 +9,8 @@ describe('TopMoversComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TopMoversComponent ]
+      declarations: [ TopMoversComponent ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
   }));

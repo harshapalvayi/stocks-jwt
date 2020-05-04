@@ -3,14 +3,11 @@ import {Chart} from '@models/chart';
 
 export class Share {
   shareid?: number;
+  ticker?: string;
   userInfo?: User;
   shares?: number;
   buy?: number;
-  ticker?: string;
-
-  getUserInfo(): User {
-    return this.userInfo;
-  }
+  sell?: number;
 }
 
 export class ShareList {
@@ -21,7 +18,7 @@ export class ShareList {
 
 export class Portfolio {
   investment: number;
-  equity: number;
+  portfolio: number;
   annualDividend: number;
   percentChange: number;
 }

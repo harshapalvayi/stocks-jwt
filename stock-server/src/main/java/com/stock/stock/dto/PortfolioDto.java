@@ -4,17 +4,17 @@ import java.math.BigDecimal;
 
 public class PortfolioDto {
     private BigDecimal investment;
-    private BigDecimal equity;
+    private BigDecimal portfolio;
     private BigDecimal annualDividend;
     private String percentChange;
 
     public PortfolioDto() {
     }
 
-    public PortfolioDto(BigDecimal investment, BigDecimal equity, BigDecimal annualDividend,
+    public PortfolioDto(BigDecimal investment, BigDecimal portfolio, BigDecimal annualDividend,
                         String percent) {
         this.investment = investment;
-        this.equity = equity;
+        this.portfolio = portfolio;
         this.annualDividend = annualDividend;
         this.percentChange = percent;
     }
@@ -27,12 +27,12 @@ public class PortfolioDto {
         this.investment = investment;
     }
 
-    public BigDecimal getEquity() {
-        return equity;
+    public BigDecimal getPortfolio() {
+        return portfolio;
     }
 
-    public void setEquity(BigDecimal equity) {
-        this.equity = equity;
+    public void setPortfolio(BigDecimal portfolio) {
+        this.portfolio = portfolio;
     }
 
     public BigDecimal getAnnualDividend() {

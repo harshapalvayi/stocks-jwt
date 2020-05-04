@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {Chart} from '@models/chart';
 
 @Component({
   selector: 'app-pie-cards',
@@ -7,7 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PieCardsComponent implements OnInit {
 
-  constructor() { }
+  @Input() data: Chart;
+  options: any;
+  constructor() {
+    this.options = {
+      legend: {
+        position: 'left'
+      }
+    };
+  }
 
   ngOnInit() {
   }

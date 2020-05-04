@@ -6,6 +6,12 @@
               (click)="addStockPopup()">
     </button>
   </div>
+  <div *ngIf="portfolio && portfolio.portfolio && shares.length == 0" class="float-right  mb-3">
+    <button pButton type="button" label="Clear Portfolio"
+            class="ui-button-rounded ui-button-warning"
+            (click)="deletePortfolioPopup()">
+    </button>
+  </div>
   <app-add-stocks (saved)="onAddStocks()"></app-add-stocks>
 </div>
 

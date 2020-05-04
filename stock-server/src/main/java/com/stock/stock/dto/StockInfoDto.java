@@ -11,7 +11,7 @@ private String ticker;
 private String name;
 private BigDecimal price;
 private BigDecimal dividend;
-private Integer shares;
+private BigDecimal shares;
 private BigDecimal equity;
 private BigDecimal buy;
 private BigDecimal cost;
@@ -70,13 +70,13 @@ private Date exdate;
     this.dividend = dividend;
 }
 
-    public Integer getShares() {
-    return shares;
-}
+    public BigDecimal getShares() {
+        return shares;
+    }
 
-    public void setShares(Integer shares) {
-    this.shares = shares;
-}
+    public void setShares(BigDecimal shares) {
+        this.shares = shares;
+    }
 
     public BigDecimal getEquity() {
     return equity;
@@ -147,7 +147,7 @@ private Date exdate;
 
 public StockInfoDto(long userid, long shareid, String ticker, String name,
                     BigDecimal price, BigDecimal dividend, BigDecimal percentChange,
-                    Integer shares, BigDecimal equity, BigDecimal buy, BigDecimal cost,
+                    BigDecimal shares, BigDecimal equity, BigDecimal buy, BigDecimal cost,
                     BigDecimal high, BigDecimal low, Date exdate, Date paydate) {
     this.userid = userid;
     this.shareid = shareid;

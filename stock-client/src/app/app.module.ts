@@ -9,7 +9,6 @@ import {FormsModule} from '@angular/forms';
 import {CoreModule} from '@core/core.module';
 import {TemplateModule} from '@shared/templates/template.module';
 import {HttpInterceptors} from '@shared/services/http-interceptors/http-interceptor.service';
-import { PieCardsComponent } from './shared/templates/pie-cards/pie-cards.component';
 
 @NgModule({
   declarations: [

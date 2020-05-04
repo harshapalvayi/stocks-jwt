@@ -16,7 +16,9 @@ public class Portfolio {
 
     private BigDecimal investment;
 
-    private BigDecimal equity;
+    private BigDecimal portfolio;
+
+    private BigDecimal annualDividend;
 
     public long getPortfolioId() {
         return portfolioId;
@@ -43,11 +45,19 @@ public class Portfolio {
     }
 
     public BigDecimal getPortfolio() {
-        return equity;
+        return portfolio;
     }
 
     public void setPortfolio(BigDecimal portfolio) {
-        this.equity = portfolio;
+        this.portfolio = portfolio;
+    }
+
+    public BigDecimal getAnnualDividend() {
+        return annualDividend;
+    }
+
+    public void setAnnualDividend(BigDecimal annualDividend) {
+        this.annualDividend = annualDividend;
     }
 
     public Portfolio() {}
@@ -55,7 +65,7 @@ public class Portfolio {
     @Override
     public String toString() {
         return String.format(
-                "portfolio[portfolioId=%d, equity=%f, investment='%f']",
-                portfolioId, equity, investment);
+                "portfolio[portfolioId=%d, equity=%f, investment='%f', dividend='%f']",
+                portfolioId, portfolio, investment, annualDividend);
     }
 }

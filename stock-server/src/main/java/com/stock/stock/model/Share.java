@@ -17,7 +17,7 @@ public class Share {
     @JoinColumn(name = "userid")
     private Users userInfo;
 
-    private Integer shares;
+    private BigDecimal shares;
 
     private BigDecimal buy;
 
@@ -61,11 +61,11 @@ public class Share {
         this.userInfo = users;
     }
 
-    public Integer getShares() {
+    public BigDecimal getShares() {
         return shares;
     }
 
-    public void setShares(Integer shares) {
+    public void setShares(BigDecimal shares) {
         this.shares = shares;
     }
 
@@ -114,7 +114,7 @@ public class Share {
     @Override
     public String toString() {
         return String.format(
-                "Share[shareId=%d, shares=%d, buy='%f', payDate='%s', exDate='%s', sell='%f', holding='%b']",
+                "Share[shareId=%d, shares='%f', buy='%f', payDate='%s', exDate='%s', sell='%f', holding='%b']",
                 shareid, shares, buy, paydate, exdate, sell, holding);
     }
 }

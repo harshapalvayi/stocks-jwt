@@ -9,8 +9,8 @@ import {MenuTabs as menus, Tabs} from '@models/menus';
 import {ChartService} from '@shared/services/chart/chart.service';
 import {Dates} from '@models/dates';
 import {forkJoin, Observable} from 'rxjs';
-import {SharesService} from "@shared/services/shares/shares.service";
-import {UtilService} from "@shared/services/util/util.service";
+import {SharesService} from '@shared/services/shares/shares.service';
+import {UtilService} from '@shared/services/util/util.service';
 
 @Component({
   selector: 'app-reports',
@@ -82,12 +82,10 @@ export class ReportsComponent implements OnInit {
     const { reportTabs } = menus;
     this.items = reportTabs;
     this.tabs = this.selected.TOTAL_PORTFOLIO;
-
     const date  = this.dateService.getMonthDates();
     const data: {userid: number, date: Dates} = {
       userid: this.userInfo.id, date
     };
-
     this.utilService.showSpinner();
 
     forkJoin([
@@ -103,7 +101,6 @@ export class ReportsComponent implements OnInit {
       this.monthlyDividends = monthly;
       this.allDividends = yearly;
       this.topMovers = topMovers;
-      console.log(' monthlyDividends', this.monthlyDividends);
       this.utilService.hideSpinner();
     });
   }
