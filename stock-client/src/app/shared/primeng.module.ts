@@ -4,7 +4,6 @@ import {
   AccordionModule,
   AutoCompleteModule,
   ButtonModule,
-  CalendarModule,
   CardModule,
   CarouselModule,
   ChartModule,
@@ -16,8 +15,7 @@ import {
   KeyFilterModule,
   MenubarModule,
   MenuModule,
-  MessageModule,
-  MessageService,
+  MessageModule, MessageService,
   MessagesModule,
   MultiSelectModule,
   OverlayPanelModule,
@@ -36,7 +34,7 @@ import {
   TooltipModule,
   TreeModule,
   TreeTableModule
-} from 'primeng/primeng';
+} from 'primeng';
 import {ToastModule} from 'primeng/toast';
 import {TableModule} from 'primeng/table';
 
@@ -55,7 +53,6 @@ import {TableModule} from 'primeng/table';
     CheckboxModule,
     DialogModule,
     RadioButtonModule,
-    CalendarModule,
     TooltipModule,
     PaginatorModule,
     ButtonModule,
@@ -92,7 +89,6 @@ import {TableModule} from 'primeng/table';
     CarouselModule,
     CheckboxModule,
     DialogModule,
-    CalendarModule,
     TooltipModule,
     PaginatorModule,
     RadioButtonModule,

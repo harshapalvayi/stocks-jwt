@@ -6,7 +6,7 @@ import java.util.Date;
 
 @Entity
 @Table(name="share")
-public class Share {
+public class  Share {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long shareid;
@@ -28,6 +28,8 @@ public class Share {
     private BigDecimal sell;
 
     private boolean holding;
+
+    private Integer account;
 
     public long getShareid() {
         return shareid;
@@ -107,6 +109,14 @@ public class Share {
 
     public void setHolding(boolean holding) {
         this.holding = holding;
+    }
+
+    public Integer getAccount() {
+        return account;
+    }
+
+    public void setAccount(Integer account) {
+        this.account = account;
     }
 
     public Share() {}

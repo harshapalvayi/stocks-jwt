@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PieCardsComponent } from './pie-cards.component';
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 
 describe('PieCardsComponent', () => {
   let component: PieCardsComponent;
@@ -8,9 +9,9 @@ describe('PieCardsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PieCardsComponent ]
-    })
-    .compileComponents();
+      declarations: [ PieCardsComponent ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    });
   }));
 
   beforeEach(() => {

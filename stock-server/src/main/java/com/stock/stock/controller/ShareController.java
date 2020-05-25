@@ -3,9 +3,12 @@ package com.stock.stock.controller;
 import com.stock.stock.dto.ShareListDto;
 import com.stock.stock.dto.StockHistoryInfoDto;
 import com.stock.stock.dto.StockInfoDto;
+import com.stock.stock.model.AccountType;
+import com.stock.stock.model.BrokerageAccounts;
 import com.stock.stock.model.MessageResponse;
 import com.stock.stock.model.Share;
 import com.stock.stock.repository.ShareRepository;
+import com.stock.stock.service.AccountService;
 import com.stock.stock.service.ShareService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +25,9 @@ public class ShareController {
 
     @Autowired
     public ShareService shareService;
+
+    @Autowired
+    public AccountService accountService;
 
     @Autowired
     public ShareRepository shareRepository;

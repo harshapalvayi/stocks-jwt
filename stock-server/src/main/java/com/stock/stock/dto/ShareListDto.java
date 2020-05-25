@@ -7,15 +7,18 @@ public class ShareListDto {
     public BigDecimal shares;
     public BigDecimal buy;
     public BigDecimal sell;
+    public Integer account;
 
     public ShareListDto() {
     }
 
-    public ShareListDto(String ticker, BigDecimal shares, BigDecimal buy, BigDecimal sell) {
+    public ShareListDto(String ticker, BigDecimal shares, BigDecimal buy,
+                        BigDecimal sell, Integer account) {
         this.ticker = ticker;
         this.shares = shares;
         this.buy = buy;
         this.sell = sell;
+        this.account = account;
     }
 
     public String getTicker() {
@@ -48,5 +51,13 @@ public class ShareListDto {
 
     public void setSell(BigDecimal sell) {
         this.sell = sell;
+    }
+
+    public Integer getAccount() {
+        return account;
+    }
+
+    public void setAccount(Integer account) {
+        this.account = account;
     }
 }

@@ -60,7 +60,8 @@ public class Portfolio {
         this.annualDividend = annualDividend;
     }
 
-    public Portfolio() {}
+    public Portfolio() {
+    }
 
     @Override
     public String toString() {

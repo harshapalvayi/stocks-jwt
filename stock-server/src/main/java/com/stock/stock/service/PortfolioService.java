@@ -31,10 +31,10 @@ public class PortfolioService {
         if (portfolio != null) {
             portfolioDto.setPortfolio(portfolio.getPortfolio());
             portfolioDto.setInvestment(portfolio.getInvestment());
-            String percentChange = ((((portfolio.getInvestment().subtract(portfolio.getPortfolio()))
+            BigDecimal percentChange = ((((portfolio.getInvestment().subtract(portfolio.getPortfolio()))
                     .multiply(BigDecimal.valueOf(100)))
                     .divide(portfolio.getPortfolio(), RoundingMode.FLOOR))
-                    .setScale(2, RoundingMode.FLOOR)).abs() + "%";
+                    .setScale(2, RoundingMode.FLOOR)).abs();
             portfolioDto.setPercentChange(percentChange);
         }
         List<Share> shares = shareRepository.findByUserId(userId);
@@ -45,7 +45,8 @@ public class PortfolioService {
                 if (yahooStock.isValid()) {
                     if (yahooStock.getDividend().getAnnualYield() != null) {
                         BigDecimal dividend = yahooStock.getDividend().getAnnualYield();
-                        annualDividend = annualDividend.add(dividend.multiply(share.getShares()));
+                        annualDividend = annualDividend.add(dividend.multiply(share.getShares()))
+                        .setScale(2, RoundingMode.FLOOR);
                     }
                 }
             }

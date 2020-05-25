@@ -38,7 +38,7 @@ export class TokenStorageService {
   }
 
   public saveUser(user) {
-    this.removeUserFromSessionAndLocalStorage(user);
+   // this.removeUserFromSessionAndLocalStorage(user);
     this.saveUserToSessionAndLocalStorage(user);
     this.sharedUserProfile.next(user);
   }

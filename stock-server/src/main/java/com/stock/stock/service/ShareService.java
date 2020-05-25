@@ -1,6 +1,7 @@
 package com.stock.stock.service;
 
 import com.stock.stock.dto.*;
+import com.stock.stock.model.AccountType;
 import com.stock.stock.model.Portfolio;
 import com.stock.stock.model.Share;
 import com.stock.stock.model.Users;
@@ -40,24 +41,26 @@ public class ShareService {
         String ticker = shareData.getTicker().toUpperCase();
         Share currentShare = shareRepository.findByTicker(shareData.getTicker());
         Portfolio portfolio = portfolioRepository.findByUserId(userId);
-        Stock yahooStock = this.stockService.getYahooStockData(ticker);
         Users user = new Users();
         user.setUserid(userId);
-        if (currentShare != null) {
-            currentShare.setBuy(shareData.getBuy());
-            currentShare.setTicker(ticker);
-            currentShare.setUser(user);
-            currentShare.setShares(shareData.getShares());
-            updateShareToPortfolio(user, shareData, yahooStock, portfolio);
-        } else {
-            currentShare = new Share();
-            currentShare.setBuy(shareData.getBuy());
-            currentShare.setTicker(ticker);
-            currentShare.setUser(user);
-            currentShare.setShares(shareData.getShares());
-            updateShareToPortfolio(user, shareData, yahooStock, portfolio);
-        }
+        Stock yahooStock = this.stockService.getYahooStockData(ticker);
         if (yahooStock.isValid()) {
+            if (currentShare != null) {
+                currentShare.setBuy(shareData.getBuy());
+                currentShare.setTicker(ticker);
+                currentShare.setUser(user);
+                currentShare.setAccount(shareData.getAccount());
+                currentShare.setShares(shareData.getShares());
+                updateShareToPortfolio(user, shareData, yahooStock, portfolio);
+            } else {
+                currentShare = new Share();
+                currentShare.setBuy(shareData.getBuy());
+                currentShare.setTicker(ticker);
+                currentShare.setUser(user);
+                currentShare.setAccount(shareData.getAccount());
+                currentShare.setShares(shareData.getShares());
+                updateShareToPortfolio(user, shareData, yahooStock, portfolio);
+            }
             if (yahooStock.getDividend().getPayDate() != null) {
                 currentShare.setPaydate(yahooStock.getDividend().getPayDate().getTime());
             }
@@ -65,8 +68,17 @@ public class ShareService {
                 currentShare.setExdate(yahooStock.getDividend().getExDate().getTime());
             }
             currentShare.setHolding(true);
+            shareRepository.save(currentShare);
         }
-        shareRepository.save(currentShare);
+    }
+
+    public void updateShareAcctType(AccountType acctData, long userId) {
+        Share currentShare = shareRepository.findByShareId(acctData.getShareid());
+        Users user = userRepository.findByUserid(userId);
+        if (currentShare != null && user != null) {
+            currentShare.setAccount(acctData.getAccount());
+            shareRepository.save(currentShare);
+        }
     }
 
     public void tradeStock(Share shareData, long userId) {
@@ -78,11 +90,16 @@ public class ShareService {
             currentShare.setShareid(shareData.getShareid());
             currentShare.setUser(user);
             currentShare.setTicker(ticker);
+            /* sell logic */
             if(shareData.getSell() != null) {
                 if ((shareData.getShares()).compareTo(currentShare.getShares()) > 0) {
                     BigDecimal shares = currentShare.getShares().subtract(shareData.getShares());
                     currentShare.setShares(shares);
-                    currentShare.setHolding(true);
+                    if (currentShare.getShares().compareTo(BigDecimal.valueOf(0)) > 0) {
+                        currentShare.setHolding(true);
+                    } else {
+                        currentShare.setHolding(false);
+                    }
                 } else {
                     currentShare.setShares(BigDecimal.valueOf(0));
                     currentShare.setHolding(false);
@@ -90,11 +107,16 @@ public class ShareService {
                 currentShare.setSell(shareData.getSell());
                 BigDecimal lossOrGains = (shareData.getSell()
                         .subtract(currentShare.getBuy()))
-                        .multiply(shareData.getShares());
+                        .multiply(shareData.getShares()).abs();
                 if (portfolio != null) {
-                    portfolio.setPortfolio(portfolio.getPortfolio().add(lossOrGains));
+                    if (lossOrGains.compareTo(BigDecimal.valueOf(0)) > 0) {
+                        portfolio.setPortfolio(portfolio.getPortfolio().add(lossOrGains));
+                    } else {
+                        portfolio.setPortfolio(portfolio.getPortfolio().subtract(lossOrGains));
+                    }
                 }
             } else {
+                /* buy logic */
                 BigDecimal shares = currentShare.getShares().add(shareData.getShares());
                 BigDecimal buy = currentShare.getBuy()
                                             .add(shareData.getBuy())
@@ -102,6 +124,13 @@ public class ShareService {
                 currentShare.setBuy(buy);
                 currentShare.setShares(shares);
                 currentShare.setHolding(true);
+                BigDecimal buyValue = shareData.getBuy().multiply(shareData.getShares()).abs();
+                if (portfolio != null) {
+                    portfolio.setPortfolio(portfolio.getPortfolio().add(buyValue));
+                }
+            }
+            if (portfolio != null) {
+                portfolioRepository.save(portfolio);
             }
             shareRepository.save(currentShare);
         }
@@ -110,14 +139,7 @@ public class ShareService {
     public List<StockInfoDto> getStockInfoDtos(@PathVariable long userid) {
         List<StockInfoDto> stockInfo = new ArrayList<StockInfoDto>();
         List<Share> userShares = shareRepository.findByUserId(userid);
-        for (Share share: userShares) {
-            Stock yahooStock = this.stockService.getYahooStockData(share.getTicker());
-            StockInfoDto stock = new StockInfoDto();
-            if (yahooStock.isValid()) {
-                this.generateStock(userid, share, yahooStock, stock);
-                stockInfo.add(stock);
-            }
-        }
+        getStockList(userid, stockInfo, userShares);
         return stockInfo;
     }
 
@@ -133,6 +155,9 @@ public class ShareService {
         stock.setPercentChange(change);
         stock.setCost((share.getShares()).multiply(share.getBuy()));
         stock.setEquity((share.getShares()).multiply(stock.getPrice()));
+        if (share.getAccount() != null) {
+            stock.setAccount(share.getAccount());
+        }
         if (yahooStock.getDividend().getExDate() != null) {
             stock.setExdate(yahooStock.getDividend().getExDate().getTime());
         }
@@ -159,9 +184,13 @@ public class ShareService {
     public List<StockInfoDto> getDividendData(long userId, String startDate, String endDate) throws ParseException {
         List<StockInfoDto> stockInfo = new ArrayList<StockInfoDto>();
         CalendarDatesDto dates = this.extractSimpleDateFormat(startDate, endDate);
-
         List<Share> shares = shareRepository.getMonthlyDividends(dates.getStart(), dates.getEnd());
-        for (Share share: shares ) {
+        getStockList(userId, stockInfo, shares);
+        return stockInfo;
+    }
+
+    public void getStockList(long userId, List<StockInfoDto> stockInfo, List<Share> shares) {
+        for (Share share : shares) {
             Stock yahooStock = this.stockService.getYahooStockData(share.getTicker());
             StockInfoDto stock = new StockInfoDto();
             if (yahooStock.isValid()) {
@@ -169,22 +198,12 @@ public class ShareService {
                 stockInfo.add(stock);
             }
         }
-        return stockInfo;
     }
 
     public List<StockInfoDto> getAllDividendData(long userId) {
         List<StockInfoDto> stockInfo = new ArrayList<StockInfoDto>();
         List<Share> shares = shareRepository.findByUserId(userId);
-        for (Share share: shares) {
-            Stock yahooStock = this.stockService.getYahooStockData(share.getTicker());
-            StockInfoDto stock = new StockInfoDto();
-            if (yahooStock.isValid()) {
-                if (yahooStock.getDividend().getAnnualYield() != null) {
-                    generateStock(userId, share, yahooStock, stock);
-                    stockInfo.add(stock);
-                }
-            }
-        }
+        getStockList(userId, stockInfo, shares);
         return stockInfo;
     }
 
@@ -216,14 +235,7 @@ public class ShareService {
         List<StockInfoDto> stockInfo = new ArrayList<StockInfoDto>();
         List<StockInfoDto> topMovers = new ArrayList<StockInfoDto>();
         List<Share> shares = shareRepository.findByUserId(userId);
-        for (Share share: shares ) {
-            Stock yahooStock = this.stockService.getYahooStockData(share.getTicker());
-            StockInfoDto stock = new StockInfoDto();
-            if (yahooStock.isValid()) {
-                generateStock(userId, share, yahooStock, stock);
-                stockInfo.add(stock);
-            }
-        }
+        getStockList(userId, stockInfo, shares);
         if (stockInfo.size() > 0) {
             stockInfo.sort(StockInfoDto.stockPercentageChange);
             if (stockInfo.size() > 5) {
@@ -257,6 +269,7 @@ public class ShareService {
                     shareInfo.setUserInfo(user);
                     shareInfo.setTicker(share.getTicker());
                     shareInfo.setShares(share.getShares());
+                    shareInfo.setAccount(share.getAccount());
                     shareInfo.setBuy(share.getBuy());
                     shareInfo.setExdate(exdate);
                     shareInfo.setPaydate(paydate);
@@ -270,6 +283,7 @@ public class ShareService {
                     shareData.setBuy(share.getBuy());
                     shareData.setExdate(exdate);
                     shareData.setPaydate(paydate);
+                    shareData.setAccount(share.getAccount());
                     shareData.setHolding(true);
                     shares.add(shareData);
                     updateShareListToPortfolio(user, share,  yahooStock, portfolio);
@@ -359,7 +373,6 @@ public class ShareService {
             initialPortfolio.setAnnualDividend(dividend);
             portfolioRepository.save(initialPortfolio);
         }
-
     }
 
     public Calendar extractCalendarDateFormat(Date date) {

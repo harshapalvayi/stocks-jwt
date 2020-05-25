@@ -28,8 +28,7 @@ export class AuthenticationService {
     const username = data.username;
     const password = data.password;
     const email = data.email;
-    return this.http.post<any>(
-      `${API_URL}/register`, {username, password, email}, httpOptions)
+    return this.http.post<any>(`${API_URL}/register`, {username, password, email}, httpOptions)
       .pipe(map(d =>  d));
   }
 }

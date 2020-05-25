@@ -1,3 +1,11 @@
-<app-cards>
+<div *ngIf="data; else doThis">
   <p-chart type="pie" [data]="data"  [options]="options"></p-chart>
-</app-cards>
+</div>
+
+<ng-template #doThis>
+  <div class="text-center">
+    <header class="text-center">
+      <h3> No data found </h3>
+    </header>
+  </div>
+</ng-template>

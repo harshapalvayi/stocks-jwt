@@ -41,3 +41,13 @@ export const StockHeaders = {
   ]
 };
 
+export const OptionsHeaders = {
+  headers: [
+    { field: 'ticker', header: 'Ticker', width: '10%'},
+    { field: 'name', header: 'Stock', width: '30%'},
+    { field: 'price', header: 'Price', width: '10%'},
+    { field: 'buy', header: 'Buy', width: '10%' },
+    { field: 'contracts', header: 'Contract', width: '15%' },
+    { field: '', header: 'Actions',  width: '15%' }
+  ]
+};

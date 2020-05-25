@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Share, ShareList, StockInfo} from '@models/stock';
+import {AcctType, Share, ShareList, StockInfo} from '@models/stock';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -22,7 +22,8 @@ export class SharesService {
     this.addStock  = this.fb.group({
       ticker: ['', Validators.required],
       buy: [null, Validators.required],
-      shares: [null, Validators.required]
+      shares: [null, [Validators.required, Validators.min(1)]],
+      brokerage: [null, Validators.required]
     });
     return this.addStock;
   }
@@ -42,7 +43,6 @@ export class SharesService {
   }
 
   uploadStockFile(shareLists: ShareList[], userId): Observable<any> {
-    console.log('stock list', shareLists);
     return this.http.post<any>(`${this.baseUrl}/upload/${userId}`, shareLists).pipe(
       map(response => response));
   }

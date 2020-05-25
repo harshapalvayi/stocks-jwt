@@ -1,15 +1,14 @@
 
 <p-dialog [(visible)]="showFlag" [appendTo]="'body'"
           [style]="{width: '700px'}"
-          class="card-layout"
-          [responsive]="true">
+          class="card-layout">
 
   <p-header>
     <span class="text-center font-weight-bold text-success mb-2"> Add or Upload Stocks </span>
   </p-header>
 
     <form [formGroup]="addStock" (ngSubmit)="onSubmitStock()">
-      <div class="d-flex flex-row flex-wrap justify-content-around align-items-center m-auto">
+      <div class="d-flex flex-column flex-wrap justify-content-around align-items-center m-auto">
         <div>
           <label><b>Ticker</b>
             <input class="font-weight-bold ml-5" formControlName="ticker" type="text">
@@ -18,16 +17,25 @@
 
         <div>
           <label><b>Shares</b>
-            <input class="font-weight-bold ml-5" formControlName="shares" type="number">
+            <input class="font-weight-bold ml-5" formControlName="shares" type="number" [min]="1">
           </label>
         </div>
 
         <div>
-          <label><b>Buy</b>
-            <input class="font-weight-bold ml-5" formControlName="buy" type="number">
+          <label><b>Bought</b>
+            <input class="font-weight-bold ml-5" formControlName="buy" type="number" [min]="0">
           </label>
         </div>
 
+        <div *ngIf="accounts">
+          <label><b>Brokerage</b>
+            <select class="ml-4" style="width: 170px;" formControlName="brokerage">
+              <option *ngFor="let account of accounts" ngValue="{{account.value}}">
+                {{account.label}}
+              </option>
+            </select>
+          </label>
+        </div>
       </div>
 
       <div class="d-flex justify-content-center mt-3">

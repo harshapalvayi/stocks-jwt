@@ -1,9 +1,10 @@
-<div class="my-3" *ngIf="shares && shares.length > 0; else showThis">
+<div class="my-3" *ngIf="shares && shares.length > 0">
   <p-table  [columns]="cols"  [value]="shares"
-            editMode="row" dataKey="symbol" [paginator]="true" [rows]="7">
+            dataKey="symbol" [paginator]="true" [rows]="7">
     <ng-template pTemplate="header" let-columns>
       <tr>
-        <th class="text-center" *ngFor="let col of columns"  [ngStyle]="{'width': col.width}">
+        <th class="text-center" *ngFor="let col of columns"  [pSortableColumn]="col.field"
+            [ngStyle]="{'width': col.width}">
           {{col.header}}
           <p-sortIcon [field]="col.field"></p-sortIcon>
         </th>
@@ -11,9 +12,13 @@
     </ng-template>
     <ng-template pTemplate="body" let-stock let-ri="rowIndex">
       <tr>
-        <td class="text-center">{{stock.ticker}}</td>
+        <td class="text-center">
+          <a class="text-primary" style="cursor:pointer;"
+             (click)="goToLink(stock.ticker)"> {{stock.ticker}}
+          </a>
+        </td>
         <td class="text-left">{{stock.name}}</td>
-        <td class="text-center">{{stock.price}}</td>
+        <td class="text-center">{{stock.price | currency}}</td>
         <td class="text-center" [ngClass]="stock.percentChange > 0 ? 'text-success' : 'text-danger'">
           {{getPercentage(stock.percentChange)}}
           <i  *ngIf="stock.percentChange > 0"  class="pi pi-arrow-up"
@@ -21,13 +26,15 @@
           <i  *ngIf="stock.percentChange < 0"  class="pi pi-arrow-down"
               [style]="{'font-size': '24px', 'width': '32px'}"> </i>
         </td>
-        <td class="text-center">{{stock.buy}}</td>
+        <td class="text-center">{{stock.buy | currency}}</td>
         <td class="text-center">{{stock.shares}}</td>
         <td class="text-center">
-          <button pButton type="button" class="ui-button-rounded ui-button-success mx-2"
-                  label="Buy" (click)="buyStock(stock)"></button>
+          <button pButton type="button" class="ui-button-rounded ui-button-success mx-1"
+                  icon="pi pi-plus" (click)="buyStock(stock)"></button>
           <button pButton type="button" class="ui-button-rounded ui-button-danger"
-                  label="Sell" (click)="sellStock(stock)"></button>
+                  icon="pi pi-minus" (click)="sellStock(stock)"></button>
+          <button pButton type="button" class="ui-button-rounded ui-button-warning mx-1"
+                  icon="pi pi-external-link" (click)="tradeStock(stock)"></button>
         </td>
       </tr>
     </ng-template>
@@ -35,11 +42,5 @@
 </div>
 
 <app-trade-stock (saved)="onTradeStocks()"></app-trade-stock>
-
-<ng-template #showThis>
-  <div class="container text-center">
-    <h3>Add Stocks To Portfolio</h3>
-  </div>
-</ng-template>
 
 

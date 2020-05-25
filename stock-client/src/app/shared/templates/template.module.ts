@@ -11,6 +11,8 @@ import {DisplayCardsComponent} from '@shared/templates/display-cards/display-car
 import {LoaderComponent} from '@shared/templates/loader/loader.component';
 import {TopMoversComponent} from '@shared/templates/top-movers/top-movers.component';
 import {PieCardsComponent} from '@shared/templates/pie-cards/pie-cards.component';
+import {SemiPieCardsComponent} from '@shared/templates/semi-pie-cards/semi-pie-cards.component';
+import {DoughnutChartComponent} from '@shared/templates/doughnut-chart/doughnut-chart.component';
 
 @NgModule({
   imports: [
@@ -27,7 +29,9 @@ import {PieCardsComponent} from '@shared/templates/pie-cards/pie-cards.component
     LineCardsComponent,
     TopMoversComponent,
     AutoPlayCardsComponent,
-    NotificationComponent
+    NotificationComponent,
+    SemiPieCardsComponent,
+    DoughnutChartComponent
   ],
   exports: [
     LoaderComponent,
@@ -39,7 +43,9 @@ import {PieCardsComponent} from '@shared/templates/pie-cards/pie-cards.component
     LineCardsComponent,
     TopMoversComponent,
     AutoPlayCardsComponent,
-    NotificationComponent
+    NotificationComponent,
+    SemiPieCardsComponent,
+    DoughnutChartComponent
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

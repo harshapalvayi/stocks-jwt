@@ -27,6 +27,18 @@ export class DividendsComponent implements OnInit {
   ngOnInit() { }
 
 
+  getDividends(data) {
+    let dividend = 0;
+    if (data && data.dividend) {
+      if (this.dividendType && this.dividendType === 'monthly') {
+        dividend = data.dividend / 4;
+      } else {
+        dividend = data.dividend;
+      }
+    }
+    return dividend;
+  }
+
   getTotals(data) {
     let total = 0;
     if (data && data.dividend) {
@@ -51,7 +63,6 @@ export class DividendsComponent implements OnInit {
           sum = sum + (stock.shares * (stock.dividend));
         });
       }
-
     }
     return sum;
   }

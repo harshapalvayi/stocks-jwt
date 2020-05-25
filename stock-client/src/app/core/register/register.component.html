@@ -1,26 +1,32 @@
 <div class="container">
-  <app-cards>
+  <div class="boxStyles">
     <form [formGroup]= "signUpForm" (ngSubmit)="submit()">
-      <header class="text-center"> <h2>User Registration</h2> </header><br>
-      <div>
-        <label>
-          <input class="text-center" formControlName="username" placeholder="user" maxlength="12"/>
-        </label>
-      </div>
-      <div>
-        <label>
-          <input class="text-center" formControlName="password" placeholder="password"/>
-        </label>
-      </div>
-      <div>
-        <label>
-          <input class="text-center" formControlName="email" placeholder="email"/>
-        </label>
-      </div>
-      <div>
+      <header class="text-center"> <h2>User Registration</h2> </header>
+
+      <span class="ui-float-label my-4">
+            <input id="user-name"
+                   formControlName="username" maxlength="12"
+                   type="text" size="25" pInputText>
+            <label for="user-name" class="ml-c-8">Username</label>
+      </span>
+
+      <span class="ui-float-label my-4">
+            <input id="password"
+                   formControlName="password"
+                   type="text" size="25" pInputText>
+            <label for="password" class="ml-c-8">Password</label>
+      </span>
+
+      <span class="ui-float-label my-4">
+            <input id="email"
+                   formControlName="email"
+                   type="text" size="25" pInputText>
+            <label for="email" class="ml-c-8">Email</label>
+      </span>
+
+      <div class="mt-3">
         <button pButton label="Sign Up" class="ui-button-rounded" [disabled]="signUpForm.invalid"></button>
       </div>
     </form>
-  </app-cards>
-
+  </div>
 </div>

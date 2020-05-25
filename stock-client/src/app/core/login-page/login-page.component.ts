@@ -27,21 +27,19 @@ export class LoginPageComponent implements OnInit {
 
   createForm() {
     this.loginForm = this.fb.group({
-      username: [null, Validators.required],
-      password: [null, Validators.required]
+      username: [null, [Validators.required, Validators.minLength(4)]],
+      password: [null, [Validators.required, Validators.minLength(4)]]
     });
   }
 
   submit() {
     this.jwtService.login(this.loginForm.value)
       .subscribe(data => {
-          this.tokenStorage.setSharedUserProfile(data);
           this.tokenStorage.saveUser(data);
           this.router.navigate(['/app-landing-page']);
           this.isLoggedIn = true;
         },
-        error => {
-          console.log(error);
+        () => {
           this.isValid = false;
           this.isLoggedIn = false;
         }

@@ -6,13 +6,13 @@ public class PortfolioDto {
     private BigDecimal investment;
     private BigDecimal portfolio;
     private BigDecimal annualDividend;
-    private String percentChange;
+    private BigDecimal percentChange;
 
     public PortfolioDto() {
     }
 
     public PortfolioDto(BigDecimal investment, BigDecimal portfolio, BigDecimal annualDividend,
-                        String percent) {
+                        BigDecimal percent) {
         this.investment = investment;
         this.portfolio = portfolio;
         this.annualDividend = annualDividend;
@@ -43,11 +43,11 @@ public class PortfolioDto {
         this.annualDividend = annualDividend;
     }
 
-    public String getPercentChange() {
+    public BigDecimal getPercentChange() {
         return percentChange;
     }
 
-    public void setPercentChange(String percentChange) {
+    public void setPercentChange(BigDecimal percentChange) {
         this.percentChange = percentChange;
     }
 }

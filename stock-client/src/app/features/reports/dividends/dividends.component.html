@@ -11,9 +11,9 @@
     <tr>
       <td class="text-center">{{stock.ticker}}</td>
       <td class="text-left">{{stock.name}}</td>
-      <td class="text-center">{{stock.pay_date | date}}</td>
+      <td class="text-center">{{stock.paydate | date}}</td>
       <td class="text-center">{{stock.shares}}</td>
-      <td class="text-center">{{stock.dividend}}</td>
+      <td class="text-center">{{ getDividends(stock) | number}}</td>
       <td class="text-center">{{ getTotals(stock) | number}}</td>
     </tr>
   </ng-template>

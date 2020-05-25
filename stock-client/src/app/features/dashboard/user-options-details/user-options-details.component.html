@@ -1,0 +1,39 @@
+<div class="my-3" *ngIf="options && options.length > 0">
+  <p-table  [columns]="cols"  [value]="options"
+            dataKey="symbol" [paginator]="true" [rows]="7">
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th class="text-center" *ngFor="let col of columns"  [pSortableColumn]="col.field"
+            [ngStyle]="{'width': col.width}">
+          {{col.header}}
+          <p-sortIcon [field]="col.field"></p-sortIcon>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-option let-ri="rowIndex">
+      <tr>
+        <td class="text-center">
+          <a class="text-primary" style="cursor:pointer;"
+             (click)="goToLink(option.ticker)"> {{option.ticker}}
+          </a>
+        </td>
+        <td class="text-left">{{option.name}}</td>
+        <td class="text-center">{{option.price}}</td>
+        <td class="text-center">{{option.buy}}</td>
+        <td class="text-center">{{option.contracts}}</td>
+        <td class="text-center">
+          <button pButton type="button" class="ui-button-rounded ui-button-success mx-1"
+                  icon="pi pi-plus" (click)="buyOption(option)"></button>
+          <button pButton type="button" class="ui-button-rounded ui-button-danger"
+                  icon="pi pi-minus" (click)="sellOption(option)"></button>
+          <button pButton type="button" class="ui-button-rounded ui-button-warning mx-1"
+                  icon="pi pi-external-link" (click)="tradeOption(option)"></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<app-trade-options (saved)="onTradeOptions()"></app-trade-options>
+
+

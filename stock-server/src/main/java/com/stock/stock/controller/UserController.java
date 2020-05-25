@@ -59,7 +59,9 @@ class UserController {
         }
 
         Users newUser = new Users(user.getUsername(), user.getPassword(), user.getEmail());
-        return ResponseEntity.ok(userDetailsService.save(newUser));
+        userDetailsService.save(newUser);
+        final String jwt = jwtTokenUtil.generateToken(newUser);
+        return ResponseEntity.ok(new AuthenticationResponse(jwt, newUser.getUserid(), newUser.getUsername(), newUser.getEmail()));
     }
 
     private void authenticate(String username, String password) throws Exception {

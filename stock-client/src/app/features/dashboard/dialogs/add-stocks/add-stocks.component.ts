@@ -9,6 +9,8 @@ import {ToastDetails} from '@models/Notification';
 import {ExcelService} from '@shared/services/excel/excel.service';
 import {NotificationService} from '@shared/services/notification/notification.service';
 import * as XLSX from 'xlsx';
+import {SelectItem} from 'primeng';
+import {AccountService} from '@shared/services/account/account.service';
 
 @Component({
   selector: 'app-add-stocks',
@@ -22,12 +24,14 @@ export class AddStocksComponent implements OnInit {
 
   public userInfo: UserToken;
   public addStock: FormGroup;
-  public showFlag: boolean;
   public text: string;
+  public showFlag: boolean;
+  public accounts: SelectItem[] = [];
 
   constructor(private userService: UserService,
               private excelService: ExcelService,
               private shareService: SharesService,
+              private accountService: AccountService,
               private tokenService: TokenStorageService,
               private notification: NotificationService) { }
 
@@ -35,12 +39,23 @@ export class AddStocksComponent implements OnInit {
     if (this.userService.isUserLoggedIn()) {
       this.userInfo = this.tokenService.getUserDetails();
       this.createForm();
+      this.accounts.push({label: 'select account', value: '', disabled: true});
+      this.accountService.getAccounts().subscribe(accounts => {
+        if (accounts) {
+          accounts.forEach(account => {
+            this.accounts.push({label: account.text, value: account.value});
+          });
+        }
+      });
     }
   }
 
   createForm() {
     this.text  = `To upload all your stocks at once make an excel file of your stocks with
-                    <b>Ticker</b>, <b>Shares</b> and <b>Buy</b> as columns and upload the file`;
+                    <b>Ticker</b> of type <i>String</i>,
+                    <b>Shares</b> of type <i>number</i>,
+                    <b>Buy</b> of type <i>number</i> and
+                    <b>Account</b> of type <i>number</i> as columns and upload the file`;
     this.addStock = this.shareService.createAddStock();
   }
 
@@ -49,6 +64,7 @@ export class AddStocksComponent implements OnInit {
   }
 
   showDialog() {
+    this.addStock.get('brokerage').patchValue(this.accounts[0].value);
     this.showFlag = true;
   }
 
@@ -66,12 +82,15 @@ export class AddStocksComponent implements OnInit {
         ticker: share.ticker,
         buy: share.buy,
         shares: share.shares,
+        account: Number(share.brokerage),
         userInfo: user
       };
-      this.shareService.save(shareData).subscribe(() => {
+      this.shareService.save(shareData).subscribe(res => {
         this.saved.emit('saved');
         this.resetStock();
         this.showFlag = false;
+      }, error => {
+        console.log('error', error);
       });
     }
   }

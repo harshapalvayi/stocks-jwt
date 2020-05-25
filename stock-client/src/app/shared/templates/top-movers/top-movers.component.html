@@ -1,4 +1,4 @@
-<div *ngIf="stocks && stocks.length > 0">
+<div *ngIf="stocks && stocks.length > 0; else doThis">
   <p-carousel [value]="stocks"
               [numVisible]="stocks.length < 3 ? stocks.length : 3"
               [numScroll]="stocks.length < 3 ? stocks.length : 3"
@@ -14,7 +14,7 @@
             </div>
             <div class="stock-subtitle font-weight-bold"
                  [ngClass]="share.percentChange > 0 ? 'text-success' : 'text-danger'">
-              <h2>{{share.percentChange }}</h2>
+              <h2>{{share.percentChange }}%</h2>
             </div>
           </div>
         </div>
@@ -22,3 +22,11 @@
     </ng-template>
   </p-carousel>
 </div>
+
+<ng-template #doThis>
+  <div class="text-center">
+    <header class="text-center">
+      <h3> No data found  </h3>
+    </header>
+  </div>
+</ng-template>

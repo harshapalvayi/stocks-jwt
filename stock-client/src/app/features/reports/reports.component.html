@@ -7,10 +7,10 @@
           <app-bar-cards class="w-100" *ngSwitchCase="selected.PRICE_BUY" [data]="priceVsBuy"></app-bar-cards>
           <app-bar-cards class="w-100" *ngSwitchCase="selected.COST_EQUITY" [data]="costVsEquity"></app-bar-cards>
           <app-bar-cards class="w-100" *ngSwitchCase="selected.DIVIDEND" [data]="dividends"></app-bar-cards>
-          <app-dividends class="w-100" *ngSwitchCase="selected.YEARLY_DIVIDEND"
-                         [dividendType]="'yearly'" [shareInfo]="allDividends" ></app-dividends>
           <app-dividends class="w-100" *ngSwitchCase="selected.MONTHLY_DIVIDEND"
                          [dividendType]="'monthly'" [shareInfo]="monthlyDividends"></app-dividends>
+          <app-dividends class="w-100" *ngSwitchCase="selected.YEARLY_DIVIDEND"
+                         [dividendType]="'yearly'" [shareInfo]="allDividends" ></app-dividends>
           <app-top-movers class="w-100" *ngSwitchCase="selected.TOP_MOVERS" [stocks]="topMovers"></app-top-movers>
         </div>
         <div class="m-5 text-center">
