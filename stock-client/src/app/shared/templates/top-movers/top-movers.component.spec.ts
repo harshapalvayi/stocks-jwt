@@ -11,7 +11,8 @@ describe('TopMoversComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ TopMoversComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    });
+    })
+    .compileComponents();
   }));
 
   beforeEach(() => {

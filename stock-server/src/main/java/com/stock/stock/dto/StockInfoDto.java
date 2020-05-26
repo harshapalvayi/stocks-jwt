@@ -5,154 +5,176 @@ import java.util.Comparator;
 import java.util.Date;
 
 public class StockInfoDto {
+
     private long userid;
     private long shareid;
     private String ticker;
-    private String stockName;
+    private String name;
     private BigDecimal price;
     private BigDecimal dividend;
-    private Integer shares;
+    private BigDecimal shares;
     private BigDecimal equity;
     private BigDecimal buy;
     private BigDecimal cost;
     private BigDecimal high;
     private BigDecimal low;
-    private String percentChange;
+    private BigDecimal percentChange;
     private Date paydate;
     private Date exdate;
+    private Integer account;
 
 
     public long getUserid() {
-        return userid;
-    }
+    return userid;
+}
 
     public void setUserid(long userid) {
-        this.userid = userid;
-    }
+    this.userid = userid;
+}
 
     public long getShareid() {
-        return shareid;
-    }
+    return shareid;
+}
 
     public void setShareid(long shareid) {
-        this.shareid = shareid;
-    }
+    this.shareid = shareid;
+}
 
     public String getTicker() {
-        return ticker;
-    }
+    return ticker;
+}
 
     public void setTicker(String ticker) {
-        this.ticker = ticker;
-    }
+    this.ticker = ticker;
+}
 
-    public String getStockName() {
-        return stockName;
-    }
+    public String getName() {
+    return name;
+}
 
-    public void setStockName(String stockName) {
-        this.stockName = stockName;
-    }
+    public void setStockName(String name) {
+    this.name = name;
+}
 
     public BigDecimal getPrice() {
-        return price;
-    }
+    return price;
+}
 
     public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
+    this.price = price;
+}
 
     public BigDecimal getDividend() {
-        return dividend;
-    }
+    return dividend;
+}
 
     public void setDividend(BigDecimal dividend) {
-        this.dividend = dividend;
-    }
+    this.dividend = dividend;
+}
 
-    public Integer getShares() {
+    public BigDecimal getShares() {
         return shares;
     }
 
-    public void setShares(Integer shares) {
+    public void setShares(BigDecimal shares) {
         this.shares = shares;
     }
 
     public BigDecimal getEquity() {
-        return equity;
-    }
+    return equity;
+}
 
     public void setEquity(BigDecimal equity) {
-        this.equity = equity;
-    }
+    this.equity = equity;
+}
 
     public BigDecimal getBuy() {
-        return buy;
-    }
+    return buy;
+}
 
     public void setBuy(BigDecimal buy) {
-        this.buy = buy;
-    }
+    this.buy = buy;
+}
 
     public BigDecimal getCost() {
-        return cost;
-    }
+    return cost;
+}
 
     public void setCost(BigDecimal cost) {
-        this.cost = cost;
-    }
+    this.cost = cost;
+}
 
     public BigDecimal getHigh() {
-        return high;
-    }
+    return high;
+}
 
     public void setHigh(BigDecimal high) {
-        this.high = high;
-    }
+    this.high = high;
+}
 
     public BigDecimal getLow() {
-        return low;
-    }
+    return low;
+}
 
     public void setLow(BigDecimal low) {
-        this.low = low;
-    }
+    this.low = low;
+}
 
     public Date getPaydate() {
-        return paydate;
-    }
+    return paydate;
+}
 
     public void setPaydate(Date paydate) {
-        this.paydate = paydate;
-    }
+    this.paydate = paydate;
+}
 
     public Date getExdate() {
-        return exdate;
-    }
+    return exdate;
+}
 
     public void setExdate(Date exdate) {
-        this.exdate = exdate;
-    }
+    this.exdate = exdate;
+}
 
-    public String getPercentChange() {
+    public BigDecimal getPercentChange() {
         return percentChange;
     }
 
-    public void setPercentChange(String percentChange) {
+    public void setPercentChange(BigDecimal percentChange) {
         this.percentChange = percentChange;
     }
 
-    public StockInfoDto() {
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public StockInfoDto(long userid, long shareid, String ticker, String stockName,
-                        BigDecimal price, BigDecimal dividend, String percentChange,
-                        Integer shares, BigDecimal equity, BigDecimal buy, BigDecimal cost,
-                        BigDecimal high, BigDecimal low, Date exdate, Date paydate, Integer[] history) {
+    public Integer getAccount() {
+        return account;
+    }
+
+    public void setAccount(Integer account) {
+        this.account = account;
+    }
+
+    public static Comparator<StockInfoDto> getStockPercentageChange() {
+        return stockPercentageChange;
+    }
+
+    public static void setStockPercentageChange(Comparator<StockInfoDto> stockPercentageChange) {
+        StockInfoDto.stockPercentageChange = stockPercentageChange;
+    }
+
+    public StockInfoDto() { }
+
+    public StockInfoDto(long userid, long shareid, String ticker,
+                        String name, BigDecimal price, BigDecimal dividend,
+                        BigDecimal percentChange, BigDecimal shares, BigDecimal equity,
+                        BigDecimal buy, BigDecimal cost, BigDecimal high, BigDecimal low,
+                        Date exdate, Date paydate, Integer account) {
         this.userid = userid;
         this.shareid = shareid;
         this.ticker = ticker;
-        this.stockName = stockName;
+        this.name = name;
         this.price = price;
         this.percentChange = percentChange;
         this.dividend = dividend;
@@ -164,26 +186,24 @@ public class StockInfoDto {
         this.low = low;
         this.exdate = exdate;
         this.paydate = paydate;
+        this.account = account;
     }
 
-    /* Sorting the list by percentage change*/
-    public static Comparator<StockInfoDto> stockPercentageChange = new Comparator<StockInfoDto>() {
+/* Sorting the list by percentage change*/
+    public static Comparator<StockInfoDto> stockPercentageChange = (s1, s2) -> {
+        int compare = 0;
+        if (s1.getPercentChange() != null && s2.getPercentChange() != null) {
 
-        public int compare(StockInfoDto s1, StockInfoDto s2) {
-            int compare = 0;
-            if (s1.getPercentChange() != null && s2.getPercentChange() != null) {
-                String  percent1 = s1.getPercentChange().substring(0, s1.getPercentChange().length() - 1);
-                String  percent2 = s2.getPercentChange().substring(0, s2.getPercentChange().length() - 1);
+            BigDecimal change1 = s1.getPercentChange();
+            BigDecimal change2 = s2.getPercentChange();
 
-                BigDecimal change1 = new BigDecimal(percent1);
-                BigDecimal change2 = new BigDecimal(percent2);
+            /*For ascending order*/
+            compare = change1.compareTo(change2);
 
-                /*For ascending order*/
-                compare = change1.compareTo(change2);
+            /*For descending order*/
+            //change2-change1;
+        }
+        return compare;
+    };
 
-                /*For descending order*/
-                //change2-change1;
-            }
-            return compare;
-        }};
 }

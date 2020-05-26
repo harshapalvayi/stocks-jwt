@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
 import {Chart} from '@models/chart';
 import * as moment from 'moment';
+import {UtilService} from '@shared/services/util/util.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChartService {
 
-  constructor() {}
+  private static extractColorCode(history, stock) {
+    const lastOpen = history.slice(-1).pop().open;
+    return lastOpen && lastOpen > stock.buy ? '#21CE99' : '#FF0000';
+  }
 
   public buildPriceVsBuyChart(data): Chart {
     const labels = [];
@@ -20,10 +24,11 @@ export class ChartService {
         labels.push(s.ticker);
         price.push(s.price);
       });
+      const priceColor = UtilService.getRandomColor();
       datasets.push({
         label: 'Stock Price',
-        backgroundColor: '#42A5F5',
-        borderColor: '#1E88E5',
+        backgroundColor: priceColor,
+        borderColor: priceColor,
         data: price
       });
 
@@ -31,10 +36,11 @@ export class ChartService {
       data.forEach(s => {
         buy.push(s.buy);
       });
+      const buyColor = UtilService.getRandomColor();
       datasets.push({
         label: 'Stock Buy',
-        backgroundColor: '#FF7F50',
-        borderColor: '#FF7F50',
+        backgroundColor: buyColor,
+        borderColor: buyColor,
         data: buy
       });
     }
@@ -56,20 +62,22 @@ export class ChartService {
         labels.push(s.ticker);
         cost.push(s.cost);
       });
+      const costColor = UtilService.getRandomColor();
       datasets.push({
         label: 'Stock Cost',
-        backgroundColor: '#FF7F50',
-        borderColor: '#FF7F50',
+        backgroundColor: costColor,
+        borderColor: costColor,
         data: cost
       });
       data.sort((a, b) => a.equity - b.equity);
       data.forEach(s => {
         equity.push(s.equity);
       });
+      const equityColor = UtilService.getRandomColor();
       datasets.push({
         label: 'Stock Equity',
-        backgroundColor: '#DAA520',
-        borderColor: '#DAA520',
+        backgroundColor: equityColor,
+        borderColor: equityColor,
         data: equity
       });
     }
@@ -94,10 +102,11 @@ export class ChartService {
           dividend.push(0);
         }
       });
+      const dividendColor = UtilService.getRandomColor();
       datasets.push({
         label: 'Stock Dividend',
-        backgroundColor: '#32CD32',
-        borderColor: '#32CD32',
+        backgroundColor: dividendColor,
+        borderColor: dividendColor,
         data: dividend
       });
     }
@@ -119,7 +128,7 @@ export class ChartService {
         labels.push(moment(s.date).format('MM-DD-YYYY'));
         open.push(s.open);
       });
-      const colorCode = this.extractColorCode(history, stock);
+      const colorCode = ChartService.extractColorCode(history, stock);
       datasets.push({
         label: symbol,
         backgroundColor: colorCode,
@@ -135,24 +144,21 @@ export class ChartService {
     }
   }
 
-  private extractColorCode(history, stock) {
-    const lastOpen = history.slice(-1).pop().open;
-    const colorCode = lastOpen && lastOpen > stock.buy ? '#21CE99' : '#FF0000';
-    return colorCode;
-  }
-
   public buildEquityPortfolio(data): Chart {
     const labels = [];
     const equity = [];
     const datasets = [];
+    const portfolioColor = [];
     if (data && data.length > 0) {
       data.forEach(s => {
+        const color = UtilService.getRandomColor();
         labels.push(s.ticker);
         equity.push(s.equity);
+        portfolioColor.push(color);
       });
       datasets.push({
         label: 'Stock Equity',
-        backgroundColor: '#36A2EB',
+        backgroundColor: portfolioColor,
         borderColor: '#FFFFFF',
         data: equity
       });
@@ -162,5 +168,18 @@ export class ChartService {
     } else {
       return null;
     }
+  }
+
+  public generateChartProperties(chart, chartData, widthDin, heightDin) {
+    const context = chart.chart.ctx;
+    const xCenter = (chart.chart.width / widthDin);
+    const yCenter = chart.chart.height / heightDin;
+    const progressLabel = `${chartData.datasets[0].data[0]}${chartData.datasets[0].notation}`;
+    context.textAlign = 'center';
+    context.fontStyle = 'bold';
+    context.font = '20px Helvetica';
+    context.fillStyle = chartData.titleColor;
+    context.fillText(progressLabel, xCenter, yCenter);
+    return context;
   }
 }

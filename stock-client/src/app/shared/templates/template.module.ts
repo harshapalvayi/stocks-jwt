@@ -4,14 +4,15 @@ import {PrimengModule} from '@shared/primeng.module';
 import {CardsComponent} from '@shared/templates/cards/cards.component';
 import {NotificationComponent} from '@shared/templates/notification/notification.component';
 import {MessageComponent} from '@shared/templates/message/message.component';
+import {AutoPlayCardsComponent} from '@shared/templates/auto-play-cards/auto-play-cards.component';
 import {LineCardsComponent} from '@shared/templates/line-cards/line-cards.component';
 import {BarCardsComponent} from '@shared/templates/bar-cards/bar-cards.component';
 import {DisplayCardsComponent} from '@shared/templates/display-cards/display-cards.component';
-import {PieCardsComponent} from '@shared/templates/pie-cards/pie-cards.component';
-import {TableCardsComponent} from '@shared/templates/table-cards/table-cards.component';
-import {AutoPlayCardsComponent} from '@shared/templates/auto-play-cards/auto-play-cards.component';
 import {LoaderComponent} from '@shared/templates/loader/loader.component';
 import {TopMoversComponent} from '@shared/templates/top-movers/top-movers.component';
+import {PieCardsComponent} from '@shared/templates/pie-cards/pie-cards.component';
+import {SemiPieCardsComponent} from '@shared/templates/semi-pie-cards/semi-pie-cards.component';
+import {DoughnutChartComponent} from '@shared/templates/doughnut-chart/doughnut-chart.component';
 
 @NgModule({
   imports: [
@@ -19,30 +20,32 @@ import {TopMoversComponent} from '@shared/templates/top-movers/top-movers.compon
     PrimengModule
   ],
   declarations: [
+    LoaderComponent,
+    PieCardsComponent,
     CardsComponent,
     MessageComponent,
-    LoaderComponent,
     DisplayCardsComponent,
     BarCardsComponent,
     LineCardsComponent,
-    PieCardsComponent,
-    TableCardsComponent,
-    NotificationComponent,
     TopMoversComponent,
-    AutoPlayCardsComponent
+    AutoPlayCardsComponent,
+    NotificationComponent,
+    SemiPieCardsComponent,
+    DoughnutChartComponent
   ],
   exports: [
+    LoaderComponent,
     CardsComponent,
     MessageComponent,
-    LoaderComponent,
+    PieCardsComponent,
     DisplayCardsComponent,
     BarCardsComponent,
     LineCardsComponent,
-    PieCardsComponent,
-    NotificationComponent,
-    TableCardsComponent,
     TopMoversComponent,
-    AutoPlayCardsComponent
+    AutoPlayCardsComponent,
+    NotificationComponent,
+    SemiPieCardsComponent,
+    DoughnutChartComponent
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

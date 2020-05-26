@@ -4,7 +4,6 @@ import {
   AccordionModule,
   AutoCompleteModule,
   ButtonModule,
-  CalendarModule,
   CardModule,
   CarouselModule,
   ChartModule,
@@ -22,6 +21,7 @@ import {
   OverlayPanelModule,
   PaginatorModule,
   PanelModule,
+  ProgressSpinnerModule,
   RadioButtonModule,
   SelectButtonModule,
   SharedModule,
@@ -35,10 +35,9 @@ import {
   TooltipModule,
   TreeModule,
   TreeTableModule
-} from 'primeng/primeng';
+} from 'primeng';
 import {ToastModule} from 'primeng/toast';
 import {TableModule} from 'primeng/table';
-import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {FileUploadModule} from 'primeng/fileupload';
 
 @NgModule({
@@ -56,7 +55,6 @@ import {FileUploadModule} from 'primeng/fileupload';
     CheckboxModule,
     DialogModule,
     RadioButtonModule,
-    CalendarModule,
     TooltipModule,
     PaginatorModule,
     ButtonModule,
@@ -79,6 +77,7 @@ import {FileUploadModule} from 'primeng/fileupload';
     SpinnerModule,
     TabViewModule,
     TreeModule,
+    ProgressSpinnerModule,
     ToggleButtonModule
   ],
   declarations: [],
@@ -92,7 +91,6 @@ import {FileUploadModule} from 'primeng/fileupload';
     CarouselModule,
     CheckboxModule,
     DialogModule,
-    CalendarModule,
     TooltipModule,
     PaginatorModule,
     RadioButtonModule,

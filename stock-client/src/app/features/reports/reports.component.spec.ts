@@ -9,6 +9,7 @@ import {UserService} from '@shared/services/user/user.service';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {RouterTestingModule} from '@angular/router/testing';
 import {PrimengModule} from '@shared/primeng.module';
+import {SharesService} from '@shared/services/shares/shares.service';
 
 describe('ReportsComponent', () => {
   let component: ReportsComponent;
@@ -19,7 +20,7 @@ describe('ReportsComponent', () => {
       imports: [HttpClientTestingModule, RouterTestingModule, PrimengModule],
       declarations: [ ReportsComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
-      providers: [FormBuilder, DateService, TokenStorageService, UserService]
+      providers: [FormBuilder, DateService, SharesService, TokenStorageService, UserService]
     });
   }));
 

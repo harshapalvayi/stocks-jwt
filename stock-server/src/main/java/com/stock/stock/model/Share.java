@@ -6,7 +6,7 @@ import java.util.Date;
 
 @Entity
 @Table(name="share")
-public class Share {
+public class  Share {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long shareid;
@@ -17,13 +17,19 @@ public class Share {
     @JoinColumn(name = "userid")
     private Users userInfo;
 
-    private Integer shares;
+    private BigDecimal shares;
 
     private BigDecimal buy;
 
     private Date paydate;
 
     private Date exdate;
+
+    private BigDecimal sell;
+
+    private boolean holding;
+
+    private Integer account;
 
     public long getShareid() {
         return shareid;
@@ -57,11 +63,11 @@ public class Share {
         this.userInfo = users;
     }
 
-    public Integer getShares() {
+    public BigDecimal getShares() {
         return shares;
     }
 
-    public void setShares(Integer shares) {
+    public void setShares(BigDecimal shares) {
         this.shares = shares;
     }
 
@@ -89,12 +95,36 @@ public class Share {
         this.exdate = ex_date;
     }
 
+    public BigDecimal getSell() {
+        return sell;
+    }
+
+    public void setSell(BigDecimal sell) {
+        this.sell = sell;
+    }
+
+    public boolean isHolding() {
+        return holding;
+    }
+
+    public void setHolding(boolean holding) {
+        this.holding = holding;
+    }
+
+    public Integer getAccount() {
+        return account;
+    }
+
+    public void setAccount(Integer account) {
+        this.account = account;
+    }
+
     public Share() {}
 
     @Override
     public String toString() {
         return String.format(
-                "Share[shareId=%d, shares=%d, buy='%f', payDate='%s', exDate='%s']",
-                shareid, shares, buy, paydate, exdate);
+                "Share[shareId=%d, shares='%f', buy='%f', payDate='%s', exDate='%s', sell='%f', holding='%b']",
+                shareid, shares, buy, paydate, exdate, sell, holding);
     }
 }

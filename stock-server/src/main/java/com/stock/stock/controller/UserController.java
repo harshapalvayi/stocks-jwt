@@ -33,7 +33,7 @@ class UserController {
     private UserInfoService userDetailsService;
 
 
-    @PostMapping(value = "/authenticate")
+    @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
 
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
@@ -42,26 +42,11 @@ class UserController {
 
         final String jwt = jwtTokenUtil.generateToken(userDetails);
 
-        return ResponseEntity.ok(new AuthenticationResponse(jwt,
-                userDetails.getUserid(), userDetails.getUsername(), userDetails.getEmail()));
+        return ResponseEntity.ok(new AuthenticationResponse(jwt, userDetails.getUserid(), userDetails.getUsername(), userDetails.getEmail()));
     }
 
-    @PostMapping(value = "/refresh")
-    public ResponseEntity<?> refreshAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
-
-        authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-        final Users userDetails = (Users) userDetailsService
-                .loadUserByUsername(authenticationRequest.getUsername());
-
-        final String jwt = jwtTokenUtil.refreshToken(userDetails);
-
-        return ResponseEntity.ok(new AuthenticationResponse(jwt,
-                userDetails.getUserid(), userDetails.getUsername(), userDetails.getEmail()));
-    }
-
-    @PostMapping(value = "/register")
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<?> registerUser(@RequestBody Signup user) {
-        String jwt = null;
         if (userRepository.existsByUsername(user.getUsername())) {
             return ResponseEntity
                     .badRequest()
@@ -74,14 +59,9 @@ class UserController {
         }
 
         Users newUser = new Users(user.getUsername(), user.getPassword(), user.getEmail());
-
         userDetailsService.save(newUser);
-
-        if (userRepository.existsByUsername(newUser.getUsername())) {
-            jwt = jwtTokenUtil.generateToken(newUser);
-        }
-        return ResponseEntity.ok(new AuthenticationResponse(jwt,
-                newUser.getUserid(), newUser.getUsername(), newUser.getEmail()));
+        final String jwt = jwtTokenUtil.generateToken(newUser);
+        return ResponseEntity.ok(new AuthenticationResponse(jwt, newUser.getUserid(), newUser.getUsername(), newUser.getEmail()));
     }
 
     private void authenticate(String username, String password) throws Exception {

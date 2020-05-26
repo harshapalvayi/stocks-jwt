@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import {NotificationService} from '@shared/services/notification/notification.service';
 import {Share, ShareList} from '@models/stock';
 
 @Injectable({
@@ -14,7 +13,7 @@ export class ExcelService {
   }
 
   public static checkHeaders(headers) {
-    const defaultHeaders = ['Buy', 'Shares', 'Ticker'];
+    const defaultHeaders = ['Buy', 'Shares', 'Ticker', 'Account'];
     const sortedHeaders = defaultHeaders.sort();
     return headers && JSON.stringify(defaultHeaders) === JSON.stringify(sortedHeaders);
   }
@@ -27,6 +26,7 @@ export class ExcelService {
         column.ticker = record.Ticker;
         column.shares = record.Shares;
         column.buy =    record.Buy;
+        column.account = record.Account;
         excelRecords.push(column);
       });
     }

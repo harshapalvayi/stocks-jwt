@@ -27,8 +27,8 @@ export class LoginPageComponent implements OnInit {
 
   createForm() {
     this.loginForm = this.fb.group({
-      username: [null, Validators.required],
-      password: [null, Validators.required]
+      username: [null, [Validators.required, Validators.minLength(4)]],
+      password: [null, [Validators.required, Validators.minLength(4)]]
     });
   }
 
@@ -39,8 +39,7 @@ export class LoginPageComponent implements OnInit {
           this.router.navigate(['/app-landing-page']);
           this.isLoggedIn = true;
         },
-        error => {
-          console.log(error);
+        () => {
           this.isValid = false;
           this.isLoggedIn = false;
         }

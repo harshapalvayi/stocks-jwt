@@ -3,36 +3,36 @@ package com.stock.stock.dto;
 import java.math.BigDecimal;
 
 public class PortfolioDto {
-    private BigDecimal totalInvestment;
-    private BigDecimal totalEquity;
+    private BigDecimal investment;
+    private BigDecimal portfolio;
     private BigDecimal annualDividend;
-    private String percentChange;
+    private BigDecimal percentChange;
 
     public PortfolioDto() {
     }
 
-    public PortfolioDto(BigDecimal totalInvestment, BigDecimal totalValue, BigDecimal annualDividend,
-                        String percent) {
-        this.totalInvestment = totalInvestment;
-        this.totalEquity = totalValue;
+    public PortfolioDto(BigDecimal investment, BigDecimal portfolio, BigDecimal annualDividend,
+                        BigDecimal percent) {
+        this.investment = investment;
+        this.portfolio = portfolio;
         this.annualDividend = annualDividend;
         this.percentChange = percent;
     }
 
-    public BigDecimal getTotalInvestment() {
-        return totalInvestment;
+    public BigDecimal getInvestment() {
+        return investment;
     }
 
-    public void setTotalInvestment(BigDecimal totalInvestment) {
-        this.totalInvestment = totalInvestment;
+    public void setInvestment(BigDecimal investment) {
+        this.investment = investment;
     }
 
-    public BigDecimal getTotalEquity() {
-        return totalEquity;
+    public BigDecimal getPortfolio() {
+        return portfolio;
     }
 
-    public void setTotalEquity(BigDecimal totalEquity) {
-        this.totalEquity = totalEquity;
+    public void setPortfolio(BigDecimal portfolio) {
+        this.portfolio = portfolio;
     }
 
     public BigDecimal getAnnualDividend() {
@@ -43,11 +43,11 @@ public class PortfolioDto {
         this.annualDividend = annualDividend;
     }
 
-    public String getPercentChange() {
+    public BigDecimal getPercentChange() {
         return percentChange;
     }
 
-    public void setPercentChange(String percentChange) {
+    public void setPercentChange(BigDecimal percentChange) {
         this.percentChange = percentChange;
     }
 }

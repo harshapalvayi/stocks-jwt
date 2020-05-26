@@ -6,18 +6,18 @@ import {CoreModule} from '@core/core.module';
 import {FormsModule} from '@angular/forms';
 import {AdminRoutingModule} from '@features/admin/admin-routing.module';
 import {TemplateModule} from '@shared/templates/template.module';
+import {SearchStockComponent} from '@features/admin/search-stock/search-stock.component';
 
 @NgModule({
-    imports: [
-        CoreModule,
-        CommonModule,
-        FormsModule,
-        PrimengModule,
-        TemplateModule,
-        AdminRoutingModule
-    ],
-    declarations: [AdminComponent],
-    exports: [],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  imports: [
+    CoreModule,
+    CommonModule,
+    FormsModule,
+    PrimengModule,
+    TemplateModule,
+    AdminRoutingModule
+  ],
+  declarations: [AdminComponent, SearchStockComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AdminModule { }

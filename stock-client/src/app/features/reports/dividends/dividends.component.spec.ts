@@ -1,22 +1,23 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TableCardsComponent } from './table-cards.component';
+import { DividendsComponent } from './dividends.component';
 import {CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA} from '@angular/core';
+import {PrimengModule} from '@shared/primeng.module';
 
-describe('TableCardsComponent', () => {
-  let component: TableCardsComponent;
-  let fixture: ComponentFixture<TableCardsComponent>;
+describe('MonthlyDividendsComponent', () => {
+  let component: DividendsComponent;
+  let fixture: ComponentFixture<DividendsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TableCardsComponent ],
+      imports: [PrimengModule],
+      declarations: [ DividendsComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+    });
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TableCardsComponent);
+    fixture = TestBed.createComponent(DividendsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {CustomStockInfo, StockInfo} from '@models/stock';
+import {StockInfo} from '@models/stock';
 
 @Component({
   selector: 'app-top-movers',
@@ -14,5 +14,4 @@ export class TopMoversComponent implements OnInit {
 
   ngOnInit() {
   }
-
 }

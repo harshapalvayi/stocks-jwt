@@ -1,26 +1,28 @@
 <div class="container">
-  <app-cards>
-    <form [formGroup]= "loginForm" (ngSubmit)="submit()">
-      <header class="text-center"> <h2>User Login</h2> </header><br>
-      <div>
-        <label>
-          <input class="text-center" formControlName="username" placeholder="user" maxlength="12"/>
-        </label>
-      </div>
-      <div>
-        <label>
-          <input class="text-center" type="password" formControlName="password" placeholder="password"/>
-        </label>
-      </div>
-      <div>
-        <button pButton label="LOGIN" class="ui-button-rounded" [disabled]="loginForm.invalid"></button>
-      </div>
-    </form>
+      <div class="boxStyles">
+        <form  class="text-center" [formGroup]= "loginForm" (ngSubmit)="submit()">
+          <header> <h2>User Login</h2> </header>
 
-    <div class="py-3 w-100" *ngIf="!isValid">
-      <app-message  [severity]="'error'" [text]="'Invalid Credentials'"></app-message>
-    </div>
+          <span class="ui-float-label my-4">
+            <input id="user-name"
+                   formControlName="username" maxlength="12"
+                   type="text" size="25" pInputText>
+            <label for="user-name" class="ml-c-8">Username</label>
+          </span>
 
-  </app-cards>
+          <span class="ui-float-label my-4">
+            <input id="password"
+                   formControlName="password"
+                   type="text" size="25" pInputText>
+            <label for="password" class="ml-c-8">Password</label>
+          </span>
+          <div class="mt-3">
+            <button pButton label="LOGIN" class="ui-button-rounded" [disabled]="loginForm.invalid"></button>
+          </div>
+        </form>
+      </div>
+
+      <div class="py-3 w-100" *ngIf="!isValid">
+        <app-message  [severity]="'error'" [text]="'Invalid Credentials'"></app-message>
+      </div>
 </div>
-

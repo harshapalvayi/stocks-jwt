@@ -16,12 +16,7 @@ export class TokenStorageService {
 
   constructor() { }
 
-  private removeUserFromSessionAndLocalStorage(user) {
-    window.sessionStorage.removeItem(user);
-    window.localStorage.removeItem(user);
-  }
-
-  private saveUserFromSessionAndLocalStorage(user) {
+  private static saveUserToSessionAndLocalStorage(user) {
     window.sessionStorage.setItem(USER_ID, user.id);
     window.sessionStorage.setItem(TOKEN_KEY, user.jwtToken);
     window.sessionStorage.setItem(USER_KEY, user.name);
@@ -38,8 +33,7 @@ export class TokenStorageService {
   }
 
   public saveUser(user) {
-    this.removeUserFromSessionAndLocalStorage(user);
-    this.saveUserFromSessionAndLocalStorage(user);
+    TokenStorageService.saveUserToSessionAndLocalStorage(user);
     this.sharedUserProfile.next(user);
   }
 
@@ -48,22 +42,16 @@ export class TokenStorageService {
   }
 
   setSharedUserProfile(user) {
-    window.localStorage.setItem(USER_KEY, JSON.stringify(user));
-    this.sharedUserProfile.next(user);
-  }
-
-  public getUser() {
-    return sessionStorage.getItem(USER_KEY);
+      this.sharedUserProfile.next(user);
   }
 
   public getUserDetails(): UserToken {
-    const userDetails: UserToken = {
+    return {
       id: Number(sessionStorage.getItem(USER_ID)),
       name: sessionStorage.getItem(USER_KEY),
       jwtToken: sessionStorage.getItem(TOKEN_KEY),
       email: sessionStorage.getItem(USER_EMAIL)
     };
-    return userDetails;
   }
 
   isTokenExpired(): boolean {

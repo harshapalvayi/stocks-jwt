@@ -1,13 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 
 import { SharesService } from './shares.service';
-import {FormBuilder, FormsModule} from '@angular/forms';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {FormBuilder, FormsModule} from '@angular/forms';
+import {PrimengModule} from '@shared/primeng.module';
 
-describe('ShareService', () => {
+describe('SharesService', () => {
   beforeEach(() => TestBed.configureTestingModule({
-    imports: [FormsModule, HttpClientTestingModule],
-    providers: [FormBuilder]
+    imports: [HttpClientTestingModule, FormsModule, PrimengModule],
+    providers: [SharesService, FormBuilder]
   }));
 
   it('should be created', () => {

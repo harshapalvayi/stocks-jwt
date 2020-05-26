@@ -1,0 +1,36 @@
+<div class="container">
+   <div class="text-center">
+     <label for="stock-name">
+       <input id="stock-name" type="text"
+              class="ui-button-rounded"
+              placeholder="Search Stock"
+              size="50" pInputText [(ngModel)]="text"/>
+     </label>
+
+     <button pButton type="button" label="submit"
+             (click)="submit(text)"
+             class="mx-3 ui-button-rounded" [disabled]="!text"></button>
+   </div>
+</div>
+
+<div class="container mt-3" *ngIf="stockData">
+  <div class="d-flex flex-column flex-wrap justify-content-around">
+    <div class="text-success">
+      <h3>{{stockData.stockName}}</h3>
+    </div>
+    <div class="mt-2">
+      <label><b>Ticker</b></label>
+      <a class="text-primary ml-5" style="cursor:pointer;"
+         (click)="goToLink(stockData.ticker)"> {{stockData.ticker}}
+      </a>
+    </div>
+    <div>
+      <label for="price"><b>Price</b></label>
+      <span id="price" class="ml-4">{{stockData.price | currency}}</span>
+    </div>
+    <div>
+      <label for="dividend"><b>Dividend</b></label>
+      <span id="dividend" class="ml-3">{{stockData.dividend | currency}}</span>
+    </div>
+  </div>
+</div>

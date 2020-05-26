@@ -6,10 +6,10 @@ import {UserService} from '@shared/services/user/user.service';
 import {DateService} from '@shared/services/date/date.service';
 import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
 import {MenuTabs as menus, Tabs} from '@models/menus';
-import {SharesService} from '@shared/services/shares/shares.service';
 import {ChartService} from '@shared/services/chart/chart.service';
 import {Dates} from '@models/dates';
 import {forkJoin, Observable} from 'rxjs';
+import {SharesService} from '@shared/services/shares/shares.service';
 import {UtilService} from '@shared/services/util/util.service';
 
 @Component({
@@ -33,10 +33,10 @@ export class ReportsComponent implements OnInit {
   public loader$: Observable<boolean> = this.utilService.getLoader();
 
   constructor(private dateService: DateService,
-              private chartService: ChartService,
               private userService: UserService,
-              private shareService: SharesService,
               private utilService: UtilService,
+              private chartService: ChartService,
+              private shareService: SharesService,
               private tokenService: TokenStorageService) {}
 
   ngOnInit() {
@@ -82,12 +82,10 @@ export class ReportsComponent implements OnInit {
     const { reportTabs } = menus;
     this.items = reportTabs;
     this.tabs = this.selected.TOTAL_PORTFOLIO;
-
     const date  = this.dateService.getMonthDates();
     const data: {userid: number, date: Dates} = {
       userid: this.userInfo.id, date
     };
-
     this.utilService.showSpinner();
 
     forkJoin([

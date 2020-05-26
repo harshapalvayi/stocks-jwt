@@ -1,55 +1,27 @@
-<div class="container mb-5">
+<div class="container mb-4">
   <div class="row col-sm-12">
-    <div class="col-sm-4" *ngIf="portfolio && portfolio.totalEquity">
-      <app-cards>
-        <app-display-cards [title]="'Portfolio'" [data]="portfolio.totalEquity | currency"
-                           [ngClass]="portfolio.totalEquity > portfolio.totalInvestment ? 'text-success' : 'text-danger'">
-        </app-display-cards>
-      </app-cards>
+    <div class="col-sm-3" *ngIf="portfolioValue">
+        <app-semi-pie-cards [title]="'Portfolio'" [data]="portfolioValue"
+                           [ngClass]="portfolio.portfolio > portfolio.investment ? 'text-success' : 'text-danger'">
+        </app-semi-pie-cards>
     </div>
 
-    <div class="col-sm-4" *ngIf="portfolio && portfolio.totalInvestment">
-      <app-cards>
-        <app-display-cards [title]="'Investing'" [data]="portfolio.totalInvestment | currency"
-                           [ngClass]="portfolio.totalEquity > portfolio.totalInvestment ? 'text-success' : 'text-danger'">
-        </app-display-cards>
-      </app-cards>
+    <div class="col-sm-3" *ngIf="investment">
+        <app-semi-pie-cards [title]="'Investment'" [data]="investment"
+                           [ngClass]="portfolio.portfolio > portfolio.investment ? 'text-success' : 'text-danger'">
+        </app-semi-pie-cards>
     </div>
 
-    <div class="col-sm-4"  *ngIf="portfolio && portfolio.totalInvestment && portfolio.totalEquity">
-      <app-cards>
-        <app-display-cards [title]="portfolio.totalEquity > portfolio.totalInvestment ? 'Profit': 'Loss'"
-                           [data]="(portfolio.totalInvestment - portfolio.totalEquity) | currency"
-                           [ngClass]="portfolio.totalEquity > portfolio.totalInvestment ? 'text-success' : 'text-danger'">
-        </app-display-cards>
-      </app-cards>
+    <div class="col-sm-3"  *ngIf="annualDividend">
+        <app-doughnut-chart [title]="'Dividend'" [data]="annualDividend">
+        </app-doughnut-chart>
     </div>
 
-    <div class="col-sm-6 mt-5"  *ngIf="portfolio && portfolio.annualDividend">
-      <app-cards>
-        <app-display-cards [title]="'Yearly Dividend'"
-                           [data]="portfolio.annualDividend | currency"
-                           [ngClass]="'text-success'">
-        </app-display-cards>
-      </app-cards>
+    <div class="col-sm-3"  *ngIf="position">
+        <app-doughnut-chart [data]="position"
+                           [title]="portfolio.portfolio > portfolio.investment ? 'Profit': 'Loss'">
+        </app-doughnut-chart>
     </div>
 
-    <div class="col-sm-3 mt-5"  *ngIf="portfolio && portfolio.percentChange">
-      <app-cards>
-        <app-display-cards [title]="portfolio.totalEquity > portfolio.totalInvestment ? 'Profit': 'Loss'"
-                           [data]=" portfolio.percentChange"
-                           [ngClass]="portfolio.totalEquity > portfolio.totalInvestment ? 'text-success' : 'text-danger'">
-        </app-display-cards>
-      </app-cards>
-    </div>
-
-    <div class="col-sm-3 mt-5"  *ngIf="stocks">
-      <app-cards>
-        <app-display-cards [title]="'Stocks'"
-                           [data]="stocks | number"
-                           [ngClass]="'text-success'">
-        </app-display-cards>
-      </app-cards>
-    </div>
   </div>
 </div>

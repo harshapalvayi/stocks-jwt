@@ -1,12 +1,15 @@
 export interface Chart {
-  labels: string[];
+  labels?: string[];
+  statusColor?: string;
+  titleColor?: string;
   datasets: Dataset[];
 }
 
 export interface Dataset {
   label?: string;
-  backgroundColor?: string;
-  borderColor?: string;
-  fill?: boolean;
+  backgroundColor: any;
+  hoverBackgroundColor?: any;
+  borderColor?: any;
+  notation?: string;
   data: number[];
 }

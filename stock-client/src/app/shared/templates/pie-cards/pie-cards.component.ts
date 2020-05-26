@@ -9,14 +9,11 @@ import {Chart} from '@models/chart';
 export class PieCardsComponent implements OnInit {
 
   @Input() data: Chart;
-  public options: any;
+  options: any;
   constructor() {
     this.options = {
-      responsive: true,
-      innerRadius: 60,
-      indexLabelFontSize: 17,
       legend: {
-        display: false
+        position: 'left'
       }
     };
   }

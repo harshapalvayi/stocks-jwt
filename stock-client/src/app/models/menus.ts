@@ -29,4 +29,25 @@ export const MenuTabs = {
   ]
 };
 
+export const StockHeaders = {
+  headers: [
+    { field: 'ticker', header: 'Ticker', width: '10%'},
+    { field: 'name', header: 'Stock', width: '30%'},
+    { field: 'price', header: 'Price', width: '10%'},
+    { field: 'percentChange', header: 'Change', width: '10%', icon: true},
+    { field: 'buy', header: 'Buy', width: '10%' },
+    { field: 'shares', header: 'Shares', width: '10%' },
+    { field: '', header: 'Actions',  width: '15%' }
+  ]
+};
 
+export const OptionsHeaders = {
+  headers: [
+    { field: 'ticker', header: 'Ticker', width: '10%'},
+    { field: 'name', header: 'Stock', width: '30%'},
+    { field: 'price', header: 'Price', width: '10%'},
+    { field: 'buy', header: 'Buy', width: '10%' },
+    { field: 'contracts', header: 'Contract', width: '15%' },
+    { field: '', header: 'Actions',  width: '15%' }
+  ]
+};

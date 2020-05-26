@@ -1,28 +1,40 @@
 import { Injectable } from '@angular/core';
-import {Portfolio, Share, ShareList, StockHistory, StockInfo} from '@models/stock';
+import {Share, ShareList, StockInfo} from '@models/stock';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {HttpClient} from '@angular/common/http';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {HttpClient} from '@angular/common/http';
 import {Dates} from '@models/dates';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SharesService {
+
   private baseUrl = 'api/shares';
   private addStock: FormGroup;
+  private tradeStock: FormGroup;
 
   constructor(private fb: FormBuilder,
               private http: HttpClient) { }
 
-  create(): FormGroup {
+  createAddStock(): FormGroup {
     this.addStock  = this.fb.group({
       ticker: ['', Validators.required],
       buy: [null, Validators.required],
-      shares: [null, Validators.required]
+      shares: [null, [Validators.required, Validators.min(1)]],
+      brokerage: [null, Validators.required]
     });
     return this.addStock;
+  }
+
+  createTradeStock(): FormGroup {
+    this.tradeStock  = this.fb.group({
+      buy: [null],
+      sell: [null],
+      shares: [null, Validators.required]
+    });
+    return this.tradeStock;
   }
 
   getShares(userId: number): Observable<StockInfo[]> {
@@ -36,17 +48,13 @@ export class SharesService {
   }
 
   save(shareData: Share): Observable<Share> {
-    return this.http.post<Share>(`${this.baseUrl}/${shareData.getUserInfo().userid}`, shareData).pipe(
+    return this.http.post<Share>(`${this.baseUrl}/${shareData.userInfo.userid}`, shareData).pipe(
       map(data => data));
   }
 
-  edit(shareData: Share): Observable<Share> {
-    return this.http.put<Share>(`${this.baseUrl}/${shareData.getUserInfo().userid}`, shareData).pipe(
-      map(data => data));
-  }
-
-  deleteStock(id: number) {
-    return this.http.delete<any>(`${this.baseUrl}/${id}`);
+  trade(shareData: Share): Observable<Share> {
+     return this.http.put<Share>(`${this.baseUrl}/trade/${shareData.userInfo.userid}`, shareData).pipe(
+        map(data => data));
   }
 
   getMonthlyDividendShares(data: {userid: number, date: Dates}): Observable<StockInfo[]> {
@@ -60,13 +68,4 @@ export class SharesService {
   getTopMovers(userId): Observable<StockInfo[]> {
     return this.http.get<StockInfo[]>(`${this.baseUrl}/topMovers/${userId}`);
   }
-
-  getStockHistory(id: number): Observable<StockHistory[]> {
-    return this.http.get<StockHistory[]>(`${this.baseUrl}/history/${id}`);
-  }
-
-  getPortfolio(id: number): Observable<Portfolio> {
-    return this.http.get<Portfolio>(`${this.baseUrl}/portfolio/${id}`);
-  }
-
 }

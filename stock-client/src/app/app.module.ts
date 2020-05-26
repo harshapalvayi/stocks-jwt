@@ -30,6 +30,7 @@ import {HttpInterceptors} from '@shared/services/http-interceptors/http-intercep
       multi: true
     }
   ],
+  exports: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

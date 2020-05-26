@@ -1,21 +1,20 @@
 package com.stock.stock.controller;
 
-import com.stock.stock.dto.PortfolioDto;
 import com.stock.stock.dto.ShareListDto;
 import com.stock.stock.dto.StockHistoryInfoDto;
 import com.stock.stock.dto.StockInfoDto;
+import com.stock.stock.model.AccountType;
+import com.stock.stock.model.BrokerageAccounts;
 import com.stock.stock.model.MessageResponse;
 import com.stock.stock.model.Share;
 import com.stock.stock.repository.ShareRepository;
+import com.stock.stock.service.AccountService;
 import com.stock.stock.service.ShareService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import yahoofinance.Stock;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.ParseException;
 import java.util.List;
 
@@ -28,10 +27,14 @@ public class ShareController {
     public ShareService shareService;
 
     @Autowired
+    public AccountService accountService;
+
+    @Autowired
     public ShareRepository shareRepository;
 
     @GetMapping(value = "/shares/{userId}")
     public List<StockInfoDto> getAllShares(@PathVariable long userId) {
+
         return  this.shareService.getStockInfoDtos(userId);
     }
 
@@ -39,30 +42,19 @@ public class ShareController {
     public ResponseEntity<?> postStocks(@PathVariable(value = "userId") long userId,
                                         @RequestBody Share shareData) {
         try {
-            shareService.saveUserStock(shareData, userId);
-            return ResponseEntity.ok(MessageResponse.success());
+                shareService.saveUserStock(shareData, userId);
+                return ResponseEntity.ok(MessageResponse.success());
         }
         catch(Exception e) {
             return ResponseEntity.badRequest().body(MessageResponse.failure(e));
         }
     }
 
-    @PutMapping(value = "/shares/{userId}")
-    public ResponseEntity<?> editStocks(@PathVariable(value = "userId") long userId,
+    @PutMapping(value = "/shares/trade/{userId}")
+    public ResponseEntity<?> tradeStocks(@PathVariable(value = "userId") long userId,
                                         @RequestBody Share stockData) {
         try {
-            shareService.editStock(stockData, userId);
-            return ResponseEntity.ok(MessageResponse.success());
-        }
-        catch(Exception e) {
-            return ResponseEntity.badRequest().body(MessageResponse.failure(e));
-        }
-    }
-
-    @DeleteMapping(value = "/shares/{shareId}")
-    public ResponseEntity<?> deleteStock(@PathVariable(value = "shareId") long shareId) {
-        try {
-            shareService.deleteShare(shareId);
+            shareService.tradeStock(stockData, userId);
             return ResponseEntity.ok(MessageResponse.success());
         }
         catch(Exception e) {
@@ -80,11 +72,6 @@ public class ShareController {
         catch(Exception e) {
             return ResponseEntity.badRequest().body(MessageResponse.failure(e));
         }
-    }
-
-    @GetMapping(value = "/shares/portfolio/{userId}")
-    public PortfolioDto getPortfolio(@PathVariable(value = "userId")  long userId) throws ParseException {
-        return shareService.getPortfolio(userId);
     }
 
     @GetMapping(value = "/shares/dividend/{userId}/{startDate}/{endDate}")

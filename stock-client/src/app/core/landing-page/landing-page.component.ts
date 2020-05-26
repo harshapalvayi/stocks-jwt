@@ -11,7 +11,6 @@ import {UserToken} from '@models/User';
 export class LandingPageComponent implements OnInit {
 
   public user: UserToken;
-
   constructor(private userService: UserService,
               private tokenStorage: TokenStorageService) { }
 
@@ -20,5 +19,4 @@ export class LandingPageComponent implements OnInit {
       this.user = this.tokenStorage.getUserDetails();
     }
   }
-
 }

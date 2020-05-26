@@ -24,5 +24,6 @@ export class UserService {
   logout() {
     this.tokenService.setSharedUserProfile(null);
     window.sessionStorage.clear();
+    window.localStorage.clear();
   }
 }

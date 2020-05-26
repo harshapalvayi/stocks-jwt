@@ -4,16 +4,21 @@ import java.math.BigDecimal;
 
 public class ShareListDto {
     public String ticker;
-    public Integer shares;
+    public BigDecimal shares;
     public BigDecimal buy;
+    public BigDecimal sell;
+    public Integer account;
 
     public ShareListDto() {
     }
 
-    public ShareListDto(String ticker, Integer shares, BigDecimal buy) {
+    public ShareListDto(String ticker, BigDecimal shares, BigDecimal buy,
+                        BigDecimal sell, Integer account) {
         this.ticker = ticker;
         this.shares = shares;
         this.buy = buy;
+        this.sell = sell;
+        this.account = account;
     }
 
     public String getTicker() {
@@ -24,11 +29,11 @@ public class ShareListDto {
         this.ticker = ticker;
     }
 
-    public Integer getShares() {
+    public BigDecimal getShares() {
         return shares;
     }
 
-    public void setShares(Integer shares) {
+    public void setShares(BigDecimal shares) {
         this.shares = shares;
     }
 
@@ -38,5 +43,21 @@ public class ShareListDto {
 
     public void setBuy(BigDecimal buy) {
         this.buy = buy;
+    }
+
+    public BigDecimal getSell() {
+        return sell;
+    }
+
+    public void setSell(BigDecimal sell) {
+        this.sell = sell;
+    }
+
+    public Integer getAccount() {
+        return account;
+    }
+
+    public void setAccount(Integer account) {
+        this.account = account;
     }
 }

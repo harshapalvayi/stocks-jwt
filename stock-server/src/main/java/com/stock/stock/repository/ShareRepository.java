@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public interface ShareRepository  extends CrudRepository<Share, Integer> {
 
-    @Query(value = "SELECT * FROM Share WHERE userid = :userid", nativeQuery = true)
+    @Query(value = "SELECT * FROM Share WHERE userid = :userid and holding = true", nativeQuery = true)
     List<Share> findByUserId(long userid);
 
     @Query(value = "SELECT * FROM Share WHERE ticker = :ticker", nativeQuery = true)
@@ -23,7 +23,7 @@ public interface ShareRepository  extends CrudRepository<Share, Integer> {
     @Query(value = "SELECT * FROM Share WHERE shareid = :shareid", nativeQuery = true)
     Share findByShareId(long shareid);
 
-    boolean existsAllByTicker(String ticker);
+    boolean existsByTicker(String ticker);
 
     @Query(value = " SELECT * FROM Share s WHERE s.paydate BETWEEN :startDate AND :endDate"
             , nativeQuery = true)

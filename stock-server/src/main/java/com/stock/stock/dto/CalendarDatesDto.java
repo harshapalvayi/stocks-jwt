@@ -3,6 +3,7 @@ package com.stock.stock.dto;
 import java.util.Date;
 
 public class CalendarDatesDto {
+
     Date start;
     Date end;
 

@@ -28,9 +28,9 @@ export class RegisterComponent implements OnInit {
 
   createRegistrationForm() {
     this.signUpForm = this.fb.group({
-      username: [null, Validators.required],
-      password: [null, Validators.required],
-      email: [null, Validators.required]
+      username: [null, [Validators.required, Validators.minLength(4)]],
+      password: [null, [Validators.required, Validators.minLength(4)]],
+      email: [null, [Validators.required, Validators.email]]
     });
   }
 
@@ -46,8 +46,7 @@ export class RegisterComponent implements OnInit {
           this.router.navigate(['/app-landing-page']);
           this.isRegistered = true;
         },
-        error => {
-          console.log(error);
+        () => {
           this.isRegistered = false;
         }
       );

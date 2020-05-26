@@ -2,7 +2,6 @@ package com.stock.stock.dto;
 
 import yahoofinance.histquotes.HistoricalQuote;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 public class StockHistoryInfoDto {
