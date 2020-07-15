@@ -6,7 +6,7 @@ import {FormBuilder, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DividendsComponent} from './dividends/dividends.component';
 import {PrimengModule} from '@shared/primeng.module';
 import {TemplateModule} from '@shared/templates/template.module';
-
+import {YearlyDividendsComponent} from '@features/reports/yearly-dividends/yearly-dividends.component';
 
 @NgModule({
   imports: [
@@ -17,7 +17,7 @@ import {TemplateModule} from '@shared/templates/template.module';
     ReactiveFormsModule,
     ReportsRoutingModule
   ],
-  declarations: [ReportsComponent, DividendsComponent],
+  declarations: [ReportsComponent, DividendsComponent, YearlyDividendsComponent],
   providers: [FormBuilder],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

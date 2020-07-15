@@ -13,7 +13,7 @@ export class ExcelService {
   }
 
   public static checkHeaders(headers) {
-    const defaultHeaders = ['Buy', 'Shares', 'Ticker', 'Account'];
+    const defaultHeaders = ['Buy', 'Shares', 'Ticker', 'Account', 'Trade'];
     const sortedHeaders = defaultHeaders.sort();
     return headers && JSON.stringify(defaultHeaders) === JSON.stringify(sortedHeaders);
   }
@@ -25,8 +25,9 @@ export class ExcelService {
         const column: Share = new Share();
         column.ticker = record.Ticker;
         column.shares = record.Shares;
-        column.buy =    record.Buy;
+        column.buyPrice = record.Buy;
         column.account = record.Account;
+        column.tradeDate = record.Trade;
         excelRecords.push(column);
       });
     }

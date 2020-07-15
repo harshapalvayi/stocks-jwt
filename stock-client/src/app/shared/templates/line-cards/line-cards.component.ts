@@ -22,6 +22,12 @@ export class LineCardsComponent implements OnInit, OnChanges {
 
   defaultChartOptions() {
     this.options = {
+      elements: {
+        line: {
+          borderJoinStyle: 'round',
+          tension: 0.5
+        }
+      },
       responsive: true,
       scales: {
         xAxes: [

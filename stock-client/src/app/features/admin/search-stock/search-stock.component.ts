@@ -27,7 +27,9 @@ export class SearchStockComponent implements OnInit {
 
   submit(ticker) {
     if (ticker) {
-      this.stockService.getStock(this.userInfo.id, ticker).subscribe(stock => this.stockData = stock);
+      this.stockService.getStock(this.userInfo.id, ticker).subscribe(stock => {
+        this.stockData = stock;
+      });
     }
   }
 

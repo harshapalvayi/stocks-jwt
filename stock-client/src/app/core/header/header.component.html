@@ -4,6 +4,8 @@
 
     <ul class="navbar-nav">
       <li><a *ngIf="userService.isUserLoggedIn()" routerLink="/app-dashboard" class="nav-link">DashBoard</a></li>
+      <li><a *ngIf="userService.isUserLoggedIn()" routerLink="/app-stocks" class="nav-link">Stocks</a></li>
+      <li><a *ngIf="userService.isUserLoggedIn()" routerLink="/app-options" class="nav-link">Options</a></li>
       <li><a *ngIf="userService.isUserLoggedIn()" routerLink="/app-reports"  class="nav-link"> Reports </a></li>
       <li><a *ngIf="userService.isUserLoggedIn()" routerLink="/app-admin"  class="nav-link"> Admin </a></li>
     </ul>

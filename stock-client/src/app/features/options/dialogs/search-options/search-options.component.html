@@ -1,0 +1,78 @@
+
+
+<p-dialog [(visible)]="showFlag" [appendTo]="'body'"
+          styleClass="my-dialog">
+
+  <p-header>
+    <span class="text-center font-weight-bold text-dark mb-2">Search Options</span>
+  </p-header>
+
+  <div [hidden]="spinner">
+    <form [formGroup]="searchOptions" (ngSubmit)="onSubmit()">
+      <div class="d-flex flex-row align-items-center justify-content-center">
+        <div class="text-center">
+          <label><span class="font-weight-bold field">Ticker</span> {{ticker}}</label>
+        </div>
+        <div class="mx-5">
+          <p-selectButton [options]="types" formControlName="optionType"
+                          (onChange)="onSelectType()"></p-selectButton>
+        </div>
+        <div class="mx-5">
+          <p-dropdown [options]="expirationDates" formControlName="expire"
+                      [disabled]="searchOptions.get('optionType').value === null"
+                      (onChange)="onSelectExpiry()"></p-dropdown>
+        </div>
+      </div>
+
+      <div class="container text-center">
+        <div *ngIf="searchOptions.get('optionType').value === null" class="m-5">
+          <span>Select an option</span>
+        </div>
+      </div>
+
+      <div class="container mx-2">
+
+        <div class="d-flex flex-row flex-wrap justify-content-start" [hidden]="innerSpinner">
+            <div *ngFor="let call of calls"
+                 [hidden]="!(searchOptions.get('optionType').value === 'call') || innerSpinner">
+              <label>
+                <input *ngIf="call" type="number" formControlName="strike" [value]="call.strike" [hidden]="true">
+              </label>
+              <button pButton type="button" [label]="call.strike.toString() | currency"
+                      class="m-2 ui-button-rounded"
+                      [ngClass]="{'ui-button-primary' : call.selected, 'ui-button-secondary': !call.selected}"
+                      (click)="onSelectOption(call)">
+              </button>
+            </div>
+
+            <div *ngFor="let put of puts"
+                 [hidden]="!(searchOptions.get('optionType').value === 'put') || innerSpinner">
+              <label>
+                <input *ngIf="put" type="number" formControlName="strike" [value]="put.strike" [hidden]="true">
+              </label>
+              <button pButton type="button" [label]="put.strike.toString() | currency"
+                        class="m-2 ui-button-rounded"
+                        [ngClass]="{'ui-button-primary' : put.selected, 'ui-button-secondary': !put.selected}"
+                        (click)="onSelectOption(put)">
+                </button>
+            </div>
+          </div>
+
+        <div class="text-center m-3">
+          <app-loader [style]="{width: '75px'}"
+                      [hidden]="innerSpinner === false"></app-loader>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-center mt-3">
+        <button pButton type="button" label="Submit" class="ml-2 ui-button-rounded ui-button-success"
+                (click)="onSubmit()" [disabled]="searchOptions.invalid" ></button>
+      </div>
+    </form>
+
+  </div>
+
+  <div class="text-center m-3">
+    <app-loader [style]="{width: '75px'}" [hidden]="spinner === false"></app-loader>
+  </div>
+</p-dialog>

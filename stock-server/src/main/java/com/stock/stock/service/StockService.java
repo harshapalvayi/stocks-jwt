@@ -7,7 +7,8 @@ import java.io.IOException;
 import java.util.Calendar;
 
 @Service
-public class StockService {
+public class
+StockService {
 
     public yahoofinance.Stock getYahooStockData(String quote) {
         try {
@@ -26,4 +27,6 @@ public class StockService {
             return new yahoofinance.Stock(quote);
         }
     }
+
+
 }

@@ -1,22 +1,38 @@
 package com.stock.stock.dto;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class PortfolioDto {
+    private long userId;
     private BigDecimal investment;
     private BigDecimal portfolio;
     private BigDecimal annualDividend;
     private BigDecimal percentChange;
+    private BigDecimal position;
+    private Date tradeDate;
 
     public PortfolioDto() {
     }
 
-    public PortfolioDto(BigDecimal investment, BigDecimal portfolio, BigDecimal annualDividend,
-                        BigDecimal percent) {
+    public PortfolioDto(long userId, BigDecimal investment, BigDecimal portfolio,
+                        BigDecimal annualDividend, BigDecimal percent,
+                        BigDecimal position, Date tradeDate) {
+        this.userId = userId;
         this.investment = investment;
         this.portfolio = portfolio;
         this.annualDividend = annualDividend;
         this.percentChange = percent;
+        this.position = position;
+        this.tradeDate = tradeDate;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public BigDecimal getInvestment() {
@@ -49,5 +65,21 @@ public class PortfolioDto {
 
     public void setPercentChange(BigDecimal percentChange) {
         this.percentChange = percentChange;
+    }
+
+    public BigDecimal getPosition() {
+        return position;
+    }
+
+    public void setPosition(BigDecimal position) {
+        this.position = position;
+    }
+
+    public Date getTradeDate() {
+        return tradeDate;
+    }
+
+    public void setTradeDate(Date tradeDate) {
+        this.tradeDate = tradeDate;
     }
 }

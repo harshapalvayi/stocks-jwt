@@ -5,12 +5,13 @@ import {StockInfo} from '@models/stock';
 import {UserService} from '@shared/services/user/user.service';
 import {DateService} from '@shared/services/date/date.service';
 import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
-import {MenuTabs as menus, Tabs} from '@models/menus';
+import {MenuTabs as menus, ReportTabs} from '@models/menus';
 import {ChartService} from '@shared/services/chart/chart.service';
 import {Dates} from '@models/dates';
 import {forkJoin, Observable} from 'rxjs';
 import {SharesService} from '@shared/services/shares/shares.service';
 import {UtilService} from '@shared/services/util/util.service';
+import {MenuItem} from 'primeng';
 
 @Component({
   selector: 'app-reports',
@@ -19,17 +20,17 @@ import {UtilService} from '@shared/services/util/util.service';
 })
 export class ReportsComponent implements OnInit {
 
-  public tabs: Tabs;
-  public selected = Tabs;
-  public costVsEquity: Chart;
-  public priceVsBuy: Chart;
-  public dividends: Chart;
   public pieData: Chart;
+  public items: MenuItem[];
+  public dividends: Chart;
+  public priceVsBuy: Chart;
+  public costVsEquity: Chart;
   public userInfo: UserToken;
-  public monthlyDividends: StockInfo[];
-  public allDividends: StockInfo[];
+  public selected = ReportTabs;
+  public activeItem: MenuItem;
   public topMovers: StockInfo[];
-  public items: ({ label: string; value: Tabs, id: number })[];
+  public allDividends: StockInfo[];
+  public monthlyDividends: StockInfo[];
   public loader$: Observable<boolean> = this.utilService.getLoader();
 
   constructor(private dateService: DateService,
@@ -50,49 +51,28 @@ export class ReportsComponent implements OnInit {
     }
   }
 
-  public tabChange(id) {
-    if (id) {
-      switch (id.index) {
-        case 0:
-          this.tabs = this.selected.TOTAL_PORTFOLIO;
-          break;
-        case 1:
-          this.tabs = this.selected.PRICE_BUY;
-          break;
-        case 2:
-          this.tabs = this.selected.COST_EQUITY;
-          break;
-        case 3:
-          this.tabs = this.selected.DIVIDEND;
-          break;
-        case 4:
-          this.tabs = this.selected.MONTHLY_DIVIDEND;
-          break;
-        case 5:
-          this.tabs = this.selected.YEARLY_DIVIDEND;
-          break;
-        case 6:
-          this.tabs = this.selected.TOP_MOVERS;
-          break;
-      }
+  public tabChange(tab) {
+    if (tab && tab.activeItem) {
+      this.activeItem = tab.activeItem;
     }
   }
 
   buildReportData() {
     const { reportTabs } = menus;
     this.items = reportTabs;
-    this.tabs = this.selected.TOTAL_PORTFOLIO;
+    this.activeItem = this.items[0];
     const date  = this.dateService.getMonthDates();
-    const data: {userid: number, date: Dates} = {
-      userid: this.userInfo.id, date
+    const data: {user_id: number, date: Dates} = {
+      user_id: this.userInfo.id, date
     };
+
     this.utilService.showSpinner();
 
     forkJoin([
-      this.shareService.getShares(data.userid),
+      this.shareService.getShares(data.user_id),
       this.shareService.getMonthlyDividendShares(data),
-      this.shareService.getAllDividendShares(data.userid),
-      this.shareService.getTopMovers(data.userid)
+      this.shareService.getAllDividendShares(data.user_id),
+      this.shareService.getTopMovers(data.user_id)
     ]).subscribe(([shares, monthly, yearly, topMovers]) => {
       this.priceVsBuy = this.chartService.buildPriceVsBuyChart(shares);
       this.costVsEquity = this.chartService.buildCostVsEquityChart(shares);

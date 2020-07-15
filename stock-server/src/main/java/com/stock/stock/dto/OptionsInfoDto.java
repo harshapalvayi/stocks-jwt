@@ -1,33 +1,40 @@
 package com.stock.stock.dto;
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class OptionsInfoDto {
-    private long userid;
-    private long optionid;
+    private long userId;
+    private long optionId;
     private String ticker;
     private String name;
-    private BigDecimal price;
-    private BigDecimal contracts;
-    private BigDecimal buy;
+    private Date expire;
+    private Date tradeDate;
     public Integer account;
+    private String optionType;
+    private BigDecimal contracts;
+    private String stockExchange;
+    private BigDecimal buyPrice;
+    private BigDecimal sellPrice;
+    private BigDecimal optionPrice;
+    private BigDecimal strikePrice;
 
     public OptionsInfoDto() {
     }
 
-    public long getUserid() {
-        return userid;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setUserid(long userid) {
-        this.userid = userid;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
-    public long getOptionid() {
-        return optionid;
+    public long getOptionId() {
+        return optionId;
     }
 
-    public void setOptionid(long optionid) {
-        this.optionid = optionid;
+    public void setOptionId(long optionId) {
+        this.optionId = optionId;
     }
 
     public String getTicker() {
@@ -46,12 +53,12 @@ public class OptionsInfoDto {
         this.name = name;
     }
 
-    public BigDecimal getPrice() {
-        return price;
+    public BigDecimal getOptionPrice() {
+        return optionPrice;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setOptionPrice(BigDecimal optionPrice) {
+        this.optionPrice = optionPrice;
     }
 
     public BigDecimal getContracts() {
@@ -62,12 +69,20 @@ public class OptionsInfoDto {
         this.contracts = contracts;
     }
 
-    public BigDecimal getBuy() {
-        return buy;
+    public BigDecimal getSellPrice() {
+        return sellPrice;
     }
 
-    public void setBuy(BigDecimal buy) {
-        this.buy = buy;
+    public void setSellPrice(BigDecimal sellPrice) {
+        this.sellPrice = sellPrice;
+    }
+
+    public BigDecimal getBuyPrice() {
+        return buyPrice;
+    }
+
+    public void setBuyPrice(BigDecimal buyPrice) {
+        this.buyPrice = buyPrice;
     }
 
     public Integer getAccount() {
@@ -76,5 +91,45 @@ public class OptionsInfoDto {
 
     public void setAccount(Integer account) {
         this.account = account;
+    }
+
+    public String getStockExchange() {
+        return stockExchange;
+    }
+
+    public void setStockExchange(String stockExchange) {
+        this.stockExchange = stockExchange;
+    }
+
+    public BigDecimal getStrikePrice() {
+        return strikePrice;
+    }
+
+    public void setStrikePrice(BigDecimal strikePrice) {
+        this.strikePrice = strikePrice;
+    }
+
+    public String getOptionType() {
+        return optionType;
+    }
+
+    public void setOptionType(String optionType) {
+        this.optionType = optionType;
+    }
+
+    public Date getExpire() {
+        return expire;
+    }
+
+    public void setExpire(Date expire) {
+        this.expire = expire;
+    }
+
+    public Date getTradeDate() {
+        return tradeDate;
+    }
+
+    public void setTradeDate(Date tradeDate) {
+        this.tradeDate = tradeDate;
     }
 }

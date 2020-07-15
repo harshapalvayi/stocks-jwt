@@ -1,7 +1,9 @@
-
+<app-cards>
   <div class="text-center">
-    <h2> <span class="font-weight-lighter text-dark">{{title}} : </span>
-      <span class="font-weight-bold ml-2">{{data}} </span>
+    <h2> <span class="title-style font-weight-bold">{{title}} : </span>
+      <span class="ml-2" [ngStyle]="styles">{{data}} </span>
     </h2>
   </div>
+</app-cards>
+
 

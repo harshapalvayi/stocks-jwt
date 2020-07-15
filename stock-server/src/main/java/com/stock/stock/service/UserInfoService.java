@@ -1,6 +1,6 @@
 package com.stock.stock.service;
 
-import com.stock.stock.model.Users;
+import com.stock.stock.entity.Users;
 import com.stock.stock.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

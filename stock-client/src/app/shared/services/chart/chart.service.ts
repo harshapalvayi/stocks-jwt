@@ -171,10 +171,20 @@ export class ChartService {
   }
 
   public generateChartProperties(chart, chartData, widthDin, heightDin) {
+
     const context = chart.chart.ctx;
+    let progressLabel;
     const xCenter = (chart.chart.width / widthDin);
     const yCenter = chart.chart.height / heightDin;
-    const progressLabel = `${chartData.datasets[0].data[0]}${chartData.datasets[0].notation}`;
+    if (chartData && chartData.datasets[0]) {
+      if (chartData.datasets[0].data[0] && chartData.datasets[0].notation) {
+         progressLabel = `${chartData.datasets[0].data[0]}${chartData.datasets[0].notation}`;
+      } else if (chartData.datasets[0].data[0]) {
+        progressLabel = `${chartData.datasets[0].data[0]}`;
+      } else {
+        progressLabel = 0;
+      }
+    }
     context.textAlign = 'center';
     context.fontStyle = 'bold';
     context.font = '20px Helvetica';

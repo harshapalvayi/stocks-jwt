@@ -31,7 +31,8 @@ public class StockController {
                 payDate,
                 exDate,
                 stock.getQuote().getYearHigh(),
-                stock.getQuote().getYearLow());
+                stock.getQuote().getYearLow(),
+                stock.getStockExchange());
     }
 
 }

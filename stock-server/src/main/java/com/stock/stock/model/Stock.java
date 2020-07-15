@@ -20,13 +20,16 @@ public class Stock {
 
     private BigDecimal low;
 
+    private String stockExchange;
+
     public Stock() {
     }
 
     public Stock(String ticker, String stockName,
                  BigDecimal price, BigDecimal dividend,
                  Date paydate, Date exdate,
-                 BigDecimal high, BigDecimal low) {
+                 BigDecimal high, BigDecimal low,
+                 String stockExchange) {
         this.ticker = ticker;
         StockName = stockName;
         this.price = price;
@@ -35,6 +38,7 @@ public class Stock {
         this.exdate = exdate;
         this.high = high;
         this.low = low;
+        this.stockExchange = stockExchange;
     }
 
     public String getTicker() {
@@ -99,5 +103,13 @@ public class Stock {
 
     public void setLow(BigDecimal low) {
         this.low = low;
+    }
+
+    public String getStockExchange() {
+        return stockExchange;
+    }
+
+    public void setStockExchange(String stockExchange) {
+        this.stockExchange = stockExchange;
     }
 }

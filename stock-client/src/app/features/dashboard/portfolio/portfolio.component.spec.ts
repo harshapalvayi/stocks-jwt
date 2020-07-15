@@ -1,7 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PortfolioComponent } from './portfolio.component';
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA} from '@angular/core';
+import {PortfolioService} from '@shared/services/portfolio/portfolio.service';
+import {CoreModule} from '@core/core.module';
+import {RouterTestingModule} from '@angular/router/testing';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {PrimengModule} from '@shared/primeng.module';
 
 describe('PortfolioComponent', () => {
   let component: PortfolioComponent;
@@ -9,8 +14,10 @@ describe('PortfolioComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [CoreModule, RouterTestingModule, HttpClientTestingModule, PrimengModule],
       declarations: [ PortfolioComponent ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      providers: [PortfolioService],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
     });
   }));
 
