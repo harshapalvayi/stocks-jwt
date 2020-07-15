@@ -1,0 +1,95 @@
+
+<p-dialog [(visible)]="showFlag" [appendTo]="'body'"
+          [style]="{width: '700px'}"
+          class="card-layout">
+
+  <p-header>
+    <span class="text-center font-weight-bold text-dark mb-2"> Add Options </span>
+  </p-header>
+
+  <form [formGroup]="addOptions" (ngSubmit)="onSubmitOption()">
+    <div class="d-flex flex-column flex-wrap justify-content-around align-items-center m-auto">
+      <div>
+        <label><b>Ticker</b>
+          <input class="font-weight-bold ml-5" formControlName="ticker" type="text">
+        </label>
+      </div>
+
+      <div>
+        <label><b>Trade Date</b>
+          <p-calendar class= "ml-4"
+                      placeholder="select date"
+                      [appendTo]="'body'"
+                      formControlName="tradeDate">
+          </p-calendar>
+        </label>
+      </div>
+
+      <div>
+        <label><b>Option type</b>
+          <input class="font-weight-bold ml-3"
+                 formControlName="type"
+                 type="number" [min]="0.1">
+        </label>
+      </div>
+
+      <div>
+        <label><b>Call</b>
+          <input class="font-weight-bold ml-c-4"
+                 formControlName="optionPrice"
+                 type="number" [min]="0.1">
+        </label>
+      </div>
+
+      <div>
+        <label><b>Expiry</b>
+          <p-calendar class= "ml-c-4"
+                      placeholder="select date"
+                      [inputStyle]="{'width':'100%'}"
+                      [appendTo]="'body'"
+                      formControlName="expire">
+          </p-calendar>
+        </label>
+      </div>
+
+      <div>
+        <label><b>contracts</b>
+          <input class="font-weight-bold ml-4"
+                 formControlName="contracts"
+                 type="number" [min]="1">
+        </label>
+      </div>
+
+      <div>
+        <label><b>Buy Price</b>
+          <input class="font-weight-bold ml-4"
+                 formControlName="buyPrice"
+                 type="number" [min]="0">
+        </label>
+      </div>
+
+      <div *ngIf="accounts">
+        <label><b>Brokerage</b>
+          <p-dropdown  class="ml-3" [options]="accounts"
+                       [appendTo]="'body'"
+                       formControlName="brokerage"
+                       placeholder="select account">
+          </p-dropdown>
+        </label>
+      </div>
+
+    </div>
+
+    <div class="d-flex justify-content-center mt-3">
+      <button pButton type="button" label="Reset" class="mr-2 ui-button-rounded ui-button-secondary"
+              (click)="resetOption()"></button>
+
+      <button pButton type="button" label="Submit" class="ml-2 ui-button-rounded ui-button-success"
+              (click)="onSubmitOption()" [disabled]="addOptions.invalid" ></button>
+
+      <button pButton type="button" label="Cancel" class="ml-2 ui-button-rounded ui-button-warning"
+              (click)="onCancel()">
+      </button>
+    </div>
+  </form>
+</p-dialog>

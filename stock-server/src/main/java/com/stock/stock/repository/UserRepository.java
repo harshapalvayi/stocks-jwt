@@ -1,13 +1,15 @@
 package com.stock.stock.repository;
 
-import com.stock.stock.model.Users;
+import com.stock.stock.entity.Users;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends CrudRepository<Users, Integer> {
 
-    Users findByUserid(long userid);
+    @Query(value = "SELECT * FROM Users WHERE user_id = :userId", nativeQuery = true)
+    Users findByUserId(long userId);
 
     Users findByUsername(String username);
 

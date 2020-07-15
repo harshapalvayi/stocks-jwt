@@ -1,0 +1,54 @@
+<div class="my-3" *ngIf="shares && shares.length > 0; else showThis">
+  <p-table  [columns]="cols"  [value]="shares"
+            dataKey="symbol" [paginator]="true" [rows]="10">
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th class="text-center" *ngFor="let col of columns"  [pSortableColumn]="col.field"
+            [ngStyle]="{'width': col.width}">
+          {{col.header}}
+          <p-sortIcon [field]="col.field"></p-sortIcon>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-stock let-ri="rowIndex">
+      <tr>
+        <td class="text-center">
+          <a class="text-primary" style="cursor:pointer;"
+             (click)="goToLink(stock.ticker)"> {{stock.ticker}}
+          </a>
+        </td>
+        <td class="text-left">{{getStockName(stock.name)}}</td>
+        <td class="text-center">{{stock.marketPrice | currency}}</td>
+        <td class="text-center" [ngClass]="stock.percentChange > 0 ? 'text-success' : 'text-danger'">
+          {{getPercentage(stock.percentChange)}}
+          <i  *ngIf="stock.percentChange > 0"  class="pi pi-arrow-up"
+              [style]="{'font-size': '20px', 'width': '30px'}"> </i>
+          <i  *ngIf="stock.percentChange < 0"  class="pi pi-arrow-down"
+              [style]="{'font-size': '20px', 'width': '30px'}"> </i>
+        </td>
+        <td class="text-center">{{stock.buyPrice | currency}}</td>
+        <td class="text-center">{{stock.shares}}</td>
+        <td class="text-center">
+          <button pButton type="button" class="ui-button-rounded ui-button-success ml-1"
+                  icon="pi pi-cog" (click)="menu.toggle($event)">
+          </button>
+        </td>
+      </tr>
+      <p-menu #menu [popup]="true" [appendTo]="'body'" [model]="getMenuItems(stock)"></p-menu>
+    </ng-template>
+  </p-table>
+</div>
+
+<ng-template #showThis>
+  <div class="container noDataSection">
+    <div class="d-flex justify-content-center">
+      <h3>Add Stocks To Portfolio</h3>
+    </div>
+  </div>
+</ng-template>
+
+<app-trade-stock (saved)="onTradeStocks()"></app-trade-stock>
+<app-delete-stocks (deleted)="onDeleteStocks()"></app-delete-stocks>
+
+
+

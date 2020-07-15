@@ -15,22 +15,34 @@
 
 <div class="container mt-3" *ngIf="stockData">
   <div class="d-flex flex-column flex-wrap justify-content-around">
-    <div class="text-success">
+    <div class="text-dark">
       <h3>{{stockData.stockName}}</h3>
     </div>
     <div class="mt-2">
       <label><b>Ticker</b></label>
-      <a class="text-primary ml-5" style="cursor:pointer;"
+      <a class="text-primary ml-c-4" style="cursor:pointer;"
          (click)="goToLink(stockData.ticker)"> {{stockData.ticker}}
       </a>
     </div>
     <div>
-      <label for="price"><b>Price</b></label>
-      <span id="price" class="ml-4">{{stockData.price | currency}}</span>
+      <label for="price" class="text-left"><b>Price</b></label>
+      <span id="price" class="text-success ml-5">{{stockData.price | currency}}</span>
     </div>
     <div>
-      <label for="dividend"><b>Dividend</b></label>
-      <span id="dividend" class="ml-3">{{stockData.dividend | currency}}</span>
+      <label for="high" class="text-left"><b>High</b></label>
+      <span id="high" class="text-success ml-5">{{stockData.high | currency}}</span>
+    </div>
+    <div>
+      <label for="low" class="text-left"><b>Low</b></label>
+      <span id="low" class="text-success ml-5">{{stockData.low | currency}} </span>
+    </div>
+    <div *ngIf="stockData.dividend">
+      <label for="dividend" class="text-left"><b>Dividend</b></label>
+      <span id="dividend" class="text-success ml-4">{{stockData.dividend | currency}}</span>
+    </div>
+    <div *ngIf="stockData.payDate">
+      <label for="payDate" class="text-left"><b>Pay date</b></label>
+      <span id="payDate" class="text-success ml-3">{{stockData.payDate | date}}</span>
     </div>
   </div>
 </div>

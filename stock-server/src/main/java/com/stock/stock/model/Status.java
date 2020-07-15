@@ -6,9 +6,8 @@ public enum Status {
     NOT_FOUND,
     INVALID_REQUEST;
 
-    Status() {
+    Status() { }
 
-    }
     public String value() {
         return this.name();
     }

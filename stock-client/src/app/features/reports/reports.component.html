@@ -1,22 +1,21 @@
-<div class="container">
-  <div class="m-5">
-    <p-tabView (onChange)="tabChange($event)">
-      <p-tabPanel [header]="item.label" *ngFor="let item of items; let i = index" [selected]="i == 0">
-        <div class="m-5" [ngSwitch]="tabs" [hidden]="(loader$ | async)">
-          <app-pie-cards class="w-100" *ngSwitchCase="selected.TOTAL_PORTFOLIO" [data]="pieData"></app-pie-cards>
-          <app-bar-cards class="w-100" *ngSwitchCase="selected.PRICE_BUY" [data]="priceVsBuy"></app-bar-cards>
-          <app-bar-cards class="w-100" *ngSwitchCase="selected.COST_EQUITY" [data]="costVsEquity"></app-bar-cards>
-          <app-bar-cards class="w-100" *ngSwitchCase="selected.DIVIDEND" [data]="dividends"></app-bar-cards>
-          <app-dividends class="w-100" *ngSwitchCase="selected.MONTHLY_DIVIDEND"
-                         [dividendType]="'monthly'" [shareInfo]="monthlyDividends"></app-dividends>
-          <app-dividends class="w-100" *ngSwitchCase="selected.YEARLY_DIVIDEND"
-                         [dividendType]="'yearly'" [shareInfo]="allDividends" ></app-dividends>
-          <app-top-movers class="w-100" *ngSwitchCase="selected.TOP_MOVERS" [stocks]="topMovers"></app-top-movers>
-        </div>
-        <div class="m-5 text-center">
-          <app-loader [hidden]="(loader$ | async) === false"></app-loader>
-        </div>
-      </p-tabPanel>
-    </p-tabView>
-  </div>
+<div class="container my-3">
+  <p-tabMenu #tab [model]="items"  [activeItem]="activeItem"
+             (click)="tabChange(tab)"></p-tabMenu>
+</div>
+
+<div class="container" [ngSwitch]="activeItem.title" [hidden]="(loader$ | async)">
+  <app-doughnut-chart class="w-100" *ngSwitchCase="selected.TOTAL_PORTFOLIO"
+                      [title]="'Portfolio'" [data]="pieData" [type]="'default'"></app-doughnut-chart>
+  <app-bar-cards class="w-100" *ngSwitchCase="selected.PRICE_BUY" [data]="priceVsBuy"></app-bar-cards>
+  <app-bar-cards class="w-100" *ngSwitchCase="selected.COST_EQUITY" [data]="costVsEquity"></app-bar-cards>
+  <app-bar-cards class="w-100" *ngSwitchCase="selected.DIVIDEND" [data]="dividends"></app-bar-cards>
+  <app-dividends class="w-100" *ngSwitchCase="selected.MONTHLY_DIVIDEND"
+                 [dividendType]="'monthly'" [shareInfo]="monthlyDividends"></app-dividends>
+  <app-dividends class="w-100" *ngSwitchCase="selected.YEARLY_DIVIDEND"
+                 [dividendType]="'yearly'" [shareInfo]="allDividends" ></app-dividends>
+  <app-top-movers class="w-100" *ngSwitchCase="selected.TOP_MOVERS" [stocks]="topMovers"></app-top-movers>
+</div>
+
+<div class="m-5 text-center">
+  <app-loader [hidden]="(loader$ | async) === false"></app-loader>
 </div>

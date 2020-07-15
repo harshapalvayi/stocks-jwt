@@ -1,0 +1,96 @@
+
+<p-dialog [(visible)]="showFlag" [appendTo]="'body'"
+          [style]="{width: '700px'}"
+          class="card-layout">
+
+  <p-header>
+    <span class="text-center font-weight-bold text-success mb-2" *ngIf="tradeType === 'actionPrice'"> Buy Stocks </span>
+    <span class="text-center font-weight-bold text-danger mb-2" *ngIf="tradeType === 'sell'"> Sell Stocks </span>
+  </p-header>
+
+  <form *ngIf="tradeStock" [formGroup]="tradeStock" (ngSubmit)="onTradeStock()">
+    <div class="d-flex flex-column flex-wrap justify-content-around align-items-center m-auto">
+      <div *ngIf="stock && stock.name">
+        <label>
+            <span class="font-weight-bold text-center" [ngClass]="tradeType === 'actionPrice' ? 'text-success' : 'text-danger'">
+              {{stock.name}}</span>
+        </label>
+      </div>
+
+      <div>
+        <label><b>Shares</b>
+          <input class="font-weight-bold ml-5" formControlName="shares" type="number" [min]="1">
+        </label>
+      </div>
+
+      <div *ngIf="tradeType === 'actionPrice'">
+        <label><b>Buy</b>
+          <input class="font-weight-bold ml-c-4" formControlName="buy" type="number" [min]="1">
+        </label>
+      </div>
+
+      <div *ngIf="tradeType === 'sell'">
+        <label><b>Sell</b>
+          <input class="font-weight-bold ml-c-4" formControlName="sell" type="number" [min]="1">
+        </label>
+      </div>
+
+    </div>
+
+    <div class="d-flex justify-content-center mt-3">
+      <button pButton type="button" label="Reset" class="mr-2 ui-button-rounded ui-button-secondary"
+              (click)="resetStock()"></button>
+
+      <button pButton type="button" label="Submit" class="ml-2 ui-button-rounded ui-button-success"
+              (click)="onTradeStock()" [disabled]="tradeStock.invalid" ></button>
+
+      <button pButton type="button" label="Cancel" class="ml-2 ui-button-rounded ui-button-warning"
+              (click)="onCancel()">
+      </button>
+    </div>
+
+  </form>
+
+</p-dialog>
+
+<p-dialog [(visible)]="showAccountFlag" [appendTo]="'body'"
+          [style]="{width: '700px'}"
+          class="card-layout">
+
+  <p-header>
+    <span class="text-center font-weight-bold text-success mb-2"> Account Type </span>
+  </p-header>
+
+  <form *ngIf="addAccountType" [formGroup]="addAccountType" (ngSubmit)="onSubmitAcctType()">
+    <div class="d-flex flex-column flex-wrap justify-content-around align-items-center m-auto">
+
+      <div *ngIf="stock && stock.name">
+        <label>
+          <span class="font-weight-bold mx-5 text-success">
+              {{stock.name}}
+          </span>
+        </label>
+      </div>
+
+      <div *ngIf="accounts">
+        <label><b>Brokerage</b>
+          <select class="ml-4" style="width: 170px;" formControlName="brokerage">
+            <option *ngFor="let account of accounts" ngValue="{{account.value}}">
+              {{account.label}}
+            </option>
+          </select>
+        </label>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-center mt-3">
+      <button pButton type="button" label="Submit" class="ml-2 ui-button-rounded ui-button-success"
+              (click)="onSubmitAcctType()" [disabled]="addAccountType.invalid" ></button>
+
+      <button pButton type="button" label="Cancel" class="ml-2 ui-button-rounded ui-button-warning"
+              (click)="onCancel()">
+      </button>
+    </div>
+  </form>
+
+</p-dialog>

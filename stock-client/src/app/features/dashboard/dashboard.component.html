@@ -1,55 +1,24 @@
+<div class="container mt-5">
 
-<div class="container mt-5" [hidden]="(loader$ | async)">
-  <div class="float-right mb-3 mx-3">
-    <button pButton type="button" label="Add Stocks"
-            class="ui-button-rounded ui-button-primary"
-              (click)="addStockPopup()">
-    </button>
+  <div [hidden]="(loader$ | async)" *ngIf="shares && shares.length > 0 || options && options.length > 0; else showThis">
+    <app-portfolio [portfolio]="portfolio"
+                   [stocks]="shares"
+                   [portfolioHistory]="portfolioHistory"
+                   [options]="options">
+    </app-portfolio>
   </div>
-  <div class="float-right mb-3 mx-3">
-    <button pButton type="button" label="Add Options"
-            class="ui-button-rounded ui-button-warning"
-            (click)="addOptionsPopup()">
-    </button>
-  </div>
-  <div *ngIf="portfolio && portfolio.portfolio && shares.length == 0"
-       class="float-right  mb-3 mx-3">
-    <button pButton type="button" label="Clear Portfolio"
-            class="ui-button-rounded ui-button-danger"
-            (click)="deletePortfolioPopup()">
-    </button>
-  </div>
-  <app-add-stocks (saved)="onAddStocks()"></app-add-stocks>
-  <app-add-options (saved)="onAddOptions()"></app-add-options>
 
-</div>
-
-<div class="my-3" [hidden]="(loader$ | async)">
-  <app-portfolio [portfolio]="portfolio">
-  </app-portfolio>
-</div>
-
-<div class="container" [hidden]="(loader$ | async)">
-  <app-cards>
-    <div class="mb-5" *ngIf="shares && shares.length > 0; else showThis">
-      <app-user-stock-details (action)="onActionPerformed()" [shares]="shares">
-      </app-user-stock-details>
-    </div>
-
-    <div class="mb-5" *ngIf="options && options.length > 0">
-        <app-user-options-details (action)="onActionPerformed()" [options]="options">
-        </app-user-options-details>
-    </div>
-  </app-cards>
 </div>
 
 <ng-template #showThis>
-  <div class="container text-center">
-    <h3>Add Stocks To Portfolio</h3>
+  <div class="noDataSection" [hidden]="(loader$ | async)">
+    <div class="d-flex align-items-center justify-content-center">
+      <h3>Add Stocks/Options To Portfolio</h3>
+    </div>
   </div>
 </ng-template>
 
-<div class="container mt-5">
+<div class="container">
   <div class="text-center">
     <app-loader [hidden]="(loader$ | async) === false"></app-loader>
   </div>

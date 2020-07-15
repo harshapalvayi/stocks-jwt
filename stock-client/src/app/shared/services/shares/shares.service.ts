@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Share, ShareList, StockInfo} from '@models/stock';
+import {Share, ShareList, StockHistoryInfo, StockInfo} from '@models/stock';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -9,6 +9,7 @@ import {Dates} from '@models/dates';
 @Injectable({
   providedIn: 'root'
 })
+
 export class SharesService {
 
   private baseUrl = 'api/shares';
@@ -23,6 +24,7 @@ export class SharesService {
       ticker: ['', Validators.required],
       buy: [null, Validators.required],
       shares: [null, [Validators.required, Validators.min(1)]],
+      tradeDate: [null],
       brokerage: [null, Validators.required]
     });
     return this.addStock;
@@ -42,6 +44,11 @@ export class SharesService {
       map(data => data));
   }
 
+  getShareHistory(userId: number): Observable<StockHistoryInfo[]> {
+    return this.http.get<StockHistoryInfo[]>(`${this.baseUrl}/history/${userId}`).pipe(
+        map(data => data));
+  }
+
   uploadStockFile(shareLists: ShareList[], userId): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/upload/${userId}`, shareLists).pipe(
       map(response => response));
@@ -52,13 +59,18 @@ export class SharesService {
       map(data => data));
   }
 
+  delete(shareId, userId): Observable<any> {
+    return this.http.delete<Share>(`${this.baseUrl}/${shareId}/${userId}`).pipe(
+        map(data => data));
+  }
+
   trade(shareData: Share): Observable<Share> {
      return this.http.put<Share>(`${this.baseUrl}/trade/${shareData.userInfo.userid}`, shareData).pipe(
         map(data => data));
   }
 
-  getMonthlyDividendShares(data: {userid: number, date: Dates}): Observable<StockInfo[]> {
-    return this.http.get<StockInfo[]>(`${this.baseUrl}/dividend/${data.userid}/${data.date.startDate}/${data.date.endDate}`);
+  getMonthlyDividendShares(data: {user_id: number, date: Dates}): Observable<StockInfo[]> {
+    return this.http.get<StockInfo[]>(`${this.baseUrl}/dividend/${data.user_id}/${data.date.startDate}/${data.date.endDate}`);
   }
 
   getAllDividendShares(userId): Observable<StockInfo[]> {

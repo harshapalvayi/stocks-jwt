@@ -5,26 +5,26 @@ import yahoofinance.histquotes.HistoricalQuote;
 import java.util.List;
 
 public class StockHistoryInfoDto {
-    private long userid;
-    private long shareid;
+    private long userId;
+    private long shareId;
     private String ticker;
     private String stockName;
     private List<HistoricalQuote> history;
 
-    public long getUserid() {
-        return userid;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setUserid(long userid) {
-        this.userid = userid;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
-    public long getShareid() {
-        return shareid;
+    public long getShareId() {
+        return shareId;
     }
 
-    public void setShareid(long shareid) {
-        this.shareid = shareid;
+    public void setShareId(long shareId) {
+        this.shareId = shareId;
     }
 
     public String getTicker() {
@@ -54,9 +54,9 @@ public class StockHistoryInfoDto {
     public StockHistoryInfoDto() {
     }
 
-    public StockHistoryInfoDto(long userid, long shareid, String ticker, String stockName, List<HistoricalQuote> history) {
-        this.userid = userid;
-        this.shareid = shareid;
+    public StockHistoryInfoDto(long userId, long shareId, String ticker, String stockName, List<HistoricalQuote> history) {
+        this.userId = userId;
+        this.shareId = shareId;
         this.ticker = ticker;
         this.stockName = stockName;
         this.history = history;

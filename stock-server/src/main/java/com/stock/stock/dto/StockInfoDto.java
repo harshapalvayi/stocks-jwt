@@ -6,38 +6,41 @@ import java.util.Date;
 
 public class StockInfoDto {
 
-    private long userid;
-    private long shareid;
-    private String ticker;
+    private long userId;
     private String name;
-    private BigDecimal price;
-    private BigDecimal dividend;
-    private BigDecimal shares;
-    private BigDecimal equity;
-    private BigDecimal buy;
+    private long shareId;
+    private String ticker;
     private BigDecimal cost;
-    private BigDecimal high;
     private BigDecimal low;
+    private BigDecimal high;
+    private BigDecimal equity;
+    private BigDecimal shares;
+    private BigDecimal returns;
+    private BigDecimal dividend;
+    private BigDecimal buyPrice;
+    private BigDecimal marketPrice;
     private BigDecimal percentChange;
-    private Date paydate;
-    private Date exdate;
+    private Date exDate;
+    private Date payDate;
+    private Date tradeDate;
+    private Boolean holding;
     private Integer account;
+    private String stockExchange;
 
-
-    public long getUserid() {
-    return userid;
+    public long getUserId() {
+    return userId;
 }
 
-    public void setUserid(long userid) {
-    this.userid = userid;
+    public void setUserId(long userId) {
+    this.userId = userId;
 }
 
-    public long getShareid() {
-    return shareid;
+    public long getShareId() {
+    return shareId;
 }
 
-    public void setShareid(long shareid) {
-    this.shareid = shareid;
+    public void setShareId(long shareId) {
+    this.shareId = shareId;
 }
 
     public String getTicker() {
@@ -56,12 +59,12 @@ public class StockInfoDto {
     this.name = name;
 }
 
-    public BigDecimal getPrice() {
-    return price;
+    public BigDecimal getMarketPrice() {
+    return marketPrice;
 }
 
-    public void setPrice(BigDecimal price) {
-    this.price = price;
+    public void setMarketPrice(BigDecimal marketPrice) {
+    this.marketPrice = marketPrice;
 }
 
     public BigDecimal getDividend() {
@@ -88,12 +91,12 @@ public class StockInfoDto {
     this.equity = equity;
 }
 
-    public BigDecimal getBuy() {
-    return buy;
+    public BigDecimal getBuyPrice() {
+    return buyPrice;
 }
 
-    public void setBuy(BigDecimal buy) {
-    this.buy = buy;
+    public void setBuyPrice(BigDecimal buyPrice) {
+    this.buyPrice = buyPrice;
 }
 
     public BigDecimal getCost() {
@@ -103,6 +106,14 @@ public class StockInfoDto {
     public void setCost(BigDecimal cost) {
     this.cost = cost;
 }
+
+    public BigDecimal getReturns() {
+        return returns;
+    }
+
+    public void setReturns(BigDecimal returns) {
+        this.returns = returns;
+    }
 
     public BigDecimal getHigh() {
     return high;
@@ -120,21 +131,29 @@ public class StockInfoDto {
     this.low = low;
 }
 
-    public Date getPaydate() {
-    return paydate;
+    public Date getPayDate() {
+    return payDate;
 }
 
-    public void setPaydate(Date paydate) {
-    this.paydate = paydate;
+    public void setPayDate(Date payDate) {
+    this.payDate = payDate;
 }
 
-    public Date getExdate() {
-    return exdate;
+    public Date getExDate() {
+    return exDate;
 }
 
-    public void setExdate(Date exdate) {
-    this.exdate = exdate;
+    public void setExDate(Date exDate) {
+    this.exDate = exDate;
 }
+
+    public Date getTradeDate() {
+        return tradeDate;
+    }
+
+    public void setTradeDate(Date tradeDate) {
+        this.tradeDate = tradeDate;
+    }
 
     public BigDecimal getPercentChange() {
         return percentChange;
@@ -156,6 +175,14 @@ public class StockInfoDto {
         this.account = account;
     }
 
+    public String getStockExchange() {
+        return stockExchange;
+    }
+
+    public void setStockExchange(String stockExchange) {
+        this.stockExchange = stockExchange;
+    }
+
     public static Comparator<StockInfoDto> getStockPercentageChange() {
         return stockPercentageChange;
     }
@@ -164,30 +191,15 @@ public class StockInfoDto {
         StockInfoDto.stockPercentageChange = stockPercentageChange;
     }
 
-    public StockInfoDto() { }
-
-    public StockInfoDto(long userid, long shareid, String ticker,
-                        String name, BigDecimal price, BigDecimal dividend,
-                        BigDecimal percentChange, BigDecimal shares, BigDecimal equity,
-                        BigDecimal buy, BigDecimal cost, BigDecimal high, BigDecimal low,
-                        Date exdate, Date paydate, Integer account) {
-        this.userid = userid;
-        this.shareid = shareid;
-        this.ticker = ticker;
-        this.name = name;
-        this.price = price;
-        this.percentChange = percentChange;
-        this.dividend = dividend;
-        this.shares = shares;
-        this.equity = equity;
-        this.buy = buy;
-        this.cost = cost;
-        this.high = high;
-        this.low = low;
-        this.exdate = exdate;
-        this.paydate = paydate;
-        this.account = account;
+    public Boolean getHolding() {
+        return holding;
     }
+
+    public void setHolding(Boolean holding) {
+        this.holding = holding;
+    }
+
+    public StockInfoDto() { }
 
 /* Sorting the list by percentage change*/
     public static Comparator<StockInfoDto> stockPercentageChange = (s1, s2) -> {

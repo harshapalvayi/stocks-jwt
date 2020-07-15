@@ -8,7 +8,6 @@ import {LogoutComponent} from '@core/logout/logout.component';
 import {RoleGuardService} from '@app/role-guard.service';
 import {Authguard} from '@app/authguard';
 
-
 const routes: Routes = [
   {
     path: 'app-landing-page',
@@ -31,7 +30,18 @@ const routes: Routes = [
     loadChildren: '@features/dashboard/dashboard.module#DashboardModule',
     canActivate: [RoleGuardService, Authguard]
   },
-  { path: 'app-reports',
+  {
+    path: 'app-options',
+    loadChildren: '@features/options/options.module#OptionsModule',
+    canActivate: [RoleGuardService, Authguard]
+  },
+  {
+    path: 'app-stocks',
+    loadChildren: '@features/stocks/stocks.module#StocksModule',
+    canActivate: [RoleGuardService, Authguard]
+  },
+  {
+    path: 'app-reports',
     loadChildren: () => import('@features/reports/reports.module').then(m => m.ReportsModule),
     canActivate: [RoleGuardService, Authguard]
   },

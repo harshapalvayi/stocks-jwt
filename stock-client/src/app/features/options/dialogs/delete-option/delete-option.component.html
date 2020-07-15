@@ -1,0 +1,25 @@
+<p-dialog [(visible)]="showFlag" [appendTo]="'body'"
+          [style]="{width: '700px'}"
+          class="card-layout">
+
+  <p-header>
+    <span class="text-center font-weight-bold text-danger mb-2"> Delete option </span>
+  </p-header>
+
+  <div class="text-center" *ngIf="option">
+      <span>Are you sure you want to delete
+        <span class="text-danger"><b>{{option.name}}</b></span> option call</span>
+  </div>
+
+  <div class="d-flex justify-content-center mt-3">
+    <button pButton type="button" label="Yes" class="ml-2 ui-button-rounded ui-button-success"
+            (click)="onSubmitOption()"></button>
+
+    <button pButton type="button" label="No" class="ml-2 ui-button-rounded ui-button-warning"
+            (click)="onCancel()">
+    </button>
+  </div>
+
+
+</p-dialog>
+

@@ -1,6 +1,7 @@
 package com.stock.stock.controller;
 
 
+import com.stock.stock.entity.Users;
 import com.stock.stock.model.*;
 import com.stock.stock.repository.UserRepository;
 import com.stock.stock.security.JwtUtil;
@@ -42,7 +43,7 @@ class UserController {
 
         final String jwt = jwtTokenUtil.generateToken(userDetails);
 
-        return ResponseEntity.ok(new AuthenticationResponse(jwt, userDetails.getUserid(), userDetails.getUsername(), userDetails.getEmail()));
+        return ResponseEntity.ok(new AuthenticationResponse(jwt, userDetails.getUserId(), userDetails.getUsername(), userDetails.getEmail()));
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
@@ -61,7 +62,7 @@ class UserController {
         Users newUser = new Users(user.getUsername(), user.getPassword(), user.getEmail());
         userDetailsService.save(newUser);
         final String jwt = jwtTokenUtil.generateToken(newUser);
-        return ResponseEntity.ok(new AuthenticationResponse(jwt, newUser.getUserid(), newUser.getUsername(), newUser.getEmail()));
+        return ResponseEntity.ok(new AuthenticationResponse(jwt, newUser.getUserId(), newUser.getUsername(), newUser.getEmail()));
     }
 
     private void authenticate(String username, String password) throws Exception {

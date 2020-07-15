@@ -7,12 +7,10 @@ import {UserService} from '@shared/services/user/user.service';
 import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
 import {PrimengModule} from '@shared/primeng.module';
 import {RouterTestingModule} from '@angular/router/testing';
-import {AddStocksComponent} from '@features/dashboard/dialogs/add-stocks/add-stocks.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {CoreModule} from '@core/core.module';
-import {SharesService} from '@shared/services/shares/shares.service';
-import {PortfolioService} from '@shared/services/portfolio/portfolio.service';
+import {PortfolioComponent} from '@features/dashboard/portfolio/portfolio.component';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -20,9 +18,20 @@ describe('DashboardComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [CoreModule, FormsModule, RouterTestingModule, HttpClientTestingModule, ReactiveFormsModule, PrimengModule],
-      declarations: [ DashboardComponent, AddStocksComponent],
-      providers: [BrowserAnimationsModule, UserService, TokenStorageService, SharesService, PortfolioService],
+      imports: [
+        CoreModule,
+        FormsModule,
+        PrimengModule,
+        ReactiveFormsModule,
+        RouterTestingModule,
+        HttpClientTestingModule
+      ],
+      declarations: [ DashboardComponent, PortfolioComponent],
+      providers: [
+        BrowserAnimationsModule,
+        UserService,
+        TokenStorageService
+      ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
     });
   }));

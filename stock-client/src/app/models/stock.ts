@@ -2,36 +2,29 @@ import {User} from '@models/User';
 import {Chart} from '@models/chart';
 
 export class Share {
-  shareid?: number;
+  shareId?: number;
   ticker?: string;
   userInfo?: User;
   shares?: number;
-  buy?: number;
-  sell?: number;
   account?: number;
-}
-
-export class Option {
-  optionid?: number;
-  ticker?: string;
-  userInfo?: User;
-  contracts?: number;
-  buy?: number;
-  sell?: number;
-  account?: number;
+  buyPrice?: number;
+  sellPrice?: number;
+  tradeDate?: Date;
 }
 
 export class AcctType {
-  shareid?: number;
-  optionid?: number;
-  userid?: number;
+  userId?: number;
   account: number;
+  shareId?: number;
+  optionId?: number;
 }
 
 export class ShareList {
-  shares?: number;
-  buy?: number;
   ticker?: string;
+  shares?: number;
+  buyPrice?: number;
+  account?: number;
+  tradeDate?: Date;
 }
 
 export class Portfolio {
@@ -39,41 +32,66 @@ export class Portfolio {
   portfolio: number;
   annualDividend: number;
   percentChange: number;
+  position: number;
+  tradeDate: number;
+}
+
+export class PortfolioHistory {
+  userId: number;
+  portfolioId: number;
+  investment: number;
+  portfolio: number;
+  annualDividend: number;
+  percentChange: number;
+  position: number;
+  tradeDate: number;
 }
 
 export class StockInfo {
-   shareid?: number;
-   userid?: number;
-   ticker?: string;
-   name?: string;
-   buy: number;
-   shares?: number;
-   price?: number;
-   cost?: number;
-   equity?: number;
-   dividend?: number;
-   percentChange?: number;
-   high?: number;
-   low?: number;
-   exdate?: Date;
-   paydate?: Date;
-   account?: number;
-}
-
-export class OptionInfo {
-  optionid?: number;
-  userid?: number;
-  ticker?: string;
   name?: string;
-  buy: number;
-  contracts?: number;
-  price?: number;
+  ticker?: string;
+  userId?: number;
+  shares?: number;
+  shareId?: number;
+  low?: number;
+  high?: number;
+  cost?: number;
+  equity?: number;
+  returns?: number;
+  dividend?: number;
+  buyPrice?: number;
+  sellPrice?: number;
+  marketPrice?: number;
+  percentChange?: number;
+  exDate?: Date;
+  payDate?: Date;
+  tradeDate?: Date;
+  stockExchange?: string;
+  holding?: boolean;
   account?: number;
 }
 
+export class StockHistoryInfo {
+  id?: number;
+  userId?: number;
+  shareId?: number;
+  ticker?: string;
+  name?: string;
+  shares?: number;
+  actionPrice?: number;
+  cost?: number;
+  equity?: number;
+  returns?: number;
+  sharePrice?: number;
+  marketPrice?: number;
+  percentChange?: number;
+  tradeDate?: Date;
+  stockExchange?: string;
+}
+
 export class StockHistory {
-  shareid?: number;
-  userid?: number;
+  shareId?: number;
+  userId?: number;
   ticker?: string;
   stockName?: string;
   history?: any;
@@ -81,8 +99,8 @@ export class StockHistory {
 
 
 export class CustomStockInfo {
-  shareid?: number;
-  userid?: number;
+  shareId?: number;
+  userId?: number;
   price?: number;
   buy?: number;
   cost?: number;

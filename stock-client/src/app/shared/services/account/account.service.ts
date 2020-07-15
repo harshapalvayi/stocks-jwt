@@ -28,12 +28,12 @@ export class AccountService {
   }
 
   shareAcctType(acctData: AcctType): Observable<AcctType> {
-    return this.http.put<AcctType>(`${this.baseUrl}/shareAcctType/${acctData.userid}`, acctData).pipe(
+    return this.http.put<AcctType>(`${this.baseUrl}/shareAcctType/${acctData.userId}`, acctData).pipe(
       map(data => data));
   }
 
   optionAcctType(acctData: AcctType): Observable<AcctType> {
-    return this.http.put<AcctType>(`${this.baseUrl}/optionAcctType/${acctData.userid}`, acctData).pipe(
+    return this.http.put<AcctType>(`${this.baseUrl}/optionAcctType/${acctData.userId}`, acctData).pipe(
       map(data => data));
   }
 }

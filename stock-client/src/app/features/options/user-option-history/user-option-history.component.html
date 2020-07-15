@@ -1,0 +1,48 @@
+<div *ngIf="history && history.length > 0; else showThis">
+  <p-table  [columns]="cols"
+            [value]="history"
+            [paginator]="true"
+            [rows]="10">
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th class="text-center" *ngFor="let col of columns"  [pSortableColumn]="col.field"
+            [ngStyle]="{'width': col.width}">
+          {{col.header}}
+          <p-sortIcon [field]="col.field"></p-sortIcon>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-option let-ri="rowIndex">
+      <tr>
+        <td class="text-center">
+          <a class="text-primary" style="cursor:pointer;"
+             (click)="goToLink(option.ticker)"> {{option.ticker}}
+          </a>
+        </td>
+        <td class="text-left">{{getStockName(option.name)}}</td>
+        <td class="text-center">{{option.actionPrice | currency}}</td>
+        <td class="text-center">{{option.strikePrice | currency}}</td>
+        <td class="text-center">{{option.contracts}}</td>
+        <td class="text-center">{{option.expire | date}}</td>
+        <td class="text-center" [ngClass]="option.returns > 0 ? 'text-success' : 'text-danger'">
+          {{option.returns | currency}}
+          <i  *ngIf="option.returns > 0"  class="pi pi-arrow-up"
+              [style]="{'font-size': '20px', 'width': '30px'}"> </i>
+          <i  *ngIf="option.returns < 0"  class="pi pi-arrow-down"
+              [style]="{'font-size': '20px', 'width': '30px'}"> </i>
+        </td>
+        <td class="text-center">{{option.action}}</td>
+        <td class="text-center">{{option.tradeDate | date}}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<ng-template #showThis>
+  <div class="noDataSection">
+    <div class="d-flex align-items-center">
+      <h3>Add Options To Portfolio</h3>
+    </div>
+  </div>
+</ng-template>
+

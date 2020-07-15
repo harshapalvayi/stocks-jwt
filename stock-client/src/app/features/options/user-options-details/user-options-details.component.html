@@ -1,0 +1,48 @@
+<div class="my-3" *ngIf="options && options.length > 0; else showThis">
+  <p-table  [columns]="cols"  [value]="options"
+            dataKey="symbol" [paginator]="true" [rows]="10">
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th class="text-center" *ngFor="let col of columns"  [pSortableColumn]="col.field"
+            [ngStyle]="{'width': col.width}">
+          {{col.header}}
+          <p-sortIcon [field]="col.field"></p-sortIcon>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-option let-ri="rowIndex">
+      <tr>
+        <td class="text-center">
+          <a class="text-primary" style="cursor:pointer;"
+             (click)="goToLink(option.ticker)"> {{option.ticker}}
+          </a>
+        </td>
+        <td class="text-left">{{option.name}}</td>
+        <td class="text-center">{{option.optionType }}</td>
+        <td class="text-center">{{option.buyPrice | currency}}</td>
+        <td class="text-center">{{option.strikePrice | currency}}</td>
+        <td class="text-center">{{option.contracts}}</td>
+        <td class="text-center">{{option.expire | date }}</td>
+        <td class="text-center">
+          <button pButton type="button" class="ui-button-rounded ui-button-warning ml-1"
+                  icon="pi pi-cog" (click)="menu.toggle($event)">
+          </button>
+        </td>
+      </tr>
+      <p-menu #menu [popup]="true" [appendTo]="'body'" [model]="getMenuItems(option)"></p-menu>
+    </ng-template>
+  </p-table>
+</div>
+
+<ng-template #showThis>
+  <div class="container noDataSection">
+    <div class="d-flex justify-content-center">
+      <h3>Add Options To Portfolio</h3>
+    </div>
+  </div>
+</ng-template>
+
+<app-trade-options (saved)="onTradeOptions()"></app-trade-options>
+<app-delete-option (deleted)="onDeleteOptions()"></app-delete-option>
+
+
