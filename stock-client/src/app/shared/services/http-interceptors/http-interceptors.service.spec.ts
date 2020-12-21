@@ -8,7 +8,11 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 describe('HttpInterceptors', () => {
   beforeEach(() => TestBed.configureTestingModule({
     imports: [HttpClientTestingModule],
-    providers: [AuthenticationService, TokenStorageService, HttpInterceptors]
+    providers: [
+      AuthenticationService,
+      TokenStorageService,
+      HttpInterceptors
+    ]
   }));
 
   it('should be created', () => {

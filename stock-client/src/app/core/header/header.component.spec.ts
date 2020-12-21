@@ -2,12 +2,13 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HeaderComponent } from './header.component';
 import {CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA} from '@angular/core';
-import {UserService} from '@shared/services/user/user.service';
-import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
 import {HttpClient} from '@angular/common/http';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {PrimengModule} from '@shared/primeng.module';
 import {RouterTestingModule} from '@angular/router/testing';
+import {PrimengModule} from '@shared/primeng.module';
+import {UserService} from '@shared/services/user/user.service';
+import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
+import {FormBuilder, FormsModule} from '@angular/forms';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -15,10 +16,20 @@ describe('HeaderComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, RouterTestingModule, PrimengModule],
+      imports: [
+        HttpClientTestingModule,
+        RouterTestingModule,
+        FormsModule,
+        PrimengModule
+      ],
       declarations: [ HeaderComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
-      providers: [UserService, TokenStorageService, HttpClient]
+      providers: [
+        UserService,
+        TokenStorageService,
+        FormBuilder,
+        HttpClient
+      ]
     });
   }));
 

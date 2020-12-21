@@ -1,52 +1,61 @@
 <div class="container mb-4">
-  <div class="d-flex flex-row justify-content-around mt-3">
+  <div class="row mt-3">
 
-    <div class="w-100 mr-2" *ngIf="portfolioValue">
+    <div class="col-lg-3 col-md-6" *ngIf="portfolioValue">
       <app-doughnut-chart [title]="'Portfolio'" [data]="portfolioValue"
                           [type]="'options'"
                           [ngClass]="portfolio.portfolio > portfolio.investment ? 'text-success' : 'text-danger'">
       </app-doughnut-chart>
     </div>
 
-    <div class="w-100 mr-2" *ngIf="investment">
-      <app-semi-pie-cards [title]="'Investment'" [data]="investment"
+    <div class="col-lg-3 col-md-6" *ngIf="investment">
+      <app-doughnut-chart [title]="'Investment'" [data]="investment"
+                          [type]="'options'"
                           [ngClass]="portfolio.portfolio > portfolio.investment ? 'text-success' : 'text-danger'">
-      </app-semi-pie-cards>
+      </app-doughnut-chart>
     </div>
 
-    <div class="w-100 mr-2" *ngIf="annualDividend">
+    <div class="col-lg-3 col-md-6" *ngIf="annualDividend">
       <app-doughnut-chart [title]="'Dividend'" [type]="'options'"
                           [data]="annualDividend">
       </app-doughnut-chart>
     </div>
 
-    <div class="w-100" *ngIf="position">
-      <app-semi-pie-cards [data]="position"
+    <div class="col-lg-3 col-md-6" *ngIf="position">
+      <app-doughnut-chart [data]="position"
+                          [type]="'options'"
                           [title]="portfolio.portfolio > portfolio.investment ? 'Profit': 'Loss'">
-      </app-semi-pie-cards>
+      </app-doughnut-chart>
     </div>
 
   </div>
 
-  <div class="d-flex flex-row justify-content-around mt-3">
-    <div class="w-100 mr-2" *ngIf="percentChange">
+  <div class="row mt-3">
+    <div class="col-lg-4 col-md-6" *ngIf="percentChange">
       <app-display-cards [title]="portfolio.portfolio > portfolio.investment ? 'Profit %': 'Loss %'"
                          [data]="percentChange">
       </app-display-cards>
     </div>
 
-    <div class="w-100 mr-2" *ngIf="stockCount">
+    <div class="col-lg-4 col-md-6" *ngIf="this.portfolio.stocks">
       <app-display-cards [title]="'Stocks'" [data]="stockCount">
       </app-display-cards>
     </div>
 
-    <div class="w-100" *ngIf="optionCount">
+    <div class="col-lg-4 col-md-6" *ngIf="this.portfolio.options">
       <app-display-cards [title]="'Options'" [data]="optionCount">
       </app-display-cards>
     </div>
   </div>
+</div>
 
-  <div class="container my-4 w-100">
-    <app-line-cards *ngIf="portfolioData" [data]="portfolioData"></app-line-cards>
-  </div>
+<div class="container my-3">
+    <app-line-cards *ngIf="weeklyData && monthlyData && yearlyData && allData"
+                    class="w-100"
+                    [type]="'custom'"
+                    [weeklyData]="weeklyData"
+                    [monthlyData]="monthlyData"
+                    [yearlyData]="yearlyData"
+                    [allData]="allData">
+    </app-line-cards>
 </div>

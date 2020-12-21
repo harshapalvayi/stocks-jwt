@@ -1,4 +1,27 @@
-<app-cards>
+<app-cards *ngIf="type == 'custom'">
+  <p-chart type="line" [data]="data" [options]="options"
+           *ngIf="data; else doThis"></p-chart>
+  <div class="text-center">
+      <button pButton pRipple type="button" label="1 Week"
+              (click)="calculateData('week')"
+              [ngClass]="activeIndex == 0 ? 'ui-button-primary': 'ui-button-secondary'"
+              class="p-button-text mx-3"></button>
+      <button pButton pRipple type="button" label="1 Month"
+              (click)="calculateData('month')"
+              [ngClass]="activeIndex == 1 ? 'ui-button-primary': 'ui-button-secondary'"
+              class="p-button-text mx-3"></button>
+      <button pButton pRipple type="button" label="1 Year"
+              (click)="calculateData('year')"
+              [ngClass]="activeIndex == 2 ? 'ui-button-primary': 'ui-button-secondary'"
+              class="p-button-text mx-3"></button>
+      <button pButton pRipple type="button" label="All"
+            (click)="calculateData('all')"
+            [ngClass]="activeIndex == 3 ? 'ui-button-primary': 'ui-button-secondary'"
+            class="p-button-text mx-3"></button>
+  </div>
+</app-cards>
+
+<app-cards *ngIf="type == 'default'">
   <p-chart type="line" [data]="data" [options]="options"
            *ngIf="data; else doThis"></p-chart>
 </app-cards>

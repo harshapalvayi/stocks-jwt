@@ -8,19 +8,21 @@ import {LoginPageComponent} from './login-page/login-page.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { ErrorComponent } from './error/error.component';
 import {LogoutComponent} from '@core/logout/logout.component';
-import {PrimengModule} from '@shared/primeng.module';
+import {PrimengModule} from '@features/../shared/primeng.module';
 import {RegisterComponent} from '@core/register/register.component';
-import {TemplateModule} from '@shared/templates/template.module';
+import {TemplateModule} from '@features/../shared/templates/template.module';
+import {UserProfileComponent} from '@core/user-profile/user-profile.component';
 
 @NgModule({
   declarations: [
+    ErrorComponent,
     HeaderComponent,
+    LogoutComponent,
     FooterComponent,
+    RegisterComponent,
     LoginPageComponent,
     LandingPageComponent,
-    RegisterComponent,
-    LogoutComponent,
-    ErrorComponent
+    UserProfileComponent
   ],
   imports: [
     CommonModule,
@@ -31,13 +33,14 @@ import {TemplateModule} from '@shared/templates/template.module';
     RouterModule,
   ],
   exports: [
+    ErrorComponent,
     HeaderComponent,
     FooterComponent,
-    LoginPageComponent,
-    LandingPageComponent,
-    RegisterComponent,
     LogoutComponent,
-    ErrorComponent
+    RegisterComponent,
+    LoginPageComponent,
+    UserProfileComponent,
+    LandingPageComponent
   ]
 })
 export class CoreModule { }

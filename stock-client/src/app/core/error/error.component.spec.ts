@@ -11,8 +11,7 @@ describe('ErrorComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ ErrorComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+    });
   }));
 
   beforeEach(() => {

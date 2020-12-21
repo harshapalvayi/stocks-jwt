@@ -5,25 +5,36 @@ import { DeleteStocksComponent } from './delete-stocks.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {RouterTestingModule} from '@angular/router/testing';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {PrimengModule} from '@shared/primeng.module';
 import {UserService} from '@shared/services/user/user.service';
-import {SharesService} from '@shared/services/shares/shares.service';
 import {AccountService} from '@shared/services/account/account.service';
 import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
+import {PrimengModule} from '@shared/primeng.module';
+import {StockService} from '@shared/services/stock/stock.service';
 
 describe('DeleteStocksComponent', () => {
   let component: DeleteStocksComponent;
   let fixture: ComponentFixture<DeleteStocksComponent>;
   let userService: UserService;
-  let shareService: SharesService;
+  let stockService: StockService;
   let accountService: AccountService;
   let tokenService: TokenStorageService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, RouterTestingModule, HttpClientTestingModule, ReactiveFormsModule, PrimengModule],
+      imports: [
+        FormsModule,
+        RouterTestingModule,
+        HttpClientTestingModule,
+        ReactiveFormsModule,
+        PrimengModule
+      ],
       declarations: [ DeleteStocksComponent ],
-      providers: [UserService, AccountService, TokenStorageService, SharesService],
+      providers: [
+        UserService,
+        StockService,
+        AccountService,
+        TokenStorageService
+      ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
     });
   }));
@@ -32,7 +43,7 @@ describe('DeleteStocksComponent', () => {
     fixture = TestBed.createComponent(DeleteStocksComponent);
     component = fixture.componentInstance;
     userService = TestBed.get(UserService);
-    shareService = TestBed.get(SharesService);
+    stockService = TestBed.get(StockService);
     accountService = TestBed.get(AccountService);
     tokenService = TestBed.get(TokenStorageService);
   });

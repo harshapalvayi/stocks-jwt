@@ -1,70 +1,97 @@
 package com.stock.stock.service;
 
-import com.stock.stock.dto.OptionHistoryDto;
-import com.stock.stock.entity.OptionHistory;
+import com.stock.stock.dto.OptionsChainData;
+import com.stock.stock.dto.Quote;
+import com.stock.stock.entity.Options;
+import com.stock.stock.entity.OptionsHistory;
 import com.stock.stock.repository.OptionHistoryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import yahoofinance.Stock;
 
-import java.math.BigDecimal;
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class OptionHistoryService {
 
-    @Autowired
-    public StockService stockService;
+    public final StockService stockService;
 
-    @Autowired
-    private OptionHistoryRepository optionHistoryRepository;
+    public final OptionService optionService;
 
-    public List<OptionHistoryDto> getUserOptionHistoryDtos(@PathVariable long user) {
-        List<OptionHistoryDto> optionInfo = new ArrayList<>();
-        List<OptionHistory> userOptions = optionHistoryRepository.findByUserId(user);
-        getStockHistoryList(optionInfo, userOptions);
+    private final OptionHistoryRepository optionHistoryRepository;
+
+    public OptionHistoryService(StockService stockService,
+                                OptionService optionService,
+                                OptionHistoryRepository optionHistoryRepository) {
+        this.stockService = stockService;
+        this.optionService = optionService;
+        this.optionHistoryRepository = optionHistoryRepository;
+    }
+
+    public List<OptionsHistory> getUserOptionHistoryData(long userId, Date tradeDate) throws IOException {
+        List<OptionsHistory> optionInfo = new ArrayList<>();
+        if (tradeDate != null) {
+            String stringDate = DateService.convertDateToString(tradeDate);
+            List<OptionsHistory> userOptions = optionHistoryRepository.findByUserIdAndTradeDate(userId, stringDate);
+            if (userOptions.size() > 0) {
+                optionInfo.addAll(userOptions);
+            }
+        }
         return optionInfo;
     }
 
-    public void getStockHistoryList(List<OptionHistoryDto> optionInfo, List<OptionHistory> options) {
-        for (OptionHistory option : options) {
-            String ticker = option.getTicker().toUpperCase();
-            Stock yahooStock = this.stockService.getYahooStockData(ticker);
-            OptionHistoryDto optionHistory = new OptionHistoryDto();
-            if (yahooStock.isValid()) {
-                generateOptionHistory(option, yahooStock, optionHistory);
-                optionInfo.add(optionHistory);
-            }
-        }
+     public void loadUserOptionHistoryDetails(Options optionData) throws ParseException {
+       if (optionData != null) {
+           recordOptionHistory(optionData);
+       } else {
+           List<Options> optionInfo = this.optionService.getAllUserActiveOptions();
+           for (Options option: optionInfo) {
+               recordOptionHistory(option);
+           }
+       }
     }
 
-    public void generateOptionHistory(OptionHistory option, Stock yahooStock, OptionHistoryDto optionHistory) {
-        BigDecimal units = BigDecimal.valueOf(100);
-        String name = yahooStock.getName();
-        optionHistory.setOptionId(option.getOption().getOptionId());
-        optionHistory.setName(name);
-        optionHistory.setTicker(option.getTicker());
-        optionHistory.setAction(option.getAction());
-        optionHistory.setExpire(option.getExpire());
-        optionHistory.setContracts(option.getContracts());
-        optionHistory.setTradeDate(option.getTradeDate());
-        optionHistory.setActionPrice(option.getActionPrice());
-        BigDecimal contracts = option.getContracts().multiply(units);
-        if (option.getActionPrice() != null) {
-            optionHistory.setCost(contracts.multiply(option.getActionPrice()));
+    public void recordOptionHistory(Options option) throws ParseException {
+        Date endDate;
+        Date currDate = new Date();
+        Date startDate = option.getTradeDate();
+        endDate = option.getExpire();
+        if (currDate.compareTo(endDate) > 0) {
+            endDate = option.getExpire();
+        } else {
+            endDate = DateService.getDateWithoutTimeUsingCalendar(currDate);
         }
-        if (option.getOptionPrice() != null) {
-            optionHistory.setEquity(contracts.multiply(option.getOptionPrice()));
+        ArrayList<Date> dates = DateService.calculateWorkingDatesBetween(startDate, endDate);
+        for (Date date: dates) {
+            System.out.println(date);
+            long timestamp = DateService.calculateTimestampForOption(date);
+            OptionsHistory userOption;
+            String stringDate = DateService.convertDateToString(date);
+            userOption = optionHistoryRepository
+                    .findByOptionIdAndUserIdAndTradeDate(
+                            option.getOptionId(),
+                            option.getUser().getUserId(),
+                            stringDate);
+            if (userOption == null) {
+                userOption = new OptionsHistory();
+            }
+            OptionsChainData yahooOption = this.optionService
+                    .getYahooOptionDataByTimestamp(option.getOptionSymbol(), timestamp);
+            if (yahooOption != null) {
+                Quote quote = yahooOption.quote;
+                if (quote != null && quote.regularMarketPrice != null) {
+                    userOption.setMarketPrice(quote.regularMarketPrice);
+                }
+            }
+            userOption.setUserId(option.getUser().getUserId());
+            userOption.setOptionId(option.getOptionId());
+            userOption.setContracts(option.getContracts());
+            userOption.setTicker(option.getTicker());
+            userOption.setTradeDate(date);
+            optionHistoryRepository.save(userOption);
         }
-        if (optionHistory.getEquity() != null && optionHistory.getCost() != null) {
-            BigDecimal returns = optionHistory.getEquity().subtract(optionHistory.getCost());
-            optionHistory.setReturns(returns);
-        }
-        optionHistory.setOptionType(option.getOptionType());
-        optionHistory.setStrikePrice(option.getStrikePrice());
-        optionHistory.setOptionPrice(option.getOptionPrice());
     }
 
 }

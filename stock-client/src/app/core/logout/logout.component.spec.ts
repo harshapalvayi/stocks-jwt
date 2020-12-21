@@ -2,10 +2,13 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LogoutComponent } from './logout.component';
 import {CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA} from '@angular/core';
-import {UserService} from '@shared/services/user/user.service';
 import {RouterTestingModule} from '@angular/router/testing';
 import {PrimengModule} from '@shared/primeng.module';
+import {UserService} from '@shared/services/user/user.service';
 import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
+import {FormBuilder, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {HttpClient} from '@angular/common/http';
 
 describe('LogoutComponent', () => {
   let component: LogoutComponent;
@@ -13,10 +16,21 @@ describe('LogoutComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, PrimengModule],
+      imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        HttpClientTestingModule,
+        RouterTestingModule,
+        PrimengModule
+      ],
       declarations: [ LogoutComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
-      providers: [UserService, TokenStorageService]
+      providers: [
+        UserService,
+        FormBuilder,
+        TokenStorageService,
+        HttpClient
+      ]
     });
   }));
 

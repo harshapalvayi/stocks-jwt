@@ -1,16 +1,17 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {UserService} from '@shared/services/user/user.service';
-import {UtilService} from '@shared/services/util/util.service';
-import {ChartService} from '@shared/services/chart/chart.service';
-import {SharesService} from '@shared/services/shares/shares.service';
-import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
 import {UserStockDetailsComponent} from '@features/stocks/user-stock-details/user-stock-details.component';
 import {UserToken} from '@models/User';
 import {forkJoin, Observable} from 'rxjs';
-import {StockHistoryInfo, StockInfo} from '@models/stock';
+import {StockActivityInfo, StockInfo, StockPortfolio} from '@models/stock';
 import {MenuTabs as menus} from '@models/menus';
 import {MenuItem} from 'primeng';
-import {AddStocksComponent} from '@features/stocks/dialogs/add-stocks/add-stocks.component';
+import {AddUserStocksComponent} from '@features/stocks/add-user-stocks/add-user-stocks.component';
+import {UserService} from '@shared/services/user/user.service';
+import {UtilService} from '@shared/services/util/util.service';
+import {ChartService} from '@shared/services/chart/chart.service';
+import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
+import {PortfolioService} from '@shared/services/portfolio/portfolio.service';
+import {StockService} from '@shared/services/stock/stock.service';
 
 @Component({
   selector: 'app-stocks',
@@ -19,22 +20,24 @@ import {AddStocksComponent} from '@features/stocks/dialogs/add-stocks/add-stocks
 })
 export class StocksComponent implements OnInit {
 
-  @ViewChild(AddStocksComponent, {static: false}) addStocks: AddStocksComponent;
+  @ViewChild(AddUserStocksComponent, {static: false}) addStocks: AddUserStocksComponent;
   @ViewChild(UserStockDetailsComponent, {static: false}) userStock: UserStockDetailsComponent;
 
   public text: string;
-  public activeItem: MenuItem;
   public userInfo: UserToken;
-  public shares: StockInfo[];
-  public history: StockHistoryInfo[];
+  public activeItem: MenuItem;
   public items: MenuItem[];
+  public stocks: StockInfo[];
   public innerSpinner: boolean;
+  public portfolio: StockPortfolio;
+  public stockActivities: StockActivityInfo[];
   public loader$: Observable<boolean> = this.utilService.getLoader();
 
   constructor(private userService: UserService,
               private utilService: UtilService,
               private chartService: ChartService,
-              private shareService: SharesService,
+              private stockService: StockService,
+              private portfolioService: PortfolioService,
               private tokenService: TokenStorageService) { }
 
   ngOnInit() {
@@ -52,12 +55,14 @@ export class StocksComponent implements OnInit {
     }
   }
 
-  onAddStocks() {
-    this.calculateShareData();
+  public tabChange(tab) {
+    if (tab && tab.activeItem) {
+      this.activeItem = tab.activeItem;
+    }
   }
 
-  addOptionsPopup() {
-    this.addStocks.showDialog();
+  onAddStocks() {
+    this.calculateShareData();
   }
 
   onActionPerformed() {
@@ -65,25 +70,18 @@ export class StocksComponent implements OnInit {
     this.calculateShareData();
   }
 
-  public tabChange(tab) {
-    if (tab && tab.activeItem) {
-      this.activeItem = tab.activeItem;
-    }
-  }
-
   calculateShareData() {
     forkJoin([
-      this.shareService.getShares(this.userInfo.id),
-      this.shareService.getShareHistory(this.userInfo.id)
+      this.stockService.getUserStocks(this.userInfo.id),
+      this.stockService.getStockActivityData(this.userInfo.id),
+      this.portfolioService.getStockPortfolio(this.userInfo.id)
     ])
-      .subscribe(([shares, history]) => {
-        this.shares = shares;
-        this.history = history;
-        console.log('shares', shares);
-        console.log('history', history);
+      .subscribe(([shares, stockActivities, portfolio]) => {
+        this.stocks = shares;
+        this.stockActivities = stockActivities;
+        this.portfolio = portfolio;
         this.innerSpinner = false;
         this.utilService.hideSpinner();
       });
   }
-
 }

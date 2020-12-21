@@ -2,16 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import {Chart} from '@models/chart';
 import {UserToken} from '@models/User';
 import {StockInfo} from '@models/stock';
-import {UserService} from '@shared/services/user/user.service';
-import {DateService} from '@shared/services/date/date.service';
-import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
 import {MenuTabs as menus, ReportTabs} from '@models/menus';
-import {ChartService} from '@shared/services/chart/chart.service';
 import {Dates} from '@models/dates';
 import {forkJoin, Observable} from 'rxjs';
-import {SharesService} from '@shared/services/shares/shares.service';
-import {UtilService} from '@shared/services/util/util.service';
+
 import {MenuItem} from 'primeng';
+import {DateService} from '@shared/services/date/date.service';
+import {UserService} from '@shared/services/user/user.service';
+import {UtilService} from '@shared/services/util/util.service';
+import {ChartService} from '@shared/services/chart/chart.service';
+import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
+import {StockService} from '@shared/services/stock/stock.service';
 
 @Component({
   selector: 'app-reports',
@@ -36,8 +37,8 @@ export class ReportsComponent implements OnInit {
   constructor(private dateService: DateService,
               private userService: UserService,
               private utilService: UtilService,
+              private stockService: StockService,
               private chartService: ChartService,
-              private shareService: SharesService,
               private tokenService: TokenStorageService) {}
 
   ngOnInit() {
@@ -62,17 +63,17 @@ export class ReportsComponent implements OnInit {
     this.items = reportTabs;
     this.activeItem = this.items[0];
     const date  = this.dateService.getMonthDates();
-    const data: {user_id: number, date: Dates} = {
-      user_id: this.userInfo.id, date
+    const data: {userId: number, date: Dates} = {
+      userId: this.userInfo.id, date
     };
 
     this.utilService.showSpinner();
 
     forkJoin([
-      this.shareService.getShares(data.user_id),
-      this.shareService.getMonthlyDividendShares(data),
-      this.shareService.getAllDividendShares(data.user_id),
-      this.shareService.getTopMovers(data.user_id)
+      this.stockService.getUserStocks(data.userId),
+      this.stockService.getMonthlyDividendShares(data),
+      this.stockService.getAllDividendShares(data.userId),
+      this.stockService.getTopMovers(data.userId)
     ]).subscribe(([shares, monthly, yearly, topMovers]) => {
       this.priceVsBuy = this.chartService.buildPriceVsBuyChart(shares);
       this.costVsEquity = this.chartService.buildCostVsEquityChart(shares);

@@ -9,10 +9,9 @@ export class DisplayCardsComponent implements OnInit {
 
   @Input() public title: string;
   @Input() public data: any;
-  @Input() public styles: any;
+  @Input() public styles: string;
   constructor() { }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
 }

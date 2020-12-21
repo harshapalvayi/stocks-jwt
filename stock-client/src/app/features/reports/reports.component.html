@@ -1,9 +1,9 @@
-<div class="container my-3">
+<div class="container mt-4">
   <p-tabMenu #tab [model]="items"  [activeItem]="activeItem"
              (click)="tabChange(tab)"></p-tabMenu>
 </div>
 
-<div class="container" [ngSwitch]="activeItem.title" [hidden]="(loader$ | async)">
+<div class="container my-3" [ngSwitch]="activeItem.title" [hidden]="(loader$ | async)">
   <app-doughnut-chart class="w-100" *ngSwitchCase="selected.TOTAL_PORTFOLIO"
                       [title]="'Portfolio'" [data]="pieData" [type]="'default'"></app-doughnut-chart>
   <app-bar-cards class="w-100" *ngSwitchCase="selected.PRICE_BUY" [data]="priceVsBuy"></app-bar-cards>
@@ -13,7 +13,8 @@
                  [dividendType]="'monthly'" [shareInfo]="monthlyDividends"></app-dividends>
   <app-dividends class="w-100" *ngSwitchCase="selected.YEARLY_DIVIDEND"
                  [dividendType]="'yearly'" [shareInfo]="allDividends" ></app-dividends>
-  <app-top-movers class="w-100" *ngSwitchCase="selected.TOP_MOVERS" [stocks]="topMovers"></app-top-movers>
+  <app-top-movers class="container align-items-center w-100"
+                  *ngSwitchCase="selected.TOP_MOVERS" [stocks]="topMovers"></app-top-movers>
 </div>
 
 <div class="m-5 text-center">

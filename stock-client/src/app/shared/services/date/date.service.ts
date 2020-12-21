@@ -9,6 +9,10 @@ export class DateService {
 
   constructor() { }
 
+  static getDate(date) {
+    return moment(date).utc().format('MMMM Do YYYY');
+  }
+
   getMonthDates(): Dates {
     const startDate = moment().startOf('month').format('YYYY-MM-DD');
     const endDate = moment().endOf('month').format('YYYY-MM-DD');

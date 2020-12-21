@@ -4,7 +4,7 @@
           class="card-layout">
 
   <p-header>
-    <span class="text-center font-weight-bold text-success mb-2" *ngIf="tradeType === 'actionPrice'"> Buy Stocks </span>
+    <span class="text-center font-weight-bold text-success mb-2" *ngIf="tradeType === 'buy'"> Buy Stocks </span>
     <span class="text-center font-weight-bold text-danger mb-2" *ngIf="tradeType === 'sell'"> Sell Stocks </span>
   </p-header>
 
@@ -23,15 +23,26 @@
         </label>
       </div>
 
-      <div *ngIf="tradeType === 'actionPrice'">
+      <div *ngIf="tradeType === 'buy'">
         <label><b>Buy</b>
-          <input class="font-weight-bold ml-c-4" formControlName="buy" type="number" [min]="1">
+          <input class="font-weight-bold ml-c-4" formControlName="buyPrice" type="number" [min]="1">
         </label>
       </div>
 
       <div *ngIf="tradeType === 'sell'">
         <label><b>Sell</b>
-          <input class="font-weight-bold ml-c-4" formControlName="sell" type="number" [min]="1">
+          <input class="font-weight-bold ml-c-4" formControlName="sellPrice" type="number" [min]="1">
+        </label>
+      </div>
+
+      <div>
+        <label><b>Trade Date</b>
+          <p-calendar class= "ml-3"
+                      placeholder="select date"
+                      [appendTo]="'body'"
+                      [showIcon]="true"
+                      formControlName="tradeDate">
+          </p-calendar>
         </label>
       </div>
 

@@ -1,10 +1,11 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {UserToken} from '@models/User';
-import {UserService} from '@shared/services/user/user.service';
-import {SharesService} from '@shared/services/shares/shares.service';
-import {AccountService} from '@shared/services/account/account.service';
-import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
 import {StockInfo} from '@models/stock';
+import {UserService} from '@shared/services/user/user.service';
+import {AccountService} from '@shared/services/account/account.service';
+import {NotificationService} from '@shared/services/notification/notification.service';
+import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
+import {StockService} from '@shared/services/stock/stock.service';
 
 @Component({
   selector: 'app-delete-stocks',
@@ -20,8 +21,9 @@ export class DeleteStocksComponent implements OnInit {
   public userInfo: UserToken;
 
   constructor(private userService: UserService,
-              private shareService: SharesService,
+              private stockService: StockService,
               private accountService: AccountService,
+              private notification: NotificationService,
               private tokenService: TokenStorageService) { }
 
   ngOnInit() {
@@ -41,10 +43,16 @@ export class DeleteStocksComponent implements OnInit {
 
   onSubmitStock() {
     if (this.stock && this.userInfo && this.userInfo.id) {
-      const shareId = this.stock.shareId;
+      const shareId = this.stock.stockId;
       const userId = this.userInfo.id;
-      this.shareService.delete(shareId, userId).subscribe(() => {
+      const stock = this.stock.name;
+      this.stockService.delete(shareId, userId).subscribe(() => {
         this.deleted.emit('deleted');
+        const toastDetails = {
+          message: 'Success',
+          details: `Your order to remove ${stock} has been successfully deleted.`
+        };
+        this.notification.showSuccess(toastDetails);
         this.showFlag = false;
       }, error => {
         console.log('error', error);

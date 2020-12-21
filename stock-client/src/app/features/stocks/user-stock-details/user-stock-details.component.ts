@@ -1,16 +1,14 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {StockInfo} from '@models/stock';
-import {UserService} from '@shared/services/user/user.service';
-import {SharesService} from '@shared/services/shares/shares.service';
-import {AccountService} from '@shared/services/account/account.service';
-import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
 import {UserToken} from '@models/User';
 import {BrokerageAccounts, StockHeaders} from '@models/menus';
 import {TradeStockComponent} from '@features/stocks/dialogs/trade-stock/trade-stock.component';
 import {DeleteStocksComponent} from '@features/stocks/dialogs/delete-stocks/delete-stocks.component';
 import {MenuItem} from 'primeng';
-import {AddStocksComponent} from '@features/stocks/dialogs/add-stocks/add-stocks.component';
 import {StockService} from '@shared/services/stock/stock.service';
+import {UserService} from '@shared/services/user/user.service';
+import {AccountService} from '@shared/services/account/account.service';
+import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
 
 @Component({
   selector: 'app-user-stock-details',
@@ -21,17 +19,16 @@ export class UserStockDetailsComponent implements OnInit {
 
   @ViewChild(TradeStockComponent, {static: false}) trade: TradeStockComponent;
   @ViewChild(DeleteStocksComponent, {static: false}) delete: DeleteStocksComponent;
-  @ViewChild(AddStocksComponent, {static: false}) add: AddStocksComponent;
 
+  @Input() stocks: StockInfo[];
   @Output() action = new EventEmitter<string>();
+
   public cols: any[];
   public items: MenuItem[];
   public userInfo: UserToken;
-  @Input() shares: StockInfo[];
 
   constructor(private userService: UserService,
               private stockService: StockService,
-              private shareService: SharesService,
               private accountService: AccountService,
               private tokenService: TokenStorageService) { }
 

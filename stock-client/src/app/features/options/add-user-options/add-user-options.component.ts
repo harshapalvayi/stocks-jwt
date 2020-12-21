@@ -2,14 +2,15 @@ import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core'
 import {UserToken} from '@models/User';
 import {FormGroup} from '@angular/forms';
 import {SelectItem} from 'primeng';
+import {SearchOptionsComponent} from '@features/options/dialogs/search-options/search-options.component';
+import {OptionData, OptionFeed} from '@models/optionsChainData';
+import {OptionTypes as menus} from '@models/menus';
 import {UserService} from '@shared/services/user/user.service';
+import {DateService} from '@shared/services/date/date.service';
 import {OptionsService} from '@shared/services/options/options.service';
 import {AccountService} from '@shared/services/account/account.service';
 import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
-import {SearchOptionsComponent} from '@features/options/dialogs/search-options/search-options.component';
-import {OptionInfo, OptionFeed} from '@models/options';
-import {OptionTypes as menus} from '@models/menus';
-import {DateService} from '@shared/services/date/date.service';
+import {NotificationService} from '@shared/services/notification/notification.service';
 
 @Component({
   selector: 'app-add-user-options',
@@ -18,8 +19,8 @@ import {DateService} from '@shared/services/date/date.service';
 })
 export class AddUserOptionsComponent implements OnInit {
 
+  @Output() action = new EventEmitter<string>();
   @ViewChild(SearchOptionsComponent, {static: false}) searchOptions: SearchOptionsComponent;
-  @Output() saved = new EventEmitter<string>();
 
   public text: string;
   public types: SelectItem[];
@@ -31,7 +32,8 @@ export class AddUserOptionsComponent implements OnInit {
               private dateService: DateService,
               private optionService: OptionsService,
               private accountService: AccountService,
-              private tokenService: TokenStorageService) { }
+              private tokenService: TokenStorageService,
+              private notification: NotificationService) { }
 
   ngOnInit() {
     if (this.userService.isUserLoggedIn()) {
@@ -72,6 +74,7 @@ export class AddUserOptionsComponent implements OnInit {
         const date = this.convertTimestampToDate(option.expire);
         this.addOptions.get('expire').patchValue(new Date(date));
       }
+      this.addOptions.get('optionSymbol').patchValue(option.optionSymbol);
       this.addOptions.get('strike').patchValue(option.strike);
       this.addOptions.get('type').patchValue(option.optionType);
       this.addOptions.get('optionPrice').patchValue(option.optionPrice);
@@ -93,11 +96,12 @@ export class AddUserOptionsComponent implements OnInit {
   onSubmitOption() {
     const option = this.addOptions.getRawValue();
     if (option && this.userInfo && this.userInfo.id) {
-      const optionData: OptionInfo = {
+      const optionData: OptionData = {
         userId: this.userInfo.id,
         optionType: option.type,
         ticker: option.ticker,
         expire: option.expire,
+        optionSymbol: option.optionSymbol,
         tradeDate: option.tradeDate,
         account: option.brokerage,
         contracts: option.contracts,
@@ -106,7 +110,14 @@ export class AddUserOptionsComponent implements OnInit {
         optionPrice: option.optionPrice
       };
       this.optionService.save(optionData).subscribe(() => {
-        this.saved.emit('saved');
+        this.action.emit('saved');
+        const toastDetails = {
+          message: 'Success',
+          details: `Your order to Buy ${optionData.contracts} contract of
+                    ${optionData.ticker.toUpperCase()}
+                    has been saved at an average price of ${optionData.buyPrice}`
+        };
+        this.notification.showSuccess(toastDetails);
         this.resetOption();
       });
     }

@@ -5,8 +5,8 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {CoreModule} from '@core/core.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BrowserModule} from '@angular/platform-browser';
-import {TemplateModule} from '@shared/templates/template.module';
 import {HttpClientModule} from '@angular/common/http';
+import {TemplateModule} from '@shared/templates/template.module';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -16,9 +16,9 @@ describe('AppComponent', () => {
         FormsModule,
         BrowserModule,
         TemplateModule,
-        ReactiveFormsModule,
         HttpClientModule,
-        RouterTestingModule
+        RouterTestingModule,
+        ReactiveFormsModule
       ],
       declarations: [AppComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]

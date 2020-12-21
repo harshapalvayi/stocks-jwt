@@ -2,16 +2,16 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { StocksComponent } from './stocks.component';
 import {CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA} from '@angular/core';
-import {UserService} from '@shared/services/user/user.service';
-import {UtilService} from '@shared/services/util/util.service';
-import {ChartService} from '@shared/services/chart/chart.service';
-import {SharesService} from '@shared/services/shares/shares.service';
-import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
 import {CoreModule} from '@core/core.module';
 import {RouterTestingModule} from '@angular/router/testing';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {PrimengModule} from '@shared/primeng.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {PrimengModule} from '@shared/primeng.module';
+import {UserService} from '@shared/services/user/user.service';
+import {UtilService} from '@shared/services/util/util.service';
+import {ChartService} from '@shared/services/chart/chart.service';
+import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
+import {StockService} from '@shared/services/stock/stock.service';
 
 describe('StocksComponent', () => {
   let component: StocksComponent;
@@ -21,16 +21,16 @@ describe('StocksComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         CoreModule,
+        PrimengModule,
         RouterTestingModule,
-        HttpClientTestingModule,
-        PrimengModule
+        HttpClientTestingModule
       ],
       declarations: [ StocksComponent ],
       providers: [
         UserService,
         UtilService,
         ChartService,
-        SharesService,
+        StockService,
         TokenStorageService,
         BrowserAnimationsModule
       ],

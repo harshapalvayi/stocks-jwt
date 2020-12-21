@@ -25,3 +25,16 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+Description:
+
+The Stock App helps to easily maintain user stocks and options from different brokerage accounts in a single place.
+Easy to add and edit stocks and options for a given user.
+Easy to register and sign-in if already a valid user.
+User can also track the dividend from various stocks.
+User can also search a stock to get to know the details of a stock.
+User can also validate reports and graphical charts to analyse stock portoflio.
+
+
+Screenshots of Stock App:
+

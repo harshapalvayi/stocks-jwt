@@ -19,10 +19,10 @@ export class ChartService {
     const buy = [];
     const datasets = [];
     if (data) {
-      data.sort((a, b) => a.price - b.price);
+      data.sort((a, b) => a.marketPrice - b.marketPrice);
       data.forEach(s => {
         labels.push(s.ticker);
-        price.push(s.price);
+        price.push(s.marketPrice);
       });
       const priceColor = UtilService.getRandomColor();
       datasets.push({
@@ -32,9 +32,9 @@ export class ChartService {
         data: price
       });
 
-      data.sort((a, b) => a.buy - b.buy);
+      data.sort((a, b) => a.buyPrice - b.buyPrice);
       data.forEach(s => {
-        buy.push(s.buy);
+        buy.push(s.buyPrice);
       });
       const buyColor = UtilService.getRandomColor();
       datasets.push({
@@ -171,7 +171,6 @@ export class ChartService {
   }
 
   public generateChartProperties(chart, chartData, widthDin, heightDin) {
-
     const context = chart.chart.ctx;
     let progressLabel;
     const xCenter = (chart.chart.width / widthDin);

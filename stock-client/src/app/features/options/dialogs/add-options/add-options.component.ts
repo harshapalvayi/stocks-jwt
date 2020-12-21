@@ -1,12 +1,12 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {UserToken} from '@models/User';
 import {FormGroup} from '@angular/forms';
-import {UserService} from '@shared/services/user/user.service';
-import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
-import {OptionsService} from '@shared/services/options/options.service';
 import {SelectItem} from 'primeng';
+import {OptionData} from '@models/optionsChainData';
+import {UserService} from '@shared/services/user/user.service';
+import {OptionsService} from '@shared/services/options/options.service';
 import {AccountService} from '@shared/services/account/account.service';
-import {OptionInfo} from '@models/options';
+import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
 
 @Component({
   selector: 'app-add-options',
@@ -58,7 +58,7 @@ export class AddOptionsComponent implements OnInit {
   onSubmitOption() {
     const option = this.addOptions.getRawValue();
     if (option && this.userInfo && this.userInfo.id) {
-      const optionData: OptionInfo = {
+      const optionData: OptionData = {
         userId: this.userInfo.id,
         optionType: option.type,
         ticker: option.ticker,

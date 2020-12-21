@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container mb-3">
    <div class="text-center">
      <label for="stock-name">
        <input id="stock-name" type="text"
@@ -13,36 +13,145 @@
    </div>
 </div>
 
-<div class="container mt-3" *ngIf="stockData">
-  <div class="d-flex flex-column flex-wrap justify-content-around">
-    <div class="text-dark">
-      <h3>{{stockData.stockName}}</h3>
+<div class="mb-3" *ngIf="stockData && stockData.price != null; else doThis">
+  <p-panel class="text-left" header="{{stockData.stockName}}"  [toggleable]="true">
+    <div class="d-flex flex-row align-items-center flex-wrap justify-content-around">
+
+      <div>
+        <label><b>Ticker</b></label>
+        <a class="text-primary ml-4" style="cursor:pointer;"
+           (click)="goToLink(stockData.ticker)"> {{stockData.ticker}}
+        </a>
+      </div>
+
+      <div>
+        <label for="price" class="text-left"><b>Price</b></label>
+        <span id="price" class="text-success ml-5">{{stockData.price | currency}}</span>
+      </div>
+
+      <div>
+        <label for="high" class="text-left"><b>High</b></label>
+        <span id="high" class="text-success ml-5">{{stockData.high | currency}}</span>
+      </div>
+
+      <div>
+        <label for="low" class="text-left"><b>Low</b></label>
+        <span id="low" class="text-success ml-5">{{stockData.low | currency}} </span>
+      </div>
+
+      <div *ngIf="stockData.dividend">
+        <label for="dividend" class="text-left"><b>Dividend</b></label>
+        <span id="dividend" class="text-success ml-4">{{stockData.dividend | currency}}</span>
+      </div>
+
+      <div *ngIf="stockData.payDate">
+        <label for="payDate" class="text-left"><b>Pay date</b></label>
+        <span id="payDate" class="text-success ml-3">{{convertDate(stockData.payDate)}}</span>
+      </div>
+
     </div>
-    <div class="mt-2">
-      <label><b>Ticker</b></label>
-      <a class="text-primary ml-c-4" style="cursor:pointer;"
-         (click)="goToLink(stockData.ticker)"> {{stockData.ticker}}
-      </a>
-    </div>
-    <div>
-      <label for="price" class="text-left"><b>Price</b></label>
-      <span id="price" class="text-success ml-5">{{stockData.price | currency}}</span>
-    </div>
-    <div>
-      <label for="high" class="text-left"><b>High</b></label>
-      <span id="high" class="text-success ml-5">{{stockData.high | currency}}</span>
-    </div>
-    <div>
-      <label for="low" class="text-left"><b>Low</b></label>
-      <span id="low" class="text-success ml-5">{{stockData.low | currency}} </span>
-    </div>
-    <div *ngIf="stockData.dividend">
-      <label for="dividend" class="text-left"><b>Dividend</b></label>
-      <span id="dividend" class="text-success ml-4">{{stockData.dividend | currency}}</span>
-    </div>
-    <div *ngIf="stockData.payDate">
-      <label for="payDate" class="text-left"><b>Pay date</b></label>
-      <span id="payDate" class="text-success ml-3">{{stockData.payDate | date}}</span>
-    </div>
-  </div>
+  </p-panel>
 </div>
+
+<div class="mb-3" *ngIf="stockActivities && stockActivities.length > 0">
+  <p-panel class="text-left" header="Stock History"  [toggleable]="true">
+    <p-table  [columns]="stockCols"
+              [value]="stockActivities"
+              [paginator]="true"
+              [rows]="10">
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th class="text-center" *ngFor="let col of columns"  [pSortableColumn]="col.field"
+              [ngStyle]="{'width': col.width}">
+            {{col.header}}
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-stock let-ri="rowIndex">
+        <tr>
+          <td class="text-center">
+            <a class="text-primary" style="cursor:pointer;"
+               (click)="goToLink(stock.ticker)"> {{stock.ticker}}
+            </a>
+          </td>
+          <td class="text-left">{{getStockName(stock.name)}}</td>
+          <td class="text-center">{{stock.marketPrice | currency}}</td>
+          <td class="text-center">{{stock.sharePrice | currency}}</td>
+          <td class="text-center">{{stock.shares}}</td>
+          <td class="text-center" [ngClass]="{
+                              'text-success' : stock.percentChange > 0 ,
+                                '': stock.percentChange === 0,
+                              'text-danger' : stock.percentChange < 0 }">
+            {{getPercentage(stock.percentChange)}}
+            <i  *ngIf="stock.percentChange > 0"  class="pi pi-arrow-up"
+                [style]="{'font-size': '20px', 'width': '30px'}"> </i>
+            <i  *ngIf="stock.percentChange < 0"  class="pi pi-arrow-down"
+                [style]="{'font-size': '20px', 'width': '30px'}"> </i>
+          </td>
+          <td class="text-center" [ngClass]="{
+                              'text-success' : stock.returns > 0 ,
+                                '': stock.returns === 0,
+                              'text-danger' : stock.returns < 0 }">
+            {{stock.returns | currency}}
+            <i  *ngIf="stock.returns > 0"  class="pi pi-arrow-up"
+                [style]="{'font-size': '20px', 'width': '30px'}"> </i>
+            <i  *ngIf="stock.returns < 0"  class="pi pi-arrow-down"
+                [style]="{'font-size': '20px', 'width': '30px'}"> </i>
+          </td>
+          <td class="text-center">{{stock.action}}</td>
+          <td class="text-center">{{stock.tradeDate | date}}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-panel>
+</div>
+
+<div class="mb-3" *ngIf="optionActivities && optionActivities.length > 0">
+  <p-panel class="text-left" header="Option History"  [toggleable]="true">
+    <p-table  [columns]="optionCols"
+              [value]="optionActivities"
+              [paginator]="true"
+              [rows]="10">
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th class="text-center" *ngFor="let col of columns"  [pSortableColumn]="col.field"
+              [ngStyle]="{'width': col.width}">
+            {{col.header}}
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-option let-ri="rowIndex">
+        <tr>
+          <td class="text-center">
+            <a class="text-primary" style="cursor:pointer;"
+               (click)="goToLink(option.ticker)"> {{option.ticker}}
+            </a>
+          </td>
+          <td class="text-left">{{getStockName(option.name)}}</td>
+          <td class="text-center">{{option.actionPrice | currency}}</td>
+          <td class="text-center">{{option.strikePrice | currency}}</td>
+          <td class="text-center">{{option.contracts}}</td>
+          <td class="text-center">{{option.expire | date}}</td>
+          <td class="text-center"
+              [ngClass]="option.returns > 0 ? 'text-success' : 'text-danger'">
+            {{option.returns | currency}}
+            <i  *ngIf="option.returns > 0"  class="pi pi-arrow-up"
+                [style]="{'font-size': '18px', 'width': '25px'}"> </i>
+            <i  *ngIf="option.returns < 0"  class="pi pi-arrow-down"
+                [style]="{'font-size': '18px', 'width': '25px'}"> </i>
+          </td>
+          <td class="text-center">{{option.action}}</td>
+          <td class="text-center">{{option.tradeDate | date}}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-panel>
+</div>
+
+<ng-template #doThis>
+  <div class="text-center" *ngIf="isSubmitted && stockData">
+    <h4>No data found</h4>
+  </div>
+</ng-template>
+
+

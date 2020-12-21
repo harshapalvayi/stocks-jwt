@@ -11,11 +11,11 @@ import java.util.Date;
 
 public class DateDeserializer implements JsonDeserializer<Date> {
 
-    private int MILLISECONDS = 1000;
     @Override
     public Date deserialize(JsonElement element, Type arg1, JsonDeserializationContext arg2) throws JsonParseException {
 
         Timestamp stamp = new Timestamp(element.getAsLong());
-        return new Date(stamp.getTime()*MILLISECONDS);
+        int MILLISECONDS = 1000;
+        return new Date(stamp.getTime()* MILLISECONDS);
     }
 }

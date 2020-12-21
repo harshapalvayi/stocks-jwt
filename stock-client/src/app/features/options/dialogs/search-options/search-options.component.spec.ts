@@ -5,12 +5,12 @@ import {CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {RouterTestingModule} from '@angular/router/testing';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {PrimengModule} from '@shared/primeng.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {PrimengModule} from '@shared/primeng.module';
 import {UserService} from '@shared/services/user/user.service';
-import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
 import {DateService} from '@shared/services/date/date.service';
 import {UtilService} from '@shared/services/util/util.service';
+import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
 
 describe('SearchOptionsComponent', () => {
   let component: SearchOptionsComponent;

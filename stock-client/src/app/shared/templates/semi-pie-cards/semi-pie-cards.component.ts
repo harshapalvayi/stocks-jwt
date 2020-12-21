@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {Chart} from '@models/chart';
 import {ChartService} from '@shared/services/chart/chart.service';
 
@@ -18,7 +18,8 @@ export class SemiPieCardsComponent implements OnInit, OnChanges {
     this.buildOptions();
   }
 
- ngOnChanges(): void {
+ ngOnChanges(changes: SimpleChanges): void {
+   this.data = changes.data.currentValue;
    this.buildOptions();
  }
 
@@ -50,8 +51,6 @@ export class SemiPieCardsComponent implements OnInit, OnChanges {
   }
 
   public generateAnimations() {
-    setTimeout(() => {
       this.chartService.generateChartProperties(this.chart, this.data, 2, 1.4);
-    });
   }
 }

@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SemiPieCardsComponent } from './semi-pie-cards.component';
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA} from '@angular/core';
 
 describe('SemiPieCardsComponent', () => {
   let component: SemiPieCardsComponent;
@@ -10,7 +10,10 @@ describe('SemiPieCardsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ SemiPieCardsComponent ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      schemas: [
+        NO_ERRORS_SCHEMA,
+        CUSTOM_ELEMENTS_SCHEMA
+      ]
     });
   }));
 

@@ -3,14 +3,14 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RegisterComponent } from './register.component';
 import {CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA} from '@angular/core';
 import {FormBuilder, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
-import {AuthenticationService} from '@shared/services/jwt/authentication.service';
-import {NotificationService} from '@shared/services/notification/notification.service';
 import {RouterTestingModule} from '@angular/router/testing';
 import {HttpClient} from '@angular/common/http';
 import {MessageService} from 'primeng/api';
-import {PrimengModule} from '@shared/primeng.module';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
+import {PrimengModule} from '@shared/primeng.module';
+import {NotificationService} from '@shared/services/notification/notification.service';
+import {AuthenticationService} from '@shared/services/jwt/authentication.service';
 
 describe('RegisterComponent', () => {
   let component: RegisterComponent;
@@ -18,10 +18,23 @@ describe('RegisterComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, ReactiveFormsModule, RouterTestingModule, FormsModule, PrimengModule],
+      imports: [
+        HttpClientTestingModule,
+        ReactiveFormsModule,
+        RouterTestingModule,
+        FormsModule,
+        PrimengModule
+      ],
       declarations: [ RegisterComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
-      providers: [FormBuilder, TokenStorageService, MessageService, AuthenticationService, NotificationService, HttpClient]
+      providers: [
+        FormBuilder,
+        TokenStorageService,
+        MessageService,
+        AuthenticationService,
+        NotificationService,
+        HttpClient
+      ]
     });
   }));
 

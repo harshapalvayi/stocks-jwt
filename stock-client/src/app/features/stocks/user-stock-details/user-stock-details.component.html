@@ -1,5 +1,5 @@
-<div class="my-3" *ngIf="shares && shares.length > 0; else showThis">
-  <p-table  [columns]="cols"  [value]="shares"
+<div class="my-3" *ngIf="stocks && stocks.length > 0; else showThis">
+  <p-table  [columns]="cols"  [value]="stocks"
             dataKey="symbol" [paginator]="true" [rows]="10">
     <ng-template pTemplate="header" let-columns>
       <tr>

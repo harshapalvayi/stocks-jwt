@@ -2,14 +2,17 @@
 <div class="container my-3">
   <app-cards class="mx-5 bg-white">
     <div class="text-center text-success mb-3">
-      <h3> Add options </h3>
+      <h3> Options </h3>
     </div>
 
     <form [formGroup]="addOptions" (ngSubmit)="onSubmitOption()">
       <div class="d-flex flex-row align-items-center flex-wrap justify-content-around">
         <div>
           <label><b>Ticker</b>
-            <input class="font-weight-bold field" formControlName="ticker" type="text">
+            <input class="font-weight-bold field"
+                   formControlName="ticker"
+                   pattern="[a-zA-Z]*"
+                   type="text">
           </label>
         </div>
 
@@ -36,7 +39,7 @@
                    disabled
                    type="number" [min]="0">
             <button pButton type="button" icon="pi pi-search"
-                    [disabled]="!addOptions.get('ticker').value"
+                    [disabled]="!addOptions.get('ticker').value || addOptions.get('ticker').invalid"
                     class="field ui-button-rounded ui-button-primary"
                     (click)="searchOptionsPopup()">
             </button>
@@ -46,7 +49,8 @@
 
         <div>
           <label><b>option Type</b>
-            <p-radioButton class="field" *ngFor="let type of types" name="group1" [value]="type.value"
+            <p-radioButton class="field" *ngFor="let type of types"
+                           name="group1" [value]="type.value"
                            [label]="type.label" formControlName="type" [disabled]="true">
             </p-radioButton>
           </label>

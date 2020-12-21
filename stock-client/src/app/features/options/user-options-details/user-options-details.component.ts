@@ -1,14 +1,13 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {UserToken} from '@models/User';
-import {UserService} from '@shared/services/user/user.service';
-import {SharesService} from '@shared/services/shares/shares.service';
-import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
 import {BrokerageAccounts, OptionsHeaders} from '@models/menus';
 import {TradeOptionsComponent} from '@features/options/dialogs/trade-options/trade-options.component';
-import {AccountService} from '@shared/services/account/account.service';
 import {DeleteOptionComponent} from '@features/options/dialogs/delete-option/delete-option.component';
 import {MenuItem} from 'primeng';
-import {OptionInfo} from '@models/options';
+import {OptionData} from '@models/optionsChainData';
+import {UserService} from '@shared/services/user/user.service';
+import {AccountService} from '@shared/services/account/account.service';
+import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
 
 @Component({
   selector: 'app-user-options-details',
@@ -19,13 +18,12 @@ export class UserOptionsDetailsComponent implements OnInit {
 
   @ViewChild(TradeOptionsComponent, {static: false}) trade: TradeOptionsComponent;
   @ViewChild(DeleteOptionComponent, {static: false}) delete: DeleteOptionComponent;
+  @Input() options: OptionData[];
+  @Output() action = new EventEmitter<string>();
   public cols: any[];
   public userInfo: UserToken;
-  @Input() options: OptionInfo[];
-  @Output() action = new EventEmitter<string>();
 
   constructor(private userService: UserService,
-              private shareService: SharesService,
               private accountService: AccountService,
               private tokenService: TokenStorageService) { }
 
@@ -37,7 +35,7 @@ export class UserOptionsDetailsComponent implements OnInit {
     }
   }
 
-  getMenuItems(option: OptionInfo): MenuItem[] {
+  getMenuItems(option: OptionData): MenuItem[] {
     const context = option;
     return [
       {label: 'Add', icon: 'pi pi-plus', command: () => { this.buyOption(context); }  },
@@ -55,15 +53,15 @@ export class UserOptionsDetailsComponent implements OnInit {
     this.action.emit('deleted');
   }
 
-  buyOption(option: OptionInfo) {
+  buyOption(option: OptionData) {
     this.trade.showTradeDialog('buy', option);
   }
 
-  sellOption(option: OptionInfo) {
+  sellOption(option: OptionData) {
     this.trade.showTradeDialog('sell', option);
   }
 
-  tradeOption(option: OptionInfo) {
+  tradeOption(option: OptionData) {
     if (option && option.account) {
       this.navigateToWebSite(option);
     } else {

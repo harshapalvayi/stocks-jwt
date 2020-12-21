@@ -1,20 +1,31 @@
-<header class="fixed-top">
-  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-    <div><a routerLink="/" class="navbar-brand">Stocks</a></div>
+<nav class="navbar navbar-expand-md py-2" id="main-nav">
+  <div class="container">
+    <div>
+      <a routerLink="/" class="navbar-brand" [ngClass]="theme === 'sun-rise'? 'text-white' : 'text-success'"
+         style="cursor: pointer">Stocks</a>
+    </div>
+    <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav ml-auto" *ngIf="userService.isUserLoggedIn()">
+        <li class="nav-item"><a  routerLink="/app-dashboard" class="nav-link" routerLinkActive="active">DashBoard</a></li>
+        <li class="nav-item"><a  routerLink="/app-stocks" class="nav-link" routerLinkActive="active">Stocks</a></li>
+        <li class="nav-item"><a  routerLink="/app-options" class="nav-link" routerLinkActive="active">Options</a></li>
+        <li class="nav-item"><a  routerLink="/app-reports" class="nav-link" routerLinkActive="active">Reports</a></li>
+        <li class="nav-item"><a  routerLink="/app-admin" class="nav-link" routerLinkActive="active">Admin</a></li>
+      </ul>
 
-    <ul class="navbar-nav">
-      <li><a *ngIf="userService.isUserLoggedIn()" routerLink="/app-dashboard" class="nav-link">DashBoard</a></li>
-      <li><a *ngIf="userService.isUserLoggedIn()" routerLink="/app-stocks" class="nav-link">Stocks</a></li>
-      <li><a *ngIf="userService.isUserLoggedIn()" routerLink="/app-options" class="nav-link">Options</a></li>
-      <li><a *ngIf="userService.isUserLoggedIn()" routerLink="/app-reports"  class="nav-link"> Reports </a></li>
-      <li><a *ngIf="userService.isUserLoggedIn()" routerLink="/app-admin"  class="nav-link"> Admin </a></li>
-    </ul>
-
-    <ul class="navbar-nav navbar-collapse justify-content-end">
-      <li><a *ngIf="!userService.isUserLoggedIn()" routerLink="/app-register" class="nav-link">Sign Up</a></li>
-      <li><a *ngIf="!userService.isUserLoggedIn()" routerLink="/app-login-page" class="nav-link">Login</a></li>
-      <li><span *ngIf="userService.isUserLoggedIn() && username" class="nav-link"> {{username}}</span></li>
-      <li><a *ngIf="userService.isUserLoggedIn()" routerLink="/app-logout" class="nav-link">Logout</a></li>
-    </ul>
-  </nav>
-</header>
+      <ul class="navbar-nav ml-auto justify-content-end"
+          *ngIf="!userService.isUserLoggedIn()">
+        <li><a routerLink="/app-register" class="nav-link">Sign Up</a></li>
+        <li><a routerLink="/app-login-page" class="nav-link">Login</a></li>
+      </ul>
+      <ul class="navbar-nav ml-auto justify-content-end"
+          *ngIf="userService.isUserLoggedIn()">
+        <li><a *ngIf="username" routerLink="/app-user-profile" class="nav-link">{{username | titlecase }}</a></li>
+        <li><a routerLink="/app-logout" class="nav-link">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>

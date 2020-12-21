@@ -1,10 +1,9 @@
-
-<app-header></app-header>
-<div class="py-5 bg-color">
+<app-header class="fixed-top" [ngClass]="theme === 'light'? 'bg-dark' : 'dark'"></app-header>
+<div class="py-5 alignment" [ngClass]="theme === 'light'? 'light' : 'dark'">
   <app-notification></app-notification>
   <router-outlet></router-outlet>
 </div>
-<app-footer></app-footer>
+<app-footer class="fixed-bottom" [ngClass]="theme === 'light'? 'bg-white' : 'dark'"></app-footer>
 
 
 

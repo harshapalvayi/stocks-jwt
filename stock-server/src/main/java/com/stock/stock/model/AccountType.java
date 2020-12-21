@@ -2,45 +2,48 @@ package com.stock.stock.model;
 
 public class AccountType {
 
-    private long shareid;
+    private long stockId;
 
-    private long optionid;
+    private long optionId;
 
-    private long userid;
+    private long userId;
 
     private Integer account;
 
     public AccountType() { }
 
-    public AccountType(long share, long option, long user, Integer account) {
-        this.shareid = share;
-        this.optionid = option;
-        this.userid = user;
+    public AccountType(long stockId,
+                       long optionId,
+                       long userId,
+                       Integer account) {
+        this.stockId = stockId;
+        this.optionId = optionId;
+        this.userId = userId;
         this.account = account;
     }
 
-    public long getShareid() {
-        return shareid;
+    public long getStockId() {
+        return stockId;
     }
 
-    public void setShareid(long shareid) {
-        this.shareid = shareid;
+    public void setStockId(long stockId) {
+        this.stockId = stockId;
     }
 
-    public long getOptionid() {
-        return optionid;
+    public long getOptionId() {
+        return optionId;
     }
 
-    public void setOptionid(long optionid) {
-        this.optionid = optionid;
+    public void setOptionId(long optionId) {
+        this.optionId = optionId;
     }
 
-    public long getUserid() {
-        return userid;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setUserid(long userid) {
-        this.userid = userid;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public Integer getAccount() {

@@ -25,6 +25,16 @@ public class Users implements UserDetails {
     @Column(unique = true, nullable = false)
     private String email;
 
+    private String theme;
+
+    public String getTheme() {
+        return theme;
+    }
+
+    public void setTheme(String theme) {
+        this.theme = theme;
+    }
+
     public long getUserId() {
         return userId;
     }

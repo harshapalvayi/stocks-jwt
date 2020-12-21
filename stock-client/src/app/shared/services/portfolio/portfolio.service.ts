@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import {Observable} from 'rxjs';
-import {Portfolio, PortfolioHistory} from '@models/stock';
+import {StockPortfolio} from '@models/stock';
 import {HttpClient} from '@angular/common/http';
+import {OptionPortfolio} from '@models/optionsChainData';
+import { PortfolioData, PortfolioHistory} from '@models/portfolio';
 
 @Injectable({
   providedIn: 'root'
@@ -11,16 +13,40 @@ export class PortfolioService {
   private baseUrl = 'api/portfolio';
   constructor(private http: HttpClient) { }
 
-  getPortfolio(id: number): Observable<Portfolio> {
-    return this.http.get<Portfolio>(`${this.baseUrl}/${id}`);
+  getTotalPortfolio(id: number): Observable<PortfolioData> {
+    return this.http.get<PortfolioData>(`${this.baseUrl}/${id}`);
   }
 
-  getPortfolioHistory(id: number): Observable<PortfolioHistory> {
-    return this.http.get<PortfolioHistory>(`${this.baseUrl}/history/${id}`);
+  getStockPortfolio(id: number): Observable<StockPortfolio> {
+    return this.http.get<StockPortfolio>(`${this.baseUrl}/stocks/${id}`);
   }
 
-  deletePortfolio(id: number): Observable<Portfolio> {
-    return this.http.delete<Portfolio>(`${this.baseUrl}/${id}`);
+  getOptionPortfolio(id: number): Observable<OptionPortfolio> {
+    return this.http.get<OptionPortfolio>(`${this.baseUrl}/options/${id}`);
+  }
+
+  getWeeklyData(id: number): Observable<PortfolioData[]> {
+    return this.http.get<PortfolioData[]>(`${this.baseUrl}/weekly/${id}`);
+  }
+
+  getMonthlyData(id: number): Observable<PortfolioData[]> {
+    return this.http.get<PortfolioData[]>(`${this.baseUrl}/monthly/${id}`);
+  }
+
+  getYearlyData(id: number): Observable<PortfolioData[]> {
+    return this.http.get<PortfolioData[]>(`${this.baseUrl}/yearly/${id}`);
+  }
+
+  getAllData(id: number): Observable<PortfolioData[]> {
+    return this.http.get<PortfolioData[]>(`${this.baseUrl}/all/${id}`);
+  }
+
+  getPortfolioHistory(id: number): Observable<PortfolioHistory[]> {
+    return this.http.get<PortfolioHistory[]>(`${this.baseUrl}/history/${id}`);
+  }
+
+  deletePortfolio(id: number): Observable<PortfolioData> {
+    return this.http.delete<PortfolioData>(`${this.baseUrl}/${id}`);
   }
 
   public buildDataForChart(actualValue, maxValue,  colors, titleColor, notation) {
@@ -40,19 +66,30 @@ export class PortfolioService {
     return { titleColor, datasets };
   }
 
-  public buildPortFolioChart(data) {
-    console.log('data', data);
+  public buildPortFolioChart(data, format) {
     const labels = [];
     const datasets = [];
+    const labelDates = [];
     const dataValues = [];
-    data.forEach(trade => {
-      const label = this.formatDate(trade.tradeDate);
-      labels.push(label);
+
+    if (data.length > 0) {
+      data.forEach(trade => {
+        const label = trade.tradeDate;
+        labelDates.push(label);
+        labelDates.sort();
+      });
+    }
+
+    labelDates.forEach(label => {
+      const date = this.formatDate(label, format);
+      labels.push(date);
     });
 
-    data.forEach(value => {
-      dataValues.push(value.portfolio);
-    });
+    if (data.length > 0) {
+      data.forEach(value => {
+        dataValues.push(value.portfolio);
+      });
+    }
 
     datasets.push({
       label: 'portfolio',
@@ -63,13 +100,20 @@ export class PortfolioService {
     return { labels, datasets };
   }
 
-  formatDate(fdate) {
+  formatDate(fdate, format) {
+    let result;
     if (fdate) {
       const date = new Date(fdate);
       const year = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(date);
       const month = new Intl.DateTimeFormat('en', { month: 'short' }).format(date);
       const day = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(date);
-      return `${day}-${month}-${year}`;
+      if (format === 0) {
+        result = `${day}-${month}-${year}`;
+      } else {
+        result = `${day}-${month}`;
+      }
+      return result;
     }
   }
+
 }

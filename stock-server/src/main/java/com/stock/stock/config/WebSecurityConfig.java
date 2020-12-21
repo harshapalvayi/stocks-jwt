@@ -2,7 +2,7 @@ package com.stock.stock.config;
 
 import com.stock.stock.security.JwtAuthenticationEntryPoint;
 import com.stock.stock.security.JwtTokenFilter;
-import com.stock.stock.service.UserInfoService;
+import com.stock.stock.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private UserInfoService myUserDetailsService;
+    private UserService myUserDetailsService;
     @Autowired
     private JwtTokenFilter jwtTokenFilter;
     @Autowired

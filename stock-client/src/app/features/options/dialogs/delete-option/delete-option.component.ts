@@ -1,10 +1,10 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {UserToken} from '@models/User';
+import {OptionData} from '@models/optionsChainData';
 import {UserService} from '@shared/services/user/user.service';
+import {OptionsService} from '@shared/services/options/options.service';
 import {AccountService} from '@shared/services/account/account.service';
 import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
-import {OptionsService} from '@shared/services/options/options.service';
-import {OptionInfo} from '@models/options';
 
 @Component({
   selector: 'app-delete-option',
@@ -16,7 +16,7 @@ export class DeleteOptionComponent implements OnInit {
   @Output() deleted = new EventEmitter<string>();
 
   public showFlag: boolean;
-  public option: OptionInfo;
+  public option: OptionData;
   public userInfo: UserToken;
 
   constructor(private userService: UserService,
@@ -30,7 +30,7 @@ export class DeleteOptionComponent implements OnInit {
     }
   }
 
-  showDialog(option: OptionInfo) {
+  showDialog(option: OptionData) {
     this.option = option;
     this.showFlag = true;
   }

@@ -12,9 +12,9 @@ public class Stock {
 
     private BigDecimal dividend;
 
-    private Date paydate;
+    private Date payDate;
 
-    private Date exdate;
+    private Date exDate;
 
     private BigDecimal high;
 
@@ -27,15 +27,15 @@ public class Stock {
 
     public Stock(String ticker, String stockName,
                  BigDecimal price, BigDecimal dividend,
-                 Date paydate, Date exdate,
+                 Date paydate, Date exDate,
                  BigDecimal high, BigDecimal low,
                  String stockExchange) {
         this.ticker = ticker;
         StockName = stockName;
         this.price = price;
         this.dividend = dividend;
-        this.paydate = paydate;
-        this.exdate = exdate;
+        this.payDate = paydate;
+        this.exDate = exDate;
         this.high = high;
         this.low = low;
         this.stockExchange = stockExchange;
@@ -73,20 +73,20 @@ public class Stock {
         this.dividend = dividend;
     }
 
-    public Date getPaydate() {
-        return paydate;
+    public Date getPayDate() {
+        return payDate;
     }
 
-    public void setPaydate(Date paydate) {
-        this.paydate = paydate;
+    public void setPayDate(Date payDate) {
+        this.payDate = payDate;
     }
 
-    public Date getExdate() {
-        return exdate;
+    public Date getExDate() {
+        return exDate;
     }
 
-    public void setExdate(Date exdate) {
-        this.exdate = exdate;
+    public void setExDate(Date exDate) {
+        this.exDate = exDate;
     }
 
     public BigDecimal getHigh() {

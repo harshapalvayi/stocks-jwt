@@ -1,26 +1,31 @@
 <div class="container mt-5">
 
-  <div [hidden]="(loader$ | async)" *ngIf="shares && shares.length > 0 || options && options.length > 0; else showThis">
+  <div [hidden]="(loader$ | async)"
+       *ngIf="(observeStream$ | async) && portfolio && portfolioHistory &&
+             portfolioHistory.length > 0;
+       else showThis">
     <app-portfolio [portfolio]="portfolio"
-                   [stocks]="shares"
-                   [portfolioHistory]="portfolioHistory"
-                   [options]="options">
+                   [weeklyPortfolio]="weeklyPortfolio"
+                   [yearlyPortfolio]="yearlyPortfolio"
+                   [monthlyPortfolio]="monthlyPortfolio"
+                   [allPortfolio]="allPortfolio">
     </app-portfolio>
   </div>
 
 </div>
 
 <ng-template #showThis>
-  <div class="noDataSection" [hidden]="(loader$ | async)">
+  <div class="noDataSection" [hidden]="(loader$ | async)"
+     *ngIf="portfolioHistory && portfolioHistory.length == 0">
     <div class="d-flex align-items-center justify-content-center">
-      <h3>Add Stocks/Options To Portfolio</h3>
+      <h3 class="mt-5">Add Stocks/Options To Portfolio</h3>
     </div>
   </div>
 </ng-template>
 
 <div class="container">
   <div class="text-center">
-    <app-loader [hidden]="(loader$ | async) === false"></app-loader>
+    <app-loader class="mt-5" [hidden]="(loader$ | async) === false"></app-loader>
   </div>
 </div>
 

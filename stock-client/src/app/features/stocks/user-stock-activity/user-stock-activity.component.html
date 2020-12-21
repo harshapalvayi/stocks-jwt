@@ -1,0 +1,61 @@
+<div class="my-3" *ngIf="stockActivities && stockActivities.length > 0; else showThis">
+  <p-table  [columns]="cols"
+            [value]="stockActivities"
+            [paginator]="true"
+            [rows]="10">
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th class="text-center" *ngFor="let col of columns"  [pSortableColumn]="col.field"
+            [ngStyle]="{'width': col.width}">
+          {{col.header}}
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-stock let-ri="rowIndex">
+      <tr>
+        <td class="text-center">
+          <a class="text-primary" style="cursor:pointer;"
+             (click)="goToLink(stock.ticker)"> {{stock.ticker}}
+          </a>
+        </td>
+        <td class="text-left">{{getStockName(stock.name)}}</td>
+        <td class="text-center">{{stock.marketPrice | currency}}</td>
+        <td class="text-center">{{stock.sharePrice | currency}}</td>
+        <td class="text-center">{{stock.shares}}</td>
+        <td class="text-center" [ngClass]="{
+                              'text-success' : stock.percentChange > 0 ,
+                                '': stock.percentChange === 0,
+                              'text-danger' : stock.percentChange < 0 }">
+            {{getPercentage(stock.percentChange)}}
+            <i  *ngIf="stock.percentChange > 0"  class="pi pi-arrow-up"
+                [style]="{'font-size': '20px', 'width': '30px'}"> </i>
+            <i  *ngIf="stock.percentChange < 0"  class="pi pi-arrow-down"
+                [style]="{'font-size': '20px', 'width': '30px'}"> </i>
+        </td>
+        <td class="text-center" [ngClass]="{
+                              'text-success' : stock.returns > 0 ,
+                                '': stock.returns === 0,
+                              'text-danger' : stock.returns < 0 }">
+          {{stock.returns | currency}}
+          <i  *ngIf="stock.returns > 0"  class="pi pi-arrow-up"
+              [style]="{'font-size': '20px', 'width': '30px'}"> </i>
+          <i  *ngIf="stock.returns < 0"  class="pi pi-arrow-down"
+              [style]="{'font-size': '20px', 'width': '30px'}"> </i>
+        </td>
+        <td class="text-center">{{stock.action}}</td>
+        <td class="text-center">{{stock.tradeDate | date}}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<ng-template #showThis>
+  <div class="container noDataSection">
+    <div class="d-flex align-items-center justify-content-center">
+      <h3>Add Stocks To Portfolio</h3>
+    </div>
+  </div>
+</ng-template>
+
+
+

@@ -1,11 +1,11 @@
-<app-cards *ngIf="data; else doThis">
+<div *ngIf="data; else doThis">
   <p-chart class="bg-dark" #chart type="doughnut" *ngIf="type === 'options'"
            [data]="data" [height]="'200'" [width]="'200'"
            [options]="options"></p-chart>
   <p-chart class="bg-dark" type="doughnut" *ngIf="type === 'default'"
            [data]="data"
            [options]="options"></p-chart>
-</app-cards>
+</div>
 
 <ng-template #doThis>
   <div class="container noDataSection">

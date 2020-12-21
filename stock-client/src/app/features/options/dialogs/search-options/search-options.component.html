@@ -1,76 +1,183 @@
 
 
 <p-dialog [(visible)]="showFlag" [appendTo]="'body'"
-          styleClass="my-dialog">
+          class="my-dialog">
 
-  <p-header>
-    <span class="text-center font-weight-bold text-dark mb-2">Search Options</span>
-  </p-header>
+    <p-header class="text-center">
+      <span class="font-weight-bold text-dark mb-2 mx-5">Options for {{ticker}}</span>
+    </p-header>
 
-  <div [hidden]="spinner">
-    <form [formGroup]="searchOptions" (ngSubmit)="onSubmit()">
-      <div class="d-flex flex-row align-items-center justify-content-center">
-        <div class="text-center">
-          <label><span class="font-weight-bold field">Ticker</span> {{ticker}}</label>
+    <div [hidden]="spinner">
+      <form [formGroup]="searchOptions" (ngSubmit)="onSubmit()">
+        <div class="d-flex flex-row align-items-center justify-content-center">
+          <div class="text-center">
+            <label><span class="font-weight-bold mx-5 text-success"> {{stockName}} </span></label>
+          </div>
+          <div class="mx-5">
+            <p-selectButton [options]="types" formControlName="optionType"
+                            [disabled]="expirationDates.length === 0"
+                            (onChange)="onSelectType()"></p-selectButton>
+          </div>
+          <div *ngIf="expirationDates" class="mx-5">
+            <p-dropdown [options]="expirationDates"
+                        formControlName="expire"
+                        placeholder="Select Expiration"
+                        [disabled]="searchOptions.get('optionType').value === null"
+                        (onChange)="onSelectExpiry()">
+            </p-dropdown>
+          </div>
+
+          <div class="mx-5">
+            <button pButton type="button" label="Submit"
+                    class="ui-button-rounded ui-button-success"
+                    (click)="onSubmit()" [disabled]="searchOptions.invalid" ></button>
+            <button pButton type="button" label="Cancel" class="ml-3 ui-button-rounded ui-button-warning"
+                    (click)="onCancel()">
+            </button>
+          </div>
         </div>
-        <div class="mx-5">
-          <p-selectButton [options]="types" formControlName="optionType"
-                          (onChange)="onSelectType()"></p-selectButton>
+
+        <div class="container text-center">
+          <div *ngIf="searchOptions.get('expire').value === null &&
+                    expirationDates.length === 0" class="m-5">
+            <span>No options found</span>
+          </div>
         </div>
-        <div class="mx-5">
-          <p-dropdown [options]="expirationDates" formControlName="expire"
-                      [disabled]="searchOptions.get('optionType').value === null"
-                      (onChange)="onSelectExpiry()"></p-dropdown>
+
+        <div class="container text-center">
+          <div *ngIf="searchOptions.get('expire').value === null &&
+                    expirationDates && expirationDates.length > 0" class="m-5">
+            <span>Select an option</span>
+          </div>
         </div>
-      </div>
 
-      <div class="container text-center">
-        <div *ngIf="searchOptions.get('optionType').value === null" class="m-5">
-          <span>Select an option</span>
-        </div>
-      </div>
+        <div class="container mx-2">
 
-      <div class="container mx-2">
-
-        <div class="d-flex flex-row flex-wrap justify-content-start" [hidden]="innerSpinner">
-            <div *ngFor="let call of calls"
-                 [hidden]="!(searchOptions.get('optionType').value === 'call') || innerSpinner">
-              <label>
-                <input *ngIf="call" type="number" formControlName="strike" [value]="call.strike" [hidden]="true">
-              </label>
-              <button pButton type="button" [label]="call.strike.toString() | currency"
-                      class="m-2 ui-button-rounded"
-                      [ngClass]="{'ui-button-primary' : call.selected, 'ui-button-secondary': !call.selected}"
-                      (click)="onSelectOption(call)">
-              </button>
-            </div>
-
-            <div *ngFor="let put of puts"
-                 [hidden]="!(searchOptions.get('optionType').value === 'put') || innerSpinner">
-              <label>
-                <input *ngIf="put" type="number" formControlName="strike" [value]="put.strike" [hidden]="true">
-              </label>
-              <button pButton type="button" [label]="put.strike.toString() | currency"
-                        class="m-2 ui-button-rounded"
-                        [ngClass]="{'ui-button-primary' : put.selected, 'ui-button-secondary': !put.selected}"
-                        (click)="onSelectOption(put)">
-                </button>
+          <div [hidden]="!(searchOptions.get('optionType').value === 'call')  ||
+                          (searchOptions.get('expire').value === null) || innerSpinner">
+            <div class="my-3 container align-items-center">
+              <p-table [columns]="cols"
+                       [value]="calls"
+                       selectionMode="single"
+                       dataKey="strike"
+                       [scrollable]="true"
+                       scrollHeight="250px"
+                       (onRowSelect)="onSelectOption($event)"
+                       (onRowUnselect)="onUnSelectOption($event)">
+                <ng-template pTemplate="summary">
+                  <span class="mx-5 text-success">
+                    Share Price : {{stockPrice | currency}}
+                  </span>
+                  <span class="mx-5">
+                    There are {{calls?.length}} option calls
+                  </span>
+                </ng-template>
+                <ng-template pTemplate="header" let-columns>
+                  <tr>
+                    <th class="text-center" *ngFor="let col of columns">
+                      {{col.header}}
+                    </th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-call let-columns="columns">
+                  <tr [pSelectableRow]="call">
+                    <td class="text-center">
+                      <label>
+                        <input *ngIf="call" type="number" formControlName="strike" [value]="call.strike" [hidden]="true">
+                      </label>
+                      <span>{{call.strike | currency}}</span>
+                    </td>
+                    <td class="text-center">
+                      <span>{{call.lastPrice}}</span>
+                    </td>
+                    <td class="text-center">
+                      <span>{{call.ask}}</span>
+                    </td>
+                    <td class="text-center">
+                      <span>{{call.bid}}</span>
+                    </td>
+                    <td class="text-center">
+                      <span>{{call.volume}}</span>
+                    </td>
+                    <td class="text-center">
+                      <span>{{call.openInterest}}</span>
+                    </td>
+                    <td class="text-center">
+                      <span>{{call.impliedVolatility |  number : '1.2-2'}}</span>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
             </div>
           </div>
 
-        <div class="text-center m-3">
-          <app-loader [style]="{width: '75px'}"
-                      [hidden]="innerSpinner === false"></app-loader>
+          <div [hidden]="!(searchOptions.get('optionType').value === 'put') ||
+                           (searchOptions.get('expire').value === null) || innerSpinner">
+            <div class="my-3 container align-items-center">
+              <p-table [columns]="cols"
+                       [value]="puts"
+                       selectionMode="single"
+                       dataKey="strike"
+                       (onRowSelect)="onSelectOption($event)"
+                       (onRowUnselect)="onUnSelectOption($event)"
+                       [scrollable]="true"
+                       scrollHeight="250px">
+                <ng-template pTemplate="header" let-columns>
+                  <tr>
+                    <th class="text-center" *ngFor="let col of columns">
+                      {{col.header}}
+                    </th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-put let-columns="columns">
+                  <tr [pSelectableRow]="put">
+                    <td class="text-center">
+                      <label>
+                        <input *ngIf="put" type="number" formControlName="strike" [value]="put.strike" [hidden]="true">
+                      </label>
+                      <span>{{put.strike | currency}}</span>
+                    </td>
+                    <td class="text-center">
+                      <span>{{put.lastPrice}}</span>
+                    </td>
+                    <td class="text-center">
+                      <span>{{put.ask}}</span>
+                    </td>
+                    <td class="text-center">
+                      <span>{{put.bid}}</span>
+                    </td>
+                    <td class="text-center">
+                      <span>{{put.volume}}</span>
+                    </td>
+                    <td class="text-center">
+                      <span>{{put.openInterest}}</span>
+                    </td>
+                    <td class="text-center">
+                      <span>{{put.impliedVolatility |  number : '1.2-2'}}</span>
+                    </td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                  <span class="mx-5 text-success">
+                      Share Price : {{stockPrice | currency}}
+                  </span>
+                  <span>
+                      There are {{puts?.length}} option puts
+                  </span>
+                </ng-template>
+              </p-table>
+            </div>
+          </div>
+
+          <div class="text-center m-3">
+            <app-loader [style]="{width: '75px'}"
+                        [hidden]="innerSpinner === false"></app-loader>
+          </div>
+
         </div>
-      </div>
 
-      <div class="d-flex justify-content-center mt-3">
-        <button pButton type="button" label="Submit" class="ml-2 ui-button-rounded ui-button-success"
-                (click)="onSubmit()" [disabled]="searchOptions.invalid" ></button>
-      </div>
-    </form>
-
-  </div>
+      </form>
+    </div>
 
   <div class="text-center m-3">
     <app-loader [style]="{width: '75px'}" [hidden]="spinner === false"></app-loader>

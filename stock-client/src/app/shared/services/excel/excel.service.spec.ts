@@ -6,12 +6,21 @@ import {MessagesService} from '@shared/services/message/messages.service';
 import {NotificationService} from '@shared/services/notification/notification.service';
 import {PrimengModule} from '@shared/primeng.module';
 import {FormBuilder, FormsModule} from '@angular/forms';
-import {SharesService} from '@shared/services/shares/shares.service';
+import {StockService} from '@shared/services/stock/stock.service';
 
 describe('ExcelService', () => {
   beforeEach(() => TestBed.configureTestingModule({
-    imports: [HttpClientTestingModule, FormsModule, PrimengModule],
-    providers: [MessagesService, NotificationService, SharesService, FormBuilder]
+    imports: [
+      FormsModule,
+      PrimengModule,
+      HttpClientTestingModule
+    ],
+    providers: [
+      FormBuilder,
+      StockService,
+      MessagesService,
+      NotificationService
+    ]
   }));
 
   it('should be created', () => {

@@ -1,8 +1,7 @@
 package com.stock.stock.security;
 
-import com.stock.stock.service.UserInfoService;
+import com.stock.stock.service.UserService;
 import io.jsonwebtoken.ExpiredJwtException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,14 +19,17 @@ import java.io.IOException;
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private JwtUtil jwtUtil;
+    private final JwtUtil jwtUtil;
 
     @Value("${jwt.header}")
     private String AUTH_HEADER;
 
-    @Autowired
-    private UserInfoService userDetailsService;
+    private final UserService userDetailsService;
+
+    public JwtTokenFilter(JwtUtil jwtUtil, UserService userDetailsService) {
+        this.jwtUtil = jwtUtil;
+        this.userDetailsService = userDetailsService;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)

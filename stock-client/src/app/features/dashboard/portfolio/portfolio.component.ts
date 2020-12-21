@@ -1,8 +1,7 @@
 import {Component, Input, OnChanges, OnInit} from '@angular/core';
-import {Portfolio, PortfolioHistory, StockInfo} from '@models/stock';
 import {Chart} from '@models/chart';
 import {PortfolioService} from '@shared/services/portfolio/portfolio.service';
-import {OptionInfo} from '@models/options';
+import {PortfolioData, PortfolioHistory} from '@models/portfolio';
 
 @Component({
   selector: 'app-portfolio',
@@ -11,19 +10,23 @@ import {OptionInfo} from '@models/options';
 })
 export class PortfolioComponent implements OnInit, OnChanges {
 
+  @Input() public portfolio: PortfolioData;
+  @Input() public allPortfolio: PortfolioData[];
+  @Input() public weeklyPortfolio: PortfolioData[];
+  @Input() public monthlyPortfolio: PortfolioData[];
+  @Input() public yearlyPortfolio: PortfolioData[];
   public status: string;
-  @Input() public stocks: StockInfo[];
-  @Input() public options: OptionInfo[];
-  @Input() public portfolio: Portfolio;
-  @Input() public portfolioHistory: PortfolioHistory;
-  public position: Chart;
-  public investment: Chart;
   public stockCount: number;
   public optionCount: number;
   public percentChange: number;
+  public position: Chart;
+  public investment: Chart;
+  public monthlyData: Chart;
+  public weeklyData: Chart;
+  public yearlyData: Chart;
+  public allData: Chart;
   public portfolioValue: Chart;
   public annualDividend: Chart;
-  public portfolioData: Chart;
 
   constructor(private portfolioService: PortfolioService) { }
 
@@ -79,17 +82,18 @@ export class PortfolioComponent implements OnInit, OnChanges {
           .buildDataForChart(status, 100, colors, titleColor, '$');
       }
 
-      if (this.stocks) {
-        this.stockCount = this.stocks.length > 0 ? this.stocks.length : 0;
+      if (this.portfolio.stocks) {
+        this.stockCount = this.portfolio.stocks > 0 ? this.portfolio.stocks : 0;
       }
 
-      if (this.options) {
-        this.optionCount = this.options.length > 0 ? this.options.length : 0;
+      if (this.portfolio.options) {
+        this.optionCount = this.portfolio.options > 0 ? this.portfolio.options : 0;
       }
     }
 
-    if (this.portfolioHistory) {
-      this.portfolioData = this.portfolioService.buildPortFolioChart(this.portfolioHistory);
-    }
+    this.weeklyData = this.portfolioService.buildPortFolioChart(this.weeklyPortfolio, 0);
+    this.monthlyData = this.portfolioService.buildPortFolioChart(this.monthlyPortfolio, 1);
+    this.yearlyData = this.portfolioService.buildPortFolioChart(this.yearlyPortfolio, 0);
+    this.allData = this.portfolioService.buildPortFolioChart(this.allPortfolio, 0);
   }
 }

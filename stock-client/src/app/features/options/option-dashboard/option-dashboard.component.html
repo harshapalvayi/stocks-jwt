@@ -1,0 +1,55 @@
+
+<div class="container my-5" *ngIf="portfolio && portfolio.investment > 0; else showThis">
+
+  <div class="d-flex flex-row justify-content-around mt-3">
+
+    <div class="w-100 mr-2" >
+      <app-semi-pie-cards [title]="'Portfolio'" [data]="optionValue"
+                          [ngClass]="portfolio.portfolio > portfolio.investment ? 'text-success' : 'text-danger'">
+      </app-semi-pie-cards>
+    </div>
+
+    <div class="w-100 mr-2">
+      <app-semi-pie-cards [title]="'Investment'" [data]="investment"
+                          [ngClass]="portfolio.portfolio > portfolio.investment ? 'text-success' : 'text-danger'">
+      </app-semi-pie-cards>
+    </div>
+
+    <div class="w-100" >
+      <app-semi-pie-cards [data]="position"
+                          [title]="portfolio.position > 0 ? 'Profit': 'Loss'">
+      </app-semi-pie-cards>
+    </div>
+
+  </div>
+
+  <div class="d-flex flex-row justify-content-around mt-3">
+    <div class="w-100 mr-2">
+      <app-display-cards [title]="portfolio.portfolio > portfolio.investment ? 'Profit %': 'Loss %'"
+                         [styles]="portfolio.portfolio > portfolio.investment ? 'text-success' : 'text-danger'"
+                         [data]="percentChange">
+      </app-display-cards>
+    </div>
+
+    <div class="w-100">
+      <app-display-cards [title]="'Options'" [data]="optionCount">
+      </app-display-cards>
+    </div>
+  </div>
+
+  <!--  <div class="container my-4 w-100">-->
+  <!--    <app-line-cards *ngIf="optionData" [data]="optionData"></app-line-cards>-->
+  <!--  </div>-->
+
+</div>
+
+
+
+<ng-template #showThis>
+  <div class="noDataSection">
+    <div class="d-flex align-items-center justify-content-center">
+      <h3>Add Options To Portfolio</h3>
+    </div>
+  </div>
+</ng-template>
+

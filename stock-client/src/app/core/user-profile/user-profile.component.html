@@ -1,0 +1,96 @@
+<div class="container mt-5">
+  <section>
+    <div class="mb-4">
+        <h3>Account</h3>
+    </div>
+    <div class="ml-5">
+      <h5 class="mb-3">Name: <span class="mx-5 font-weight-light">{{user.name}}</span></h5>
+      <h5 class="mb-3">Email: <span class="mx-5 font-weight-light">{{user.email}}</span></h5>
+    </div>
+    <div class="align-content-center">
+      <button pButton label="Change Password"
+              class="mx-3 ui-button-rounded ui-button-secondary"
+              (click)="onEdit('passcode')"></button>
+      <button pButton label="Change Email"
+              class="ui-button-rounded ui-button-secondary"
+              (click)="onEdit('email')"></button>
+    </div>
+  </section>
+
+  <section>
+    <div class="mt-4"><h3>Theme</h3></div>
+    <div class="align-content-center">
+      <button pButton label="Light"
+              class="mx-3 ui-button-rounded ui-button-secondary"
+              (click)="onTheme('light')"></button>
+      <button pButton label="Dark"
+              class="ui-button-rounded ui-button-secondary"
+              (click)="onTheme('dark')"></button>
+    </div>
+  </section>
+</div>
+
+<p-dialog [(visible)]="showFlag" [appendTo]="'body'"
+          [style]="{width: '700px'}" class="card-layout">
+
+  <p-header>
+    <span class="text-center font-weight-bold text-success mb-2" *ngIf="editType === 'email'"> Edit Email </span>
+    <span class="text-center font-weight-bold text-success mb-2" *ngIf="editType === 'passcode'"> Edit Passcode </span>
+  </p-header>
+
+  <form [formGroup]="editUserDetails" (ngSubmit)="onEditUserDetails()">
+
+    <div class="d-flex flex-column flex-wrap justify-content-around align-items-center m-auto">
+
+      <div *ngIf="editType === 'email'">
+        <label><b>Email</b>
+          <input class="font-weight-bold ml-c-4" formControlName="email" type="email">
+        </label>
+      </div>
+
+      <div *ngIf="editType === 'passcode'">
+        <div>
+          <label><b>Passcode</b>
+            <input class="font-weight-bold ml-c-4-7" formControlName="passcode" type="text">
+          </label>
+        </div>
+
+        <div class="my-2" *ngIf="editUserDetails.get('passcode').value &&
+                                 editUserDetails.get('passcode').errors &&
+                                 !editUserDetails.get('passcode').pristine">
+          <span class="font-weight-light"><u>Passcode Requirements</u></span>
+          <ul>
+            <li class="text-danger"
+                *ngIf="editUserDetails.get('passcode').errors['limit']">
+              Must contain at least 8 characters</li>
+            <li class="text-danger"
+                *ngIf="editUserDetails.get('passcode').errors['number']">
+              Must contain at  least one number</li>
+            <li class="text-danger"
+                *ngIf="editUserDetails.get('passcode').errors['special']">
+              Must contain at least one special characters</li>
+            <li class="text-danger"
+                *ngIf="editUserDetails.get('passcode').errors['capital']">
+              Must contain at least one uppercase characters</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="d-flex justify-content-center mt-3">
+
+      <button pButton type="button" label="Submit" class="mx-2 ui-button-rounded ui-button-success"
+              (click)="onEditUserDetails()" [disabled]="editUserDetails.invalid" ></button>
+
+      <button pButton type="button" label="Reset" class="mx-2 ui-button-rounded ui-button-secondary"
+              (click)="resetStock()"></button>
+
+      <button pButton type="button" label="Cancel" class="mx-2 ui-button-rounded ui-button-warning"
+              (click)="onCancel()">
+      </button>
+    </div>
+
+  </form>
+
+</p-dialog>

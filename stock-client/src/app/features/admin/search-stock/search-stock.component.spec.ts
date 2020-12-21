@@ -5,8 +5,8 @@ import {CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA} from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
 import {FormBuilder, FormsModule} from '@angular/forms';
 import {UserService} from '@shared/services/user/user.service';
-import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
 import {StockService} from '@shared/services/stock/stock.service';
+import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
 
 describe('SearchStockComponent', () => {
   let component: SearchStockComponent;
@@ -16,7 +16,12 @@ describe('SearchStockComponent', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule, FormsModule],
       declarations: [ SearchStockComponent ],
-      providers: [UserService, StockService, TokenStorageService, FormBuilder],
+      providers: [
+        UserService,
+        StockService,
+        TokenStorageService,
+        FormBuilder
+      ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
     });
   }));

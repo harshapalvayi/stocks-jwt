@@ -1,12 +1,14 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormGroup} from '@angular/forms';
-import {UserService} from '@shared/services/user/user.service';
-import {SharesService} from '@shared/services/shares/shares.service';
-import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
 import {User, UserToken} from '@models/User';
-import {AcctType, Share, StockInfo} from '@models/stock';
+import {AcctType, Stock, StockInfo} from '@models/stock';
 import {SelectItem} from 'primeng';
+import {ToastDetails} from '@models/Notification';
+import {UserService} from '@shared/services/user/user.service';
 import {AccountService} from '@shared/services/account/account.service';
+import {NotificationService} from '@shared/services/notification/notification.service';
+import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
+import {StockService} from '@shared/services/stock/stock.service';
 
 @Component({
   selector: 'app-trade-stock',
@@ -26,8 +28,9 @@ export class TradeStockComponent implements OnInit {
   public accounts: SelectItem[] = [];
 
   constructor(private userService: UserService,
-              private shareService: SharesService,
+              private stockService: StockService,
               private accountService: AccountService,
+              private notification: NotificationService,
               private tokenService: TokenStorageService) { }
 
   ngOnInit() {
@@ -38,7 +41,7 @@ export class TradeStockComponent implements OnInit {
   }
 
   createForm() {
-    this.tradeStock = this.shareService.createTradeStock();
+    this.tradeStock = this.stockService.createTradeStock();
     this.addAccountType = this.accountService.createAccountType();
   }
 
@@ -46,9 +49,9 @@ export class TradeStockComponent implements OnInit {
     this.tradeType = trade;
     this.stock = stock;
     if (this.tradeType === 'buy') {
-      this.tradeStock.get('buy').patchValue(stock.marketPrice);
+      this.tradeStock.get('buyPrice').patchValue(stock.marketPrice);
     } else {
-      this.tradeStock.get('sell').patchValue(stock.marketPrice);
+      this.tradeStock.get('sellPrice').patchValue(stock.marketPrice);
     }
     this.showFlag = true;
   }
@@ -85,29 +88,46 @@ export class TradeStockComponent implements OnInit {
 
   onTradeStock() {
     const stock = this.tradeStock.getRawValue();
-    let shareData: Share;
+    let shareData: Stock;
     if (stock && this.userInfo && this.userInfo.id) {
       const user = new User();
       user.userid = this.userInfo.id;
       if (this.tradeType === 'buy') {
          shareData = {
-           shareId: this.stock.shareId,
+           stockId: this.stock.stockId,
            ticker: this.stock.ticker,
-           buyPrice: stock.buy,
+           buyPrice: stock.buyPrice,
            shares: stock.shares,
-           userInfo: user
+           tradeDate: stock.tradeDate,
+           user
         };
       } else {
         shareData = {
-          shareId: this.stock.shareId,
+          stockId: this.stock.stockId,
           ticker: this.stock.ticker,
-          sellPrice: stock.sell,
+          sellPrice: stock.sellPrice,
           shares: stock.shares,
-          userInfo: user
+          tradeDate: stock.tradeDate,
+          user
         };
       }
-      this.shareService.trade(shareData).subscribe(() => {
+      this.stockService.trade(shareData).subscribe(() => {
+        let toastDetails: ToastDetails;
         this.saved.emit('saved');
+        if (shareData.buyPrice) {
+           toastDetails = {
+            message: 'Success',
+            details: `Your order to Buy ${shareData.shares} of ${shareData.ticker}
+                    has been saved at an average price of ${shareData.buyPrice}`
+          };
+        } else {
+          toastDetails = {
+            message: 'Success',
+            details: `Your order to Sell ${shareData.shares} of ${shareData.ticker}
+                    has been saved at an average price of ${shareData.buyPrice}`
+          };
+        }
+        this.notification.showSuccess(toastDetails);
         this.resetStock();
         this.showFlag = false;
       });
@@ -119,7 +139,7 @@ export class TradeStockComponent implements OnInit {
     let acctData: AcctType;
     if (acctDetails && this.userInfo && this.userInfo.id) {
       acctData = {
-        shareId: this.stock.shareId,
+        stockId: this.stock.stockId,
         userId: this.userInfo.id,
         account: acctDetails.brokerage
       };

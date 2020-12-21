@@ -7,6 +7,7 @@ import {RegisterComponent} from '@core/register/register.component';
 import {LogoutComponent} from '@core/logout/logout.component';
 import {RoleGuardService} from '@app/role-guard.service';
 import {Authguard} from '@app/authguard';
+import {UserProfileComponent} from '@core/user-profile/user-profile.component';
 
 const routes: Routes = [
   {
@@ -24,6 +25,10 @@ const routes: Routes = [
   {
     path: 'app-logout',
     component: LogoutComponent
+  },
+  {
+    path: 'app-user-profile',
+    component: UserProfileComponent
   },
   {
     path: 'app-dashboard',

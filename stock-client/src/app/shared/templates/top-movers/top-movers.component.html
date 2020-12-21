@@ -3,18 +3,18 @@
               [numVisible]="stocks.length < 3 ? stocks.length : 3"
               [numScroll]="stocks.length < 3 ? stocks.length : 3"
               [circular]="false">
-    <ng-template let-share pTemplate="item">
+    <ng-template let-stocks pTemplate="item">
       <div class="stock-details text-center">
         <div class="my-4">
           <div class="mx-2 stock-data">
-            <div class="stock-title font-weight-bold"> {{share.name}}</div>
-            <div class="stock-subtitle font-weight-bold"
-                 [ngClass]="share.price > share.buy ? 'text-success' : 'text-danger'">
-              Price : {{share.price}}
+            <div class="stock-title font-weight-bold"> {{stocks.name}}</div>
+            <div class="stock-subtitle font-weight-bold">
+              Price : <span [ngClass]="stocks.marketPrice > stocks.buyPrice ? 'text-success' : 'text-danger'">
+              {{stocks.marketPrice}} </span>
             </div>
             <div class="stock-subtitle font-weight-bold"
-                 [ngClass]="share.percentChange > 0 ? 'text-success' : 'text-danger'">
-              <h2>{{share.percentChange }}%</h2>
+                 [ngClass]="stocks.percentChange > 0 ? 'text-success' : 'text-danger'">
+              <h2>{{stocks.percentChange }}%</h2>
             </div>
           </div>
         </div>

@@ -1,4 +1,4 @@
-<div class="my-3" *ngIf="options && options.length > 0; else showThis">
+<div class="my-5" *ngIf="options && options.length > 0; else showThis">
   <p-table  [columns]="cols"  [value]="options"
             dataKey="symbol" [paginator]="true" [rows]="10">
     <ng-template pTemplate="header" let-columns>
@@ -19,6 +19,7 @@
         </td>
         <td class="text-left">{{option.name}}</td>
         <td class="text-center">{{option.optionType }}</td>
+        <td class="text-center">{{option.optionPrice }}</td>
         <td class="text-center">{{option.buyPrice | currency}}</td>
         <td class="text-center">{{option.strikePrice | currency}}</td>
         <td class="text-center">{{option.contracts}}</td>
@@ -35,8 +36,8 @@
 </div>
 
 <ng-template #showThis>
-  <div class="container noDataSection">
-    <div class="d-flex justify-content-center">
+  <div class="noDataSection">
+    <div class="d-flex align-items-center justify-content-center">
       <h3>Add Options To Portfolio</h3>
     </div>
   </div>

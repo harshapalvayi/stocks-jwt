@@ -5,8 +5,7 @@ import com.stock.stock.model.BrokerageAccounts;
 import com.stock.stock.model.MessageResponse;
 import com.stock.stock.service.AccountService;
 import com.stock.stock.service.OptionService;
-import com.stock.stock.service.ShareService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.stock.stock.service.StockService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,27 +13,33 @@ import java.util.List;
 
 @CrossOrigin(origins="http://localhost:4200")
 @RestController
-@RequestMapping(value = "/api")
+@RequestMapping(value = "/api/account")
 public class BrokerageAcctController {
-    @Autowired
-    public AccountService accountService;
 
-    @Autowired
-    public ShareService shareService;
+    public final AccountService accountService;
 
-    @Autowired
-    public OptionService optionService;
+    public final StockService stockService;
 
-    @GetMapping(value = "/account")
+    public final OptionService optionService;
+
+    public BrokerageAcctController(AccountService accountService,
+                                   StockService stockService,
+                                   OptionService optionService) {
+        this.accountService = accountService;
+        this.stockService = stockService;
+        this.optionService = optionService;
+    }
+
+    @GetMapping(value = "")
     public List<BrokerageAccounts> getAccounts() {
         return this.accountService.getBrokerageAccounts();
     }
 
-    @PutMapping(value = "/account/shareAcctType/{userId}")
-    public ResponseEntity<?> updateShareAcctType(@PathVariable(value = "userId") long userId,
+    @PutMapping(value = "/stockAcctType/{userId}")
+    public ResponseEntity<?> updateStockAcctType(@PathVariable long userId,
                                       @RequestBody AccountType acctData) {
         try {
-            shareService.updateShareAcctType(acctData, userId);
+            stockService.updateStockAcctType(acctData, userId);
             return ResponseEntity.ok(MessageResponse.success());
         }
         catch(Exception e) {
@@ -42,7 +47,7 @@ public class BrokerageAcctController {
         }
     }
 
-    @PutMapping(value = "/account/optionAcctType/{userId}")
+    @PutMapping(value = "/optionAcctType/{userId}")
     public ResponseEntity<?> updateOptionAcctType(@PathVariable(value = "userId") long userId,
                                                  @RequestBody AccountType acctData) {
         try {

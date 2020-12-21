@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
-import {UserService} from '@shared/services/user/user.service';
 import {UserToken} from '@models/User';
+import {UserService} from '@shared/services/user/user.service';
+import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
 
 @Component({
   selector: 'app-landing-page',
@@ -11,7 +11,7 @@ import {UserToken} from '@models/User';
 export class LandingPageComponent implements OnInit {
 
   public user: UserToken;
-  constructor(private userService: UserService,
+  constructor(public userService: UserService,
               private tokenStorage: TokenStorageService) { }
 
   ngOnInit() {

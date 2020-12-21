@@ -14,7 +14,11 @@ describe('NotificationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, HttpClientModule, PrimengModule],
+      imports: [
+        RouterTestingModule,
+        HttpClientModule,
+        PrimengModule
+      ],
       declarations: [ NotificationComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [NotificationService, MessagesService]

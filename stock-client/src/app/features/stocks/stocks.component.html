@@ -1,32 +1,37 @@
 
-  <div class="container my-3">
+  <div class="container mt-4">
     <p-tabMenu #tab [model]="items"  [activeItem]="activeItem"
                (click)="tabChange(tab)"></p-tabMenu>
   </div>
 
   <div class="container" [hidden]="(loader$ | async)">
-    <div *ngIf="activeItem.title === 'STOCKS'">
-      <div class="d-flex justify-content-end">
-        <button pButton type="button" icon="pi pi-plus"
-                class="ui-button-rounded ui-button-success"
-                (click)="addOptionsPopup()">
-        </button>
-        <app-add-stocks (action)="onAddStocks()"></app-add-stocks>
-      </div>
-      <div class="mx-2" *ngIf="shares">
-        <app-user-stock-details (action)="onActionPerformed()" [hidden]="innerSpinner"
-                                [shares]="shares">
+
+    <div *ngIf="activeItem.title === 'ADD STOCKS'">
+      <app-add-user-stocks (action)="onAddStocks()"></app-add-user-stocks>
+    </div>
+
+    <div *ngIf="activeItem.title === 'STOCK DASHBOARD'">
+      <app-stock-dashboard [portfolio]="portfolio" (action)="onAddStocks()"></app-stock-dashboard>
+    </div>
+
+    <div class="d-flex justify-content-around" *ngIf="activeItem.title === 'MONITOR STOCKS'">
+      <div class="my-2" *ngIf="stocks">
+        <app-user-stock-details  class="w-100"
+                                 (action)="onActionPerformed()"
+                                [hidden]="innerSpinner"
+                                [stocks]="stocks">
         </app-user-stock-details>
-      </div>
-      <div class="m-3 text-center">
-        <app-loader [hidden]="innerSpinner === false"></app-loader>
       </div>
     </div>
 
-    <div class="d-flex justify-content-around" *ngIf="activeItem.title === 'STOCK_HISTORY'">
-      <div class="my-2" *ngIf="history">
-        <app-user-stock-history class="w-100" [history]="history">
-        </app-user-stock-history>
+    <div class="m-3 text-center">
+      <app-loader [hidden]="innerSpinner === false"></app-loader>
+    </div>
+
+    <div class="d-flex justify-content-around" *ngIf="activeItem.title === 'STOCK ACTIVITY'">
+      <div class="my-2" *ngIf="stockActivities">
+        <app-user-stock-activity class="w-100" [stockActivities]="stockActivities">
+        </app-user-stock-activity>
       </div>
     </div>
   </div>

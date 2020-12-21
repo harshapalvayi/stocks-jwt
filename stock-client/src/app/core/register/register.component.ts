@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup} from '@angular/forms';
 import {Router} from '@angular/router';
 import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
 import {AuthenticationService} from '@shared/services/jwt/authentication.service';
 import {NotificationService} from '@shared/services/notification/notification.service';
+import {HttpErrorResponse} from '@angular/common/http';
+import {UserService} from '@shared/services/user/user.service';
 
 @Component({
   selector: 'app-register',
@@ -12,26 +14,19 @@ import {NotificationService} from '@shared/services/notification/notification.se
 })
 export class RegisterComponent implements OnInit {
 
-  private isRegistered = false;
+  public errorMessage: string;
   public signUpForm: FormGroup;
 
   constructor(private router: Router,
               private fb: FormBuilder,
+              private userService: UserService,
               private tokenStorage: TokenStorageService,
               private jwtService: AuthenticationService,
               private notificationService: NotificationService) {
   }
 
   ngOnInit() {
-    this.createRegistrationForm();
-  }
-
-  createRegistrationForm() {
-    this.signUpForm = this.fb.group({
-      username: [null, [Validators.required, Validators.minLength(4)]],
-      password: [null, [Validators.required, Validators.minLength(4)]],
-      email: [null, [Validators.required, Validators.email]]
-    });
+    this.signUpForm = this.userService.createRegistrationForm();
   }
 
   submit() {
@@ -44,10 +39,12 @@ export class RegisterComponent implements OnInit {
           };
           this.notificationService.showSuccess(toastDetails);
           this.router.navigate(['/app-landing-page']);
-          this.isRegistered = true;
+          this.errorMessage = null;
         },
-        () => {
-          this.isRegistered = false;
+        error => {
+          if (error instanceof HttpErrorResponse) {
+            this.errorMessage = error.error.message;
+          }
         }
       );
   }

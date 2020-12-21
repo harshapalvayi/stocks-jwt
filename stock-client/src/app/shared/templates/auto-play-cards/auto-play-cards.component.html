@@ -5,30 +5,30 @@
               [numScroll]="stocks.length < 3 ? stocks.length : 3"
               [circular]="false"
               [responsiveOptions]="responsiveOptions">
-    <ng-template let-share pTemplate="item">
+    <ng-template let-stocks pTemplate="item">
       <div class="stock-details text-center">
         <div class="my-3">
           <div class="p-col-12 stock-data">
-            <div class="stock-title font-weight-bold"> {{share.stockName}}</div>
+            <div class="stock-title font-weight-bold"> {{stocks.stockName}}</div>
 
             <div class="stock-subtitle font-weight-bold"
-                 [ngClass]="share.price > share.buy ? 'text-success' : 'text-danger'">
-              Price : {{share.price}}</div>
+                 [ngClass]="stocks.price > stocks.buy ? 'text-success' : 'text-danger'">
+              Price : {{stocks.price}}</div>
             <div class="stock-subtitle font-weight-bold"
-                 [ngClass]="share.price > share.buy ? 'text-success' : 'text-danger'">
-              Buy : {{share.buy}}</div>
+                 [ngClass]="stocks.price > stocks.buy ? 'text-success' : 'text-danger'">
+              Buy : {{stocks.buy}}</div>
             <div class="stock-subtitle font-weight-bold"
-                 [ngClass]="share.equity > share.cost ? 'text-success' : 'text-danger'">
-              Equity : {{share.equity}}</div>
+                 [ngClass]="stocks.equity > stocks.cost ? 'text-success' : 'text-danger'">
+              Equity : {{stocks.equity}}</div>
             <div class="stock-subtitle font-weight-bold"
-                 [ngClass]="share.cost < share.equity ? 'text-success' : 'text-danger'">
-              Cost : {{share.cost}}
+                 [ngClass]="stocks.cost < stocks.equity ? 'text-success' : 'text-danger'">
+              Cost : {{stocks.cost}}
             </div>
 
             <div class="container my-2" [hidden]="loader"
                  [ngClass]="{'min': stocks.length < 2,
                              'max': stocks.length > 2 }">
-              <app-line-cards *ngIf="getHistory(share) != null" [data]="getHistory(share)"></app-line-cards>
+              <app-line-cards *ngIf="getHistory(stocks) != null" [data]="getHistory(stocks)"></app-line-cards>
             </div>
             <div class="m-2">
               <app-loader [hidden]="!loader"></app-loader>

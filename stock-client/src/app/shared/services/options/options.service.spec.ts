@@ -7,7 +7,11 @@ import {PrimengModule} from '@shared/primeng.module';
 
 describe('OptionsService', () => {
   beforeEach(() => TestBed.configureTestingModule({
-    imports: [HttpClientTestingModule, FormsModule, PrimengModule],
+    imports: [
+      HttpClientTestingModule,
+      FormsModule,
+      PrimengModule
+    ],
     providers: [OptionsService, FormBuilder]
   }));
 

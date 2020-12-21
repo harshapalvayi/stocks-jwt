@@ -20,7 +20,7 @@
         </form>
       </div>
 
-      <div class="py-3 w-100" *ngIf="!isValid">
-        <app-message  [severity]="'error'" [text]="'Invalid Credentials'"></app-message>
+      <div class="py-3 w-100" *ngIf="loginForm.valid && errorMessage">
+        <app-message  [severity]="'error'" [text]="errorMessage"></app-message>
       </div>
 </div>

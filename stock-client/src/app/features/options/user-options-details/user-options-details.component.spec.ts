@@ -4,12 +4,11 @@ import { UserOptionsDetailsComponent } from './user-options-details.component';
 import {FormBuilder, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {RouterTestingModule} from '@angular/router/testing';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {PrimengModule} from '@shared/primeng.module';
-import {UserService} from '@shared/services/user/user.service';
-import {SharesService} from '@shared/services/shares/shares.service';
-import {AccountService} from '@shared/services/account/account.service';
-import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
 import {CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA} from '@angular/core';
+import {PrimengModule} from '@shared/primeng.module';
+import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
+import {AccountService} from '@shared/services/account/account.service';
+import {UserService} from '@shared/services/user/user.service';
 
 describe('TradeOptionsComponent', () => {
   let component: UserOptionsDetailsComponent;
@@ -17,9 +16,20 @@ describe('TradeOptionsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, RouterTestingModule, HttpClientTestingModule, ReactiveFormsModule, PrimengModule],
+      imports: [
+        FormsModule,
+        RouterTestingModule,
+        HttpClientTestingModule,
+        ReactiveFormsModule,
+        PrimengModule
+      ],
       declarations: [ UserOptionsDetailsComponent ],
-      providers: [UserService, SharesService, AccountService, TokenStorageService, FormBuilder],
+      providers: [
+        FormBuilder,
+        UserService,
+        AccountService,
+        TokenStorageService
+      ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
     });
   }));

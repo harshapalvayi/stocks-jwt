@@ -1,34 +1,43 @@
-<div class="container my-3">
-  <p-tabMenu #tab [model]="items"  [activeItem]="activeItem"
-             (click)="tabChange(tab)"></p-tabMenu>
-</div>
 
-<div class="container" [hidden]="(loader$ | async)">
-  <div *ngIf="activeItem.title === 'ADD OPTIONS'">
-    <app-add-user-options (saved)="onAddOptions()"></app-add-user-options>
+  <div class="container mt-4">
+    <p-tabMenu #tab [model]="items"  [activeItem]="activeItem"
+               (click)="tabChange(tab)"></p-tabMenu>
   </div>
 
-  <div *ngIf="activeItem.title === 'MONITOR OPTIONS'">
-    <div class="my-2" *ngIf="options">
-      <app-user-options-details class="w-100"
-                                (action)="onActionPerformed()"
-                                [hidden]="innerSpinner"
-                                [options]="options">
-      </app-user-options-details>
+  <div class="container" [hidden]="(loader$ | async)">
+
+    <div *ngIf="activeItem.title === 'ADD OPTIONS'">
+      <app-add-user-options (action)="onAddOptions()"></app-add-user-options>
     </div>
+
+    <div *ngIf="activeItem.title === 'OPTION DASHBOARD'">
+      <div class="my-2">
+        <app-option-dashboard [portfolio]="portfolio"></app-option-dashboard>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-around" *ngIf="activeItem.title === 'MONITOR OPTIONS'">
+      <div class="my-2" *ngIf="options">
+        <app-user-options-details class="w-100"
+                                  (action)="onActionPerformed()"
+                                  [hidden]="innerSpinner"
+                                  [options]="options">
+        </app-user-options-details>
+      </div>
+    </div>
+
     <div class="m-3 text-center">
       <app-loader [hidden]="innerSpinner === false"></app-loader>
     </div>
-  </div>
 
-  <div class="d-flex justify-content-around" *ngIf="activeItem.title === 'OPTION HISTORY'">
-    <div class="my-2" *ngIf="history">
-      <app-user-option-history class="w-100" [history]="history">
-      </app-user-option-history>
+    <div class="d-flex justify-content-around" *ngIf="activeItem.title === 'OPTION ACTIVITY'">
+      <div class="my-2" *ngIf="optionActivities">
+        <app-user-option-activity class="w-100" [optionActivities]="optionActivities">
+        </app-user-option-activity>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="text-center mt-5">
-    <app-loader [hidden]="(loader$ | async) === false"></app-loader>
-</div>
+  <div class="mt-5 text-center">
+      <app-loader [hidden]="(loader$ | async) === false"></app-loader>
+  </div>

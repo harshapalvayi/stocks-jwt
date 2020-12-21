@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {AuthenticationService} from '@shared/services/jwt/authentication.service';
 import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
+import {AuthenticationService} from '@shared/services/jwt/authentication.service';
+import {HttpErrorResponse} from '@angular/common/http';
+import {LocationService} from '@shared/services/location/location.service';
+import {UserService} from '@shared/services/user/user.service';
 
 @Component({
   selector: 'app-login-page',
@@ -11,12 +14,14 @@ import {TokenStorageService} from '@shared/services/token-storage/token-storage.
 })
 export class LoginPageComponent implements OnInit {
 
-  private isLoggedIn = false;
-  private isValid = true;
+  public errorMessage: string;
   public loginForm: FormGroup;
 
   constructor(private fb: FormBuilder,
               private router: Router,
+              private userService: UserService,
+              private location: LocationService,
+              private elementRef: ElementRef,
               private tokenStorage: TokenStorageService,
               private jwtService: AuthenticationService) {
   }
@@ -36,14 +41,19 @@ export class LoginPageComponent implements OnInit {
     this.jwtService.login(this.loginForm.value)
       .subscribe(data => {
           this.tokenStorage.saveUser(data);
+          if (data.theme != null) {
+            this.userService.setProperties(data.theme);
+          } else {
+            this.userService.setProperties('light');
+          }
           this.router.navigate(['/app-landing-page']);
-          this.isLoggedIn = true;
+          this.errorMessage = null;
         },
-        () => {
-          this.isValid = false;
-          this.isLoggedIn = false;
+        error => {
+          if (error instanceof HttpErrorResponse) {
+            this.errorMessage = error.error.message;
+          }
         }
       );
   }
-
 }

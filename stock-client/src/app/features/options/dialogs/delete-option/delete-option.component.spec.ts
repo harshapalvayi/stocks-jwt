@@ -4,12 +4,12 @@ import { DeleteOptionComponent } from './delete-option.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {RouterTestingModule} from '@angular/router/testing';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {PrimengModule} from '@shared/primeng.module';
+import {CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA} from '@angular/core';
 import {UserService} from '@shared/services/user/user.service';
+import {OptionsService} from '@shared/services/options/options.service';
 import {AccountService} from '@shared/services/account/account.service';
 import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
-import {CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA} from '@angular/core';
-import {OptionsService} from '@shared/services/options/options.service';
+import {PrimengModule} from '@shared/primeng.module';
 
 describe('DeleteOptionComponent', () => {
   let component: DeleteOptionComponent;

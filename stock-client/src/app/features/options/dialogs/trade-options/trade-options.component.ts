@@ -2,12 +2,12 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {UserToken} from '@models/User';
 import {AcctType} from '@models/stock';
 import {FormGroup} from '@angular/forms';
-import {UserService} from '@shared/services/user/user.service';
-import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
-import {OptionsService} from '@shared/services/options/options.service';
 import {SelectItem} from 'primeng';
+import {OptionData} from '@models/optionsChainData';
+import {UserService} from '@shared/services/user/user.service';
+import {OptionsService} from '@shared/services/options/options.service';
 import {AccountService} from '@shared/services/account/account.service';
-import {OptionInfo} from '@models/options';
+import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
 
 @Component({
   selector: 'app-trade-options',
@@ -21,7 +21,7 @@ export class TradeOptionsComponent implements OnInit {
   public showAccountFlag: boolean;
   public tradeType: string;
   public userInfo: UserToken;
-  public option: OptionInfo;
+  public option: OptionData;
   public tradeOptions: FormGroup;
   public addAccountType: FormGroup;
   public accounts: SelectItem[] = [];
@@ -43,7 +43,7 @@ export class TradeOptionsComponent implements OnInit {
     this.addAccountType = this.accountService.createAccountType();
   }
 
-  showTradeDialog(trade: string, option: OptionInfo) {
+  showTradeDialog(trade: string, option: OptionData) {
     this.tradeType = trade;
     this.option = option;
     this.showFlag = true;
@@ -64,7 +64,7 @@ export class TradeOptionsComponent implements OnInit {
     this.showAccountFlag = false;
   }
 
-  showAccountTypeDialog(option: OptionInfo) {
+  showAccountTypeDialog(option: OptionData) {
     this.option = option;
     this.accounts = [];
     this.accountService.getAccounts().subscribe(accounts => {
@@ -80,7 +80,7 @@ export class TradeOptionsComponent implements OnInit {
 
   onTradeOption() {
     const option = this.tradeOptions.getRawValue();
-    let optionData: OptionInfo;
+    let optionData: OptionData;
     if (option && this.userInfo && this.userInfo.id) {
       if (this.tradeType === 'buy') {
         optionData = {

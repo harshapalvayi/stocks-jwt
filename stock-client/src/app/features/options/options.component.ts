@@ -1,17 +1,21 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {AddOptionsComponent} from '@features/options/dialogs/add-options/add-options.component';
-import {Portfolio} from '@models/stock';
+import {MenuItem} from 'primeng';
 import {UserToken} from '@models/User';
 import {forkJoin, Observable} from 'rxjs';
+import {MenuTabs as menus} from '@models/menus';
+import {OptionActivityData, OptionData, OptionPortfolio} from '@models/optionsChainData';
+import {
+  AddOptionsComponent
+} from '@features/options/dialogs/add-options/add-options.component';
+import {
+  SearchOptionsComponent
+} from '@features/options/dialogs/search-options/search-options.component';
 import {UserService} from '@shared/services/user/user.service';
 import {UtilService} from '@shared/services/util/util.service';
 import {ChartService} from '@shared/services/chart/chart.service';
 import {OptionsService} from '@shared/services/options/options.service';
+import {PortfolioService} from '@shared/services/portfolio/portfolio.service';
 import {TokenStorageService} from '@shared/services/token-storage/token-storage.service';
-import {MenuItem} from 'primeng';
-import {MenuTabs as menus} from '@models/menus';
-import {SearchOptionsComponent} from '@features/options/dialogs/search-options/search-options.component';
-import {OptionHistoryInfo, OptionInfo} from '@models/options';
 
 @Component({
   selector: 'app-options',
@@ -27,15 +31,17 @@ export class OptionsComponent implements OnInit {
   public items: MenuItem[];
   public userInfo: UserToken;
   public activeItem: MenuItem;
-  public portfolio: Portfolio;
-  public options: OptionInfo[];
+  public options: OptionData[];
   public innerSpinner: boolean;
-  public history: OptionHistoryInfo[];
+
+  public portfolio: OptionPortfolio;
+  public optionActivities: OptionActivityData[];
   public loader$: Observable<boolean> = this.utilService.getLoader();
   constructor(private userService: UserService,
               private utilService: UtilService,
               private chartService: ChartService,
               private optionService: OptionsService,
+              private portfolioService: PortfolioService,
               private tokenService: TokenStorageService) { }
 
   ngOnInit() {
@@ -59,19 +65,6 @@ export class OptionsComponent implements OnInit {
     }
   }
 
-  private calculateOptionData() {
-    forkJoin([
-      this.optionService.getOptions(this.userInfo.id),
-      this.optionService.getOptionHistory(this.userInfo.id)
-    ])
-      .subscribe(([options, history]) => {
-        this.options = options;
-        this.history = history;
-        this.innerSpinner = false;
-        this.utilService.hideSpinner();
-      });
-  }
-
   onAddOptions() {
     this.calculateOptionData();
   }
@@ -81,4 +74,19 @@ export class OptionsComponent implements OnInit {
     this.calculateOptionData();
   }
 
+  private calculateOptionData() {
+    forkJoin([
+      this.optionService.getOptionsData(this.userInfo.id),
+      this.optionService.getOptionActivityData(this.userInfo.id),
+      this.portfolioService.getOptionPortfolio(this.userInfo.id)
+    ])
+      .subscribe(([options, optionActivities, portfolio]) => {
+        const count = options.length;
+        this.options = options;
+        this.optionActivities = optionActivities;
+        this.portfolio = portfolio;
+        this.innerSpinner = false;
+        this.utilService.hideSpinner();
+      });
+  }
 }
