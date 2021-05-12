@@ -22,7 +22,7 @@
     "@angular/router": "~8.2.7",
     "@fullcalendar/core": "^4.4.0",
     "bootstrap": "^4.5.3",
-    "chart.js": "^2.9.3",
+    "chart.js": "^2.9.4",
     "eslint": "^7.1.0",
     "jquery": "^3.5.1",
     "moment": "^2.29.1",
